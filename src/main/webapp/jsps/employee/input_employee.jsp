@@ -7,18 +7,18 @@
     <title></title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
+	<meta http-equiv="expires" content="0">
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">	
+	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
   </head>
-  
+
   <body style="padding:8px;">
     <h3 class="title">新增员工</h3>
     <form:form action="${pageContext.request.contextPath}/employee/create" method="post" modelAttribute="employee">
        <div>
-         <span>工号:</span>
-         <form:input path="empId"/>
+            <span>工号:</span>
+            <form:input path="empId"/>
        </div>
         <div>
             <span>姓名:</span>
@@ -26,7 +26,14 @@
         </div>
         <div>
             <span>性别:</span>
-            <form:input path="empSex"/>
+            <%
+                Map<String, String> status = new TreeMap<String, String>();
+                status.put("M", "男");
+                status.put("W", "女");
+
+                request.setAttribute("status", status);
+            %>
+            <form:radiobuttons  path="empSex" items="${status}"/>
         </div>
         <div>
             <span>职务:</span>
@@ -34,7 +41,7 @@
         </div>
         <div>
             <span>部门:</span>
-            <form:input path="empDepartment"/>
+            <form:checkboxes path="empDept" items="${deptList}" itemLabel="deptName" itemValue="deptId"/>
         </div>
         <div>
             <span>电话:</span>
@@ -44,10 +51,10 @@
             <span>邮件:</span>
             <form:input path="empEmail"/>
         </div>
-                 
+
        <div>
-         <input type="submit" value=" 确定 "/> 
-       </div>              
+         <input type="submit" value=" 确定 "/>
+       </div>
     </form:form>
   </body>
 </html>

@@ -9,21 +9,7 @@
 	<meta http-equiv="expires" content="0">    
 	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">	
-	<style>
-	   
-	   .errorMessage{
-	      list-style:none;
-	      color:red;
-	      display:inline;
-	   }
-	   
-	   .errorMessage li{
-	      display:inline-block;
-	   }
-	   
-	   
-	</style>
+	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
   </head>
   
   <body style="padding:8px;">
@@ -41,7 +27,14 @@
         </div>
         <div>
             <span>性别:</span>
-            <form:input path="empSex"/>
+            <%
+                Map<String, String> status = new TreeMap<String, String>();
+                status.put("M", "男");
+                status.put("W", "女");
+
+                request.setAttribute("status", status);
+            %>
+            <form:radiobuttons  path="empSex" items="${status}"/>
         </div>
         <div>
             <span>职务:</span>
@@ -49,7 +42,7 @@
         </div>
         <div>
             <span>部门:</span>
-            <form:input path="empDepartment"/>
+            <form:checkboxes path="empDept" items="${deptList}" itemLabel="deptName" itemValue="deptId"/>
         </div>
         <div>
             <span>电话:</span>

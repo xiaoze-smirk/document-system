@@ -18,7 +18,7 @@
 
 			  $(".delete").click(function(){
 				  var href = $(this).attr("href");
-				  var empName=$(this).parent().parent().children("#empName").attr("title");
+				  var empName=$(this).parent().parent().children("#deptName").attr("title");
 				  if(confirm("确定要删除 ["+empName+"] 的信息吗?")){
 					  $("form:eq(0)").attr("action",href).submit();
 					  return false;
@@ -88,33 +88,19 @@
 
 	    <table border="0" cellspacing="0">
 	       <tr>
-	        <th>工号</th>
-	        <th>姓名</th>
-	        <th>性别</th>
-			<th>职务</th>
-			<th>部门</th>
-			<th>电话</th>
-			<th>邮件</th>
+	        <th>部门编号</th>
+	        <th>部门名称</th>
+	        <th>部门职能</th>
 			<th>操作</th>
 	       </tr>
-	       <c:forEach var="employee" items="${page.list}" >
+	       <c:forEach var="department" items="${page.list}" >
 	         <tr>
-	             <td nowrap>${employee.empId}</td>
-	             <td id="empName" title="${employee.empName}" nowrap>${employee.empName}</td>
+	             <td nowrap>${department.deptId}</td>
+	             <td id="deptName" title="${department.deptName}" nowrap>${department.deptName}</td>
+				 <td nowrap>${department.deptContent}</td>
 				 <td nowrap>
-					 <c:choose>
-						 <c:when test="${employee.empSex=='M'}">男</c:when>
-						 <c:when test="${employee.empSex=='W'}">女</c:when>
-					 </c:choose>
-				 </td>
-				 <td nowrap>${employee.empDuty}</td>
-				 <td nowrap>${employee.empDeptName}</td>
-
-				 <td nowrap>${employee.empPhone}</td>
-				 <td nowrap>${employee.empEmail}</td>
-				 <td nowrap>
-					 <button class="update" href="${pageContext.request.contextPath}/employee/preUpdate/${employee.empId}">修改</button>
-					 <button class="delete" href="${pageContext.request.contextPath}/employee/remove/${employee.empId}">删除</button>
+					 <button class="update" href="${pageContext.request.contextPath}/department/preUpdate/${department.deptId}">修改</button>
+					 <button class="delete" href="${pageContext.request.contextPath}/department/remove/${department.deptId}">删除</button>
 				 </td>
 	         </tr>   
 	       </c:forEach>

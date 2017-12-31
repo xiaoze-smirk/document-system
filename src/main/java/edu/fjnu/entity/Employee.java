@@ -1,5 +1,9 @@
 package edu.fjnu.entity;
 
+import edu.fjnu.utils.StringUtil;
+import org.springframework.stereotype.Component;
+
+@Component
 public class Employee {
 
     //工号（序号）
@@ -16,6 +20,10 @@ public class Employee {
 
     //部门
     private String empDepartment;
+    //显示部门辅助字符数组
+    private String[] empDept;
+    //显示部门辅助字符串
+    private String empDeptName;
 
     //电话
     private String empPhone;
@@ -61,6 +69,8 @@ public class Employee {
 
     public void setEmpDepartment(String empDepartment) {
         this.empDepartment = empDepartment == null ? null : empDepartment.trim();
+        StringUtil stringUtil = new StringUtil();
+        this.empDept=stringUtil.strList(empDepartment);
     }
 
     public String getEmpPhone() {
@@ -77,5 +87,26 @@ public class Employee {
 
     public void setEmpEmail(String empEmail) {
         this.empEmail = empEmail == null ? null : empEmail.trim();
+    }
+
+
+    public String[] getEmpDept() {
+        return empDept;
+    }
+
+    public void setEmpDept(String[] empDept) {
+        this.empDept = empDept;
+
+        StringUtil stringUtil = new StringUtil();
+        this.empDepartment=stringUtil.str(empDept);
+
+    }
+
+    public String getEmpDeptName() {
+        return empDeptName;
+    }
+
+    public void setEmpDeptName(String empDeptName) {
+        this.empDeptName = empDeptName;
     }
 }

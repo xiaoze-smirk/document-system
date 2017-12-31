@@ -2,8 +2,11 @@ package edu.fjnu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import edu.fjnu.entity.Department;
 import edu.fjnu.entity.Employee;
+import edu.fjnu.service.DepartmentService;
 import edu.fjnu.service.EmployeeService;
+import edu.fjnu.utils.EntityUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,9 @@ public class EmployeeController extends BaseController {
 
     @Autowired
     private EmployeeService employeeService;
+
+    @Autowired
+    private DepartmentService departmentService;
 
     @ModelAttribute
     public void getEmployee(@RequestParam(value="updateEmpId",required=false) Integer empId,
@@ -37,6 +43,8 @@ public class EmployeeController extends BaseController {
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {
         map.put("employee", new Employee());
+
+        map.put("deptList", departmentService.findAllDepartment());
 
         return "employee/input_employee";
     }
@@ -63,10 +71,20 @@ public class EmployeeController extends BaseController {
 
         PageHelper.startPage(pageNo, 3);
         List<Employee> employeeList = employeeService.findAllEmployee();
+        List<Department> departmentList = departmentService.findAllDepartment();
 
         PageInfo<Employee> page=new PageInfo<Employee>(employeeList);
 
+        EntityUtil entityUtil = new EntityUtil();
+        String str;
+        for(Employee emp:page.getList()) {
+            str = entityUtil.str(emp.getEmpDept(),departmentList);
+            emp.setEmpDeptName(str);
+        }
+
         map.put("page", page);
+
+        map.put("deptList", departmentService.findAllDepartment());
 
         return "employee/list_employee";
     }
@@ -83,6 +101,8 @@ public class EmployeeController extends BaseController {
     public String preUpdate(@PathVariable("empId") Integer empId, Map<String, Object> map){
 
         map.put("employee", employeeService.selectByPrimaryKey(empId));
+
+        map.put("deptList", departmentService.findAllDepartment());
 
         return "employee/update_employee";
     }
