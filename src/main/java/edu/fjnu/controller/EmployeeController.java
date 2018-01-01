@@ -37,7 +37,9 @@ public class EmployeeController extends BaseController {
 
     @GetMapping("/enter")
     public String enter() {
-        return "main";
+
+        throw new RuntimeException();
+//        return "main";
     }
 
     @GetMapping("/toInput")

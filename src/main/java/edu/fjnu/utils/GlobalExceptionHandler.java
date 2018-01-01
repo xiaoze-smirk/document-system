@@ -2,6 +2,7 @@ package edu.fjnu.utils;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,18 +10,18 @@ import javax.servlet.http.HttpServletRequest;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
+
+//    @ExceptionHandler(value = RuntimeException.class)
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) {
         ModelAndView mav = new ModelAndView();
-        mav.addObject("exception", e);
         mav.addObject("url", req.getRequestURL());
-        mav.setViewName("error");
+        mav.addObject("exception", e);
+        mav.setViewName("/error");
 
-        System.out.println("我捕捉到异常了，哈哈哈哈");
+        System.out.println("我捕捉到异常了，哈哈哈哈    "+e.getMessage());
         return mav;
     }
-
-
 }
 
 //@ControllerAdvice
