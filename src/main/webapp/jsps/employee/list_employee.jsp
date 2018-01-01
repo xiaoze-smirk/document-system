@@ -80,7 +80,7 @@
   </head>
   
   <body style="padding:8px;">
-    <h3 class="title">课程类型管理</h3>
+    <h3 class="title">员工管理</h3>
 
 	<form action="" method="POST">
 		<input type="hidden" name="_method" value="DELETE"/>

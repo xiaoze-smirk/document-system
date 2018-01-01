@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.fjnu.mapper.ClientMapper">
+  <resultMap id="BaseResultMap" type="edu.fjnu.entity.Client">
+    <id column="client_id" jdbcType="VARCHAR" property="clientId" />
+    <result column="client_company" jdbcType="VARCHAR" property="clientCompany" />
+    <result column="client_person" jdbcType="VARCHAR" property="clientPerson" />
+    <result column="client_phone" jdbcType="VARCHAR" property="clientPhone" />
+    <result column="client_email" jdbcType="VARCHAR" property="clientEmail" />
+    <result column="client_addr" jdbcType="VARCHAR" property="clientAddr" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    client_id, client_company, client_person, client_phone, client_email, client_addr
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_client
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </select>
+  <select id="findAllClient" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_client
+    order by client_id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_client
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.fjnu.entity.Client">
+    insert into tb_client (client_id, client_company, client_person, 
+      client_phone, client_email, client_addr
+      )
+    values (#{clientId,jdbcType=VARCHAR}, #{clientCompany,jdbcType=VARCHAR}, #{clientPerson,jdbcType=VARCHAR}, 
+      #{clientPhone,jdbcType=VARCHAR}, #{clientEmail,jdbcType=VARCHAR}, #{clientAddr,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjnu.entity.Client">
+    insert into tb_client
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="clientId != null">
+        client_id,
+      </if>
+      <if test="clientCompany != null">
+        client_company,
+      </if>
+      <if test="clientPerson != null">
+        client_person,
+      </if>
+      <if test="clientPhone != null">
+        client_phone,
+      </if>
+      <if test="clientEmail != null">
+        client_email,
+      </if>
+      <if test="clientAddr != null">
+        client_addr,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="clientId != null">
+        #{clientId,jdbcType=VARCHAR},
+      </if>
+      <if test="clientCompany != null">
+        #{clientCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="clientPerson != null">
+        #{clientPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="clientPhone != null">
+        #{clientPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="clientEmail != null">
+        #{clientEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="clientAddr != null">
+        #{clientAddr,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjnu.entity.Client">
+    update tb_client
+    <set>
+      <if test="clientCompany != null">
+        client_company = #{clientCompany,jdbcType=VARCHAR},
+      </if>
+      <if test="clientPerson != null">
+        client_person = #{clientPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="clientPhone != null">
+        client_phone = #{clientPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="clientEmail != null">
+        client_email = #{clientEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="clientAddr != null">
+        client_addr = #{clientAddr,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjnu.entity.Client">
+    update tb_client
+    set client_company = #{clientCompany,jdbcType=VARCHAR},
+      client_person = #{clientPerson,jdbcType=VARCHAR},
+      client_phone = #{clientPhone,jdbcType=VARCHAR},
+      client_email = #{clientEmail,jdbcType=VARCHAR},
+      client_addr = #{clientAddr,jdbcType=VARCHAR}
+    where client_id = #{clientId,jdbcType=VARCHAR}
+  </update>
+</mapper>

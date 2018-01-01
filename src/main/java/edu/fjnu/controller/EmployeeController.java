@@ -26,20 +26,20 @@ public class EmployeeController extends BaseController {
     private DepartmentService departmentService;
 
     @ModelAttribute
-    public void getEmployee(@RequestParam(value="updateEmpId",required=false) Integer empId,
+    public void getEmployee(@RequestParam(value="empId",required=false) Integer empId,
                           Map<String, Object> map,Employee employee){
 
-        employee=employeeService.selectByPrimaryKey(empId);
-        if(empId != null && employee != null)
+
+        if(empId != null)
+            employee=employeeService.selectByPrimaryKey(empId);
+        if(employee != null)
             map.put("employee", employee);
     }
-
 
     @GetMapping("/enter")
     public String enter() {
 
-        throw new RuntimeException();
-//        return "main";
+        return "main";
     }
 
     @GetMapping("/toInput")

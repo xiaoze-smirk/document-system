@@ -22,11 +22,12 @@ public class DepartmentController extends BaseController {
     private DepartmentService departmentService;
 
     @ModelAttribute
-    public void getDepartment(@RequestParam(value="updateDeptId",required=false) String deptId,
+    public void getDepartment(@RequestParam(value="deptId",required=false) String deptId,
                             Map<String, Object> map, Department department){
 
-        department=departmentService.selectByPrimaryKey(deptId);
-        if(isNotEmpty(deptId) && department != null)
+        if(isNotEmpty(deptId))
+            department=departmentService.selectByPrimaryKey(deptId);
+        if(department != null)
             map.put("department", department);
     }
 

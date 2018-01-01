@@ -18,8 +18,8 @@
 
 			  $(".delete").click(function(){
 				  var href = $(this).attr("href");
-				  var empName=$(this).parent().parent().children("#deptName").attr("title");
-				  if(confirm("确定要删除 ["+empName+"] 的信息吗?")){
+				  var clientId=$(this).parent().parent().children("#clientId").attr("title");
+				  if(confirm("确定要删除客户号为 ["+clientId+"] 的信息吗?")){
 					  $("form:eq(0)").attr("action",href).submit();
 					  return false;
 				  }
@@ -80,7 +80,7 @@
   </head>
   
   <body style="padding:8px;">
-    <h3 class="title">部门管理管理</h3>
+    <h3 class="title">客户管理</h3>
 
 	<form action="" method="POST">
 		<input type="hidden" name="_method" value="DELETE"/>
@@ -88,19 +88,26 @@
 
 	    <table border="0" cellspacing="0">
 	       <tr>
-	        <th>部门编号</th>
-	        <th>部门名称</th>
-	        <th>部门职能</th>
+	        <th>客户号</th>
+	        <th>公司名称</th>
+	        <th>联系人</th>
+			<th>联系电话</th>
+			<th>邮件</th>
+			<th>地址</th>
 			<th>操作</th>
 	       </tr>
-	       <c:forEach var="department" items="${page.list}" >
+	       <c:forEach var="client" items="${page.list}" >
 	         <tr>
-	             <td nowrap>${department.deptId}</td>
-	             <td id="deptName" title="${department.deptName}" nowrap>${department.deptName}</td>
-				 <td nowrap>${department.deptContent}</td>
+	             <td id="clientId" title="${client.clientId}" nowrap>${client.clientId}</td>
+				 <td nowrap>${client.clientCompany}</td>
+				 <td nowrap>${client.clientPerson}</td>
+				 <td nowrap>${client.clientPhone}</td>
+
+				 <td nowrap>${client.clientEmail}</td>
+				 <td nowrap>${client.clientAddr}</td>
 				 <td nowrap>
-					 <button class="update" href="${pageContext.request.contextPath}/department/preUpdate/${department.deptId}">修改</button>
-					 <button class="delete" href="${pageContext.request.contextPath}/department/remove/${department.deptId}">删除</button>
+					 <button class="update" href="${pageContext.request.contextPath}/client/preUpdate/${client.clientId}">修改</button>
+					 <button class="delete" href="${pageContext.request.contextPath}/client/remove/${client.clientId}">删除</button>
 				 </td>
 	         </tr>   
 	       </c:forEach>
