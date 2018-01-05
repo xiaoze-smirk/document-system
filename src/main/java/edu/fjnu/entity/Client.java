@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Client {
 
-    //客户号
+    //客户号:地区号+客户序列号
     private String clientId;
 
     //公司名称
