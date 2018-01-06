@@ -29,8 +29,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteByPrimaryKey(Integer id) {
-        itemMapper.deleteByPrimaryKey(id);
+    public void deleteByPrimaryKey(Integer autoId) {
+        itemMapper.deleteByPrimaryKey(autoId);
     }
 
     @Override
@@ -44,8 +44,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item selectByPrimaryKey(Integer id) {
-        return itemMapper.selectByPrimaryKey(id);
+    public Item selectByPrimaryKey(Integer autoId) {
+        return itemMapper.selectByPrimaryKey(autoId);
+    }
+
+    @Override
+    public Integer selectNextAutoId() {
+        return itemMapper.selectNextAutoId();
     }
 
     @Override

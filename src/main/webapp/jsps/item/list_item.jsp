@@ -18,8 +18,8 @@
 
 			  $(".delete").click(function(){
 				  var href = $(this).attr("href");
-				  var empName=$(this).parent().parent().children("#empName").attr("title");
-				  if(confirm("确定要删除 ["+empName+"] 的信息吗?")){
+				  var itemName=$(this).parent().parent().children("#itemName").attr("title");
+				  if(confirm("确定要删除项目名为 ["+itemName+"] 的信息吗?")){
 					  $("form:eq(0)").attr("action",href).submit();
 					  return false;
 				  }
@@ -88,33 +88,25 @@
 
 	    <table border="0" cellspacing="0">
 	       <tr>
-	        <th>工号</th>
-	        <th>姓名</th>
-	        <th>性别</th>
-			<th>职务</th>
-			<th>部门</th>
-			<th>电话</th>
-			<th>邮件</th>
+	        <th>编号</th>
+			<th>项目号</th>
+	        <th>项目名</th>
+			<th>起始日期</th>
+			<th>结束日期</th>
+			<th>业务负责人</th>
 			<th>操作</th>
 	       </tr>
-	       <c:forEach var="employee" items="${page.list}" >
+	       <c:forEach var="item" items="${page.list}" >
 	         <tr>
-	             <td nowrap>${employee.empId}</td>
-	             <td id="empName" title="${employee.empName}" nowrap>${employee.empName}</td>
+	             <td nowrap>${item.autoId}</td>
+				 <td nowrap>${item.itemId}</td>
+	             <td id="itemName" title="${item.itemName}" nowrap>${item.itemName}</td>
+				 <td nowrap>${item.itemStartDate}</td>
+				 <td nowrap>${item.itemDeadline}</td>
+				 <td nowrap>${item.itemPrincipal}</td>
 				 <td nowrap>
-					 <c:choose>
-						 <c:when test="${employee.empSex=='M'}">男</c:when>
-						 <c:when test="${employee.empSex=='W'}">女</c:when>
-					 </c:choose>
-				 </td>
-				 <td nowrap>${employee.empDuty}</td>
-				 <td nowrap>${employee.empDeptName}</td>
-
-				 <td nowrap>${employee.empPhone}</td>
-				 <td nowrap>${employee.empEmail}</td>
-				 <td nowrap>
-					 <button class="update" href="${pageContext.request.contextPath}/employee/preUpdate/${employee.empId}">修改</button>
-					 <button class="delete" href="${pageContext.request.contextPath}/employee/remove/${employee.empId}">删除</button>
+					 <button class="update" href="${pageContext.request.contextPath}/item/preUpdate/${item.autoId}">修改</button>
+					 <button class="delete" href="${pageContext.request.contextPath}/item/remove/${item.autoId}">删除</button>
 				 </td>
 	         </tr>   
 	       </c:forEach>

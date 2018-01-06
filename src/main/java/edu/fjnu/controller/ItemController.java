@@ -1,9 +1,9 @@
 package edu.fjnu.controller;
 
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import edu.fjnu.entity.Client;
 import edu.fjnu.entity.Item;
 import edu.fjnu.service.ClientService;
 import edu.fjnu.service.ItemService;
@@ -27,11 +27,11 @@ public class ItemController extends BaseController {
     private ClientService clientService;
 
     @ModelAttribute
-    public void getEmployee(@RequestParam(value="id",required=false) Integer id,
+    public void getEmployee(@RequestParam(value="autoId",required=false) Integer autoId,
                             Map<String, Object> map, Item item){
 
-        if(id != null)
-            item=itemService.selectByPrimaryKey(id);
+        if(autoId != null)
+            item=itemService.selectByPrimaryKey(autoId);
         if(item != null)
             map.put("item", item);
     }
@@ -48,12 +48,10 @@ public class ItemController extends BaseController {
     public String create(Item item) {
 
         item.setClientId(item.getClientId().substring(4,7));
-        Item item1 = new Item();
-        item1 = itemService.selectByLastRecord();
         LocalDateTime localDateTime = LocalDateTime.now();
 
         StringUtil stringUtil = new StringUtil();
-        item.setItemId(stringUtil.getYear(localDateTime)+item.getClientId()+item1.getId());
+        item.setItemId(stringUtil.getYear(localDateTime)+item.getClientId()+stringUtil.getThreeStr(itemService.selectNextAutoId()));
 
         itemService.insert(item);
 
@@ -73,33 +71,41 @@ public class ItemController extends BaseController {
         }
 
         PageHelper.startPage(pageNo, 3);
-        List<Item> itemList = itemService.findAllItem();
+        List<Item> itemList =  itemService.findAllItem();
 
         PageInfo<Item> page=new PageInfo<Item>(itemList);
-
+        page.setList((List<Item>)JSON.toJSON(page.getList()));
         map.put("page", page);
 
         return "item/list_item";
     }
 
-    @DeleteMapping(value="/remove/{id}")
-    public String remove(@PathVariable("id") Integer id) {
+    @DeleteMapping(value="/remove/{autoId}")
+    public String remove(@PathVariable("autoId") Integer autoId) {
 
-        itemService.deleteByPrimaryKey(id);
+        itemService.deleteByPrimaryKey(autoId);
 
         return "redirect:/item/list";
     }
 
-    @GetMapping(value="/preUpdate/{id}")
-    public String preUpdate(@PathVariable("id") Integer id, Map<String, Object> map){
+    @GetMapping(value="/preUpdate/{autoId}")
+    public String preUpdate(@PathVariable("autoId") Integer autoId, Map<String, Object> map){
 
-        map.put("employee", itemService.selectByPrimaryKey(id));
+        Item item = itemService.selectByPrimaryKey(autoId);
+        map.put("item", item);
+        map.put("clientList",clientService.findAllClient());
+        map.put("client",clientService.selectLikePrimaryKey(item.getClientId()));
 
         return "item/update_item";
     }
 
     @PutMapping(value="/update")
-    public String update(Item item) {
+    public String update(Item item , @RequestParam(value="clientId",required=false) String clientId) {
+
+        if(clientId.length()==7){
+            item.setClientId(clientId.substring(4,7));
+            item.setItemId(item.getItemId().substring(0,4)+item.getClientId()+item.getItemId().substring(7,10));
+        }
 
         itemService.updateByPrimaryKey(item);
 

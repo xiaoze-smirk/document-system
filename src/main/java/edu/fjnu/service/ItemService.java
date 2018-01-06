@@ -13,13 +13,15 @@ public interface ItemService {
 
     void insertSelective(Item record);
 
-    void deleteByPrimaryKey(Integer id);
+    void deleteByPrimaryKey(Integer autoId);
 
     void updateByPrimaryKeySelective(Item record);
 
     void updateByPrimaryKey(Item record);
 
-    Item selectByPrimaryKey(Integer id);
+    Item selectByPrimaryKey(Integer autoId);
+
+    Integer selectNextAutoId();
 
     List<Item> findAllItem();
 

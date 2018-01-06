@@ -19,6 +19,8 @@ public interface ClientService {
 
     Client selectByPrimaryKey(String clientId);
 
+    Client selectLikePrimaryKey(String clientId);
+
     List<Client> findAllClient();
 
 }

@@ -17,5 +17,7 @@ public interface ClientMapper {
 
     Client selectByPrimaryKey(String clientId);
 
+    Client selectLikePrimaryKey(String clientId);
+
     List<Client> findAllClient();
 }

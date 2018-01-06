@@ -31,4 +31,17 @@ public class StringUtil {
         return String.valueOf(i+1);
     }
 
+    //获取三为字符串
+    public String getThreeStr(int i){
+
+        String str;
+        if(i<10)
+            str="00"+ i;
+        else if(i<20)
+            str="0"+ i;
+        else
+            str=String.valueOf(i);
+        return str;
+    }
+
 }

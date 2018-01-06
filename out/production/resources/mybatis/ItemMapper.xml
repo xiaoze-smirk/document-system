@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="edu.fjnu.mapper.ItemMapper">
   <resultMap id="BaseResultMap" type="edu.fjnu.entity.Item">
-    <id column="id" jdbcType="INTEGER" property="id" />
+    <id column="auto_id" jdbcType="INTEGER" property="autoId" />
     <result column="item_id" jdbcType="VARCHAR" property="itemId" />
     <result column="item_name" jdbcType="VARCHAR" property="itemName" />
     <result column="item_start_date" jdbcType="DATE" property="itemStartDate" />
@@ -10,43 +10,49 @@
     <result column="item_principal" jdbcType="VARCHAR" property="itemPrincipal" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, item_id, item_name, item_start_date, item_deadline, item_principal
+    auto_id, item_id, item_name, item_start_date, item_deadline, item_principal
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from tb_item
-    where id = #{id,jdbcType=INTEGER}
+    where auto_id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectNextAutoId" resultType="int">
+    select Auto_increment
+    from information_schema.`TABLES`
+    where Table_Schema='xiaozedb'
+    and table_name = 'tb_item';
   </select>
   <select id="selectByLastRecord" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_item
-    order by id desc LIMIT 1
+    order by auto_id desc LIMIT 1
   </select>
-  <select id="findAllClient" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findAllItem" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_item
-    order by id
+    order by auto_id
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_item
-    where id = #{id,jdbcType=INTEGER}
+    where auto_id = #{id,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.fjnu.entity.Item">
-    insert into tb_item (id, item_id, item_name, 
+    insert into tb_item (auto_id, item_id, item_name,
       item_start_date, item_deadline, item_principal
       )
-    values (#{id,jdbcType=INTEGER}, #{itemId,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR}, 
+    values (#{autoId,jdbcType=INTEGER}, #{itemId,jdbcType=VARCHAR}, #{itemName,jdbcType=VARCHAR},
       #{itemStartDate,jdbcType=DATE}, #{itemDeadline,jdbcType=DATE}, #{itemPrincipal,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.fjnu.entity.Item">
     insert into tb_item
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
+      <if test="autoId != null">
+        auto_id,
       </if>
       <if test="itemId != null">
         item_id,
@@ -65,8 +71,8 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
+      <if test="autoId != null">
+        #{autoId,jdbcType=INTEGER},
       </if>
       <if test="itemId != null">
         #{itemId,jdbcType=VARCHAR},
@@ -104,7 +110,7 @@
         item_principal = #{itemPrincipal,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=INTEGER}
+    where auto_id = #{autoId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.fjnu.entity.Item">
     update tb_item
@@ -113,6 +119,6 @@
       item_start_date = #{itemStartDate,jdbcType=DATE},
       item_deadline = #{itemDeadline,jdbcType=DATE},
       item_principal = #{itemPrincipal,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=INTEGER}
+    where auto_id = #{autoId,jdbcType=INTEGER}
   </update>
 </mapper>

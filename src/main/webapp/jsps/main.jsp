@@ -46,6 +46,13 @@
             <div class="menuitem">
                 <a href="<c:url value="/client/list"/>" target="contentFrame">客户管理</a>
             </div>
+            <div class="seperator"></div>
+            <div class="menuitem">
+                <a href="<c:url value="/item/toInput"/>"  target="contentFrame">新增项目</a>
+            </div>
+            <div class="menuitem">
+                <a href="<c:url value="/item/list"/>" target="contentFrame">项目管理</a>
+            </div>
         </div>
         <div id="content">
           <iframe id="contentFrame" width="100%" scrolling="no" height="480px" frameborder="0" name="contentFrame" allowtransparency="true" src="<c:url value="/welcome.jsp"/>">              

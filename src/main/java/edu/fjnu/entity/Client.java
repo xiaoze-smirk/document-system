@@ -70,4 +70,17 @@ public class Client {
     public void setClientAddr(String clientAddr) {
         this.clientAddr = clientAddr == null ? null : clientAddr.trim();
     }
+
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "clientId='" + clientId + '\'' +
+                ", clientCompany='" + clientCompany + '\'' +
+                ", clientPerson='" + clientPerson + '\'' +
+                ", clientPhone='" + clientPhone + '\'' +
+                ", clientEmail='" + clientEmail + '\'' +
+                ", clientAddr='" + clientAddr + '\'' +
+                '}';
+    }
 }

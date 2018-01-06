@@ -7,33 +7,38 @@ import org.springframework.boot.autoconfigure.web.HttpMessageConverters;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+
+import java.util.List;
 
 /**
  * Created by xiaozemaliya on 2017/4/2.
  */
 @Configuration
-public class FastJson {
+public class FastJson extends WebMvcConfigurerAdapter{
 
     /**
-     * 在这里我们使用 @Bean注入 fastJsonHttpMessageConvert
-     * @return
+     * 使用FastJson第三方Json处理工具，配置Json视图渲染
      */
-    @Bean
-    public HttpMessageConverters fastJsonHttpMessageConverters() {
-        // 1、需要先定义一个 convert 转换消息的对象;
+    @Override
+    public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-
-        //2、添加fastJson 的配置信息，比如：是否要格式化返回的json数据;
+        //创建fastJson配置实体类
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
-        fastJsonConfig.setSerializerFeatures(SerializerFeature.PrettyFormat);
-
-        //3、在convert中添加配置信息.
+        fastJsonConfig.setSerializerFeatures(
+                SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteMapNullValue,
+                SerializerFeature.WriteNullListAsEmpty,
+                SerializerFeature.WriteNullStringAsEmpty,
+                SerializerFeature.WriteNullNumberAsZero,
+                //设置默认时间格式化格式，默认格式：yyyy-MM-dd HH:mm:ss
+                SerializerFeature.WriteDateUseDateFormat
+        );
         fastConverter.setFastJsonConfig(fastJsonConfig);
 
-
-        HttpMessageConverter<?> converter = fastConverter;
-        return new HttpMessageConverters(converter);
+        converters.add(fastConverter);
     }
+
 
 }
 

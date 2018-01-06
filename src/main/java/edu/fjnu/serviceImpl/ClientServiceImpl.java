@@ -47,6 +47,11 @@ public class ClientServiceImpl implements ClientService {
     }
 
     @Override
+    public Client selectLikePrimaryKey(String clientId) {
+        return clientMapper.selectLikePrimaryKey(clientId);
+    }
+
+    @Override
     public List<Client> findAllClient() {
         return clientMapper.findAllClient();
     }
