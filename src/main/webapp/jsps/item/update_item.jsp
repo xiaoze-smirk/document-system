@@ -19,7 +19,7 @@
 
         <form:hidden path="autoId" />
         <div>
-            <span>编号: ${autoId}</span>
+            <span>编号: ${item.autoId}</span>
         </div>
         <div>
             <span>项目号:</span>

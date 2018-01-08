@@ -17,7 +17,6 @@ public class ItemServiceImpl implements ItemService {
     @Autowired
     ItemMapper itemMapper;
 
-
     @Override
     public void insert(Item record) {
         itemMapper.insert(record);

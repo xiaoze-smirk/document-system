@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.fjnu.mapper.VersionMapper">
+  <resultMap id="BaseResultMap" type="edu.fjnu.entity.Version">
+    <id column="ver_id" jdbcType="INTEGER" property="verId" />
+    <result column="doc_num" jdbcType="VARCHAR" property="docNum" />
+    <result column="ver_num" jdbcType="VARCHAR" property="verNum" />
+    <result column="ver_alert_time" jdbcType="TIMESTAMP" property="verAlertTime" />
+    <result column="ver_alert_people" jdbcType="VARCHAR" property="verAlertPeople" />
+    <result column="ver_content" jdbcType="VARCHAR" property="verContent" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ver_id, doc_num, ver_num, ver_alert_time, ver_alert_people, ver_content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_version
+    where ver_id = #{verId,jdbcType=INTEGER}
+  </select>
+  <select id="findAllVersion" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_version
+    order by ver_id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from tb_version
+    where ver_id = #{verId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="edu.fjnu.entity.Version">
+    insert into tb_version (ver_id, doc_num, ver_num,
+      ver_alert_time, ver_alert_people, ver_content
+      )
+    values (#{verId,jdbcType=INTEGER}, #{docNum,jdbcType=VARCHAR}, #{verNum,jdbcType=VARCHAR},
+      #{verAlertTime,jdbcType=TIMESTAMP}, #{verAlertPeople,jdbcType=VARCHAR}, #{verContent,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjnu.entity.Version">
+    insert into tb_version
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="verId != null">
+        ver_id,
+      </if>
+      <if test="docNum != null">
+        doc_num,
+      </if>
+      <if test="verNum != null">
+        ver_num,
+      </if>
+      <if test="verAlertTime != null">
+        ver_alert_time,
+      </if>
+      <if test="verAlertPeople != null">
+        ver_alert_people,
+      </if>
+      <if test="verContent != null">
+        ver_content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="verId != null">
+        #{verId,jdbcType=INTEGER},
+      </if>
+      <if test="docNum != null">
+        #{docNum,jdbcType=VARCHAR},
+      </if>
+      <if test="verNum != null">
+        #{verNum,jdbcType=VARCHAR},
+      </if>
+      <if test="verAlertTime != null">
+        #{verAlertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="verAlertPeople != null">
+        #{verAlertPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="verContent != null">
+        #{verContent,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjnu.entity.Version">
+    update tb_version
+    <set>
+      <if test="docNum != null">
+        doc_num = #{docNum,jdbcType=VARCHAR},
+      </if>
+      <if test="verNum != null">
+        ver_num = #{verNum,jdbcType=VARCHAR},
+      </if>
+      <if test="verAlertTime != null">
+        ver_alert_time = #{verAlertTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="verAlertPeople != null">
+        ver_alert_people = #{verAlertPeople,jdbcType=VARCHAR},
+      </if>
+      <if test="verContent != null">
+        ver_content = #{verContent,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ver_id = #{verId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjnu.entity.Version">
+    update tb_version
+    set doc_num = #{docNum,jdbcType=VARCHAR},
+    ver_num = #{verNum,jdbcType=VARCHAR},
+    ver_alert_time = #{verAlertTime,jdbcType=TIMESTAMP},
+    ver_alert_people = #{verAlertPeople,jdbcType=VARCHAR},
+    ver_content = #{verContent,jdbcType=VARCHAR}
+    where ver_id = #{verId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -46,7 +46,7 @@ public class WebServerConfiguration {
         log.setDirectory("E:/IDEA/DocumentSystem/tomcat-log");
         log.setEnabled(true);
         log.setPattern("%h %l %u %t \"%r\" %s %b");
-        log.setPrefix("ssm-springboot-log");
+        log.setPrefix("DocumentSystem-log");
         log.setSuffix(".txt");
 
         return log;
