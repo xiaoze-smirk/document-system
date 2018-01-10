@@ -16,6 +16,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
+
 @Controller
 @RequestMapping("/item")
 public class ItemController extends BaseController {
@@ -46,6 +49,9 @@ public class ItemController extends BaseController {
 
     @PostMapping(value="/create")
     public String create(Item item) {
+
+        if(isEmpty(item.getClientId()))
+            return "redirect:/item/toInput";
 
         item.setClientId(item.getClientId().substring(4,7));
         LocalDateTime localDateTime = LocalDateTime.now();

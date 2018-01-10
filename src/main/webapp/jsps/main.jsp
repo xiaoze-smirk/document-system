@@ -60,6 +60,13 @@
             <div class="menuitem">
                 <a href="<c:url value="/version/list"/>" target="contentFrame">版本管理</a>
             </div>
+            <div class="seperator"></div>
+            <div class="menuitem">
+                <a href="<c:url value="/document/toInput"/>"  target="contentFrame">新增文档</a>
+            </div>
+            <div class="menuitem">
+                <a href="<c:url value="/document/list"/>" target="contentFrame">文档管理</a>
+            </div>
         </div>
         <div id="content">
           <iframe id="contentFrame" width="100%" scrolling="no" height="480px" frameborder="0" name="contentFrame" allowtransparency="true" src="<c:url value="/welcome.jsp"/>">              

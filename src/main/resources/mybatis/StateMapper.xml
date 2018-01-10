@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.fjnu.mapper.StateMapper">
+  <resultMap id="BaseResultMap" type="edu.fjnu.entity.State">
+    <id column="state_str" jdbcType="VARCHAR" property="stateStr" />
+    <result column="state_str_name" jdbcType="VARCHAR" property="stateStrName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    state_str, state_str_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from tb_state
+    where state_str = #{stateStr,jdbcType=VARCHAR}
+  </select>
+  <select id="findAllState" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_state
+    order by state_str
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_state
+    where state_str = #{stateStr,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.fjnu.entity.State">
+    insert into tb_state (state_str, state_str_name)
+    values (#{stateStr,jdbcType=VARCHAR}, #{stateStrName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjnu.entity.State">
+    insert into tb_state
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stateStr != null">
+        state_str,
+      </if>
+      <if test="stateStrName != null">
+        state_str_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stateStr != null">
+        #{stateStr,jdbcType=VARCHAR},
+      </if>
+      <if test="stateStrName != null">
+        #{stateStrName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjnu.entity.State">
+    update tb_state
+    <set>
+      <if test="stateStrName != null">
+        state_str_name = #{stateStrName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where state_str = #{stateStr,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjnu.entity.State">
+    update tb_state
+    set state_str_name = #{stateStrName,jdbcType=VARCHAR}
+    where state_str = #{stateStr,jdbcType=VARCHAR}
+  </update>
+</mapper>
