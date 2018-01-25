@@ -4,6 +4,9 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import edu.fjnu.entity.Version;
 import edu.fjnu.service.VersionService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@Api(tags ="版本管理")
 @RequestMapping("/version")
 public class VersionController extends BaseController  {
 
@@ -29,6 +33,7 @@ public class VersionController extends BaseController  {
             map.put("version", version);
     }
 
+    @ApiOperation(value="新增版本界面")
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {
         map.put("version", new Version());
@@ -36,6 +41,7 @@ public class VersionController extends BaseController  {
         return "version/input_version";
     }
 
+    @ApiOperation(value="新增操作需要传入后台的值")
     @PostMapping(value="/create")
     public String create(Version version) {
 
@@ -45,6 +51,8 @@ public class VersionController extends BaseController  {
 
     }
 
+    @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
+    @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
     @GetMapping("/list")
     public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
 
@@ -66,6 +74,8 @@ public class VersionController extends BaseController  {
         return "version/list_version";
     }
 
+    @ApiOperation(value="删除操作后台所需要的值")
+    @ApiImplicitParam(name = "verId", value = "版本verId", required = true, dataType = "Integer")
     @DeleteMapping(value="/remove/{verId}")
     public String remove(@PathVariable("verId") Integer verId) {
 
@@ -74,6 +84,8 @@ public class VersionController extends BaseController  {
         return "redirect:/version/list";
     }
 
+    @ApiOperation(value="进入版本修改界面")
+    @ApiImplicitParam(name = "verId", value = "版本verId", required = true, dataType = "Integer")
     @GetMapping(value="/preUpdate/{verId}")
     public String preUpdate(@PathVariable("verId") Integer verId, Map<String, Object> map){
 
@@ -82,6 +94,7 @@ public class VersionController extends BaseController  {
         return "version/update_version";
     }
 
+    @ApiOperation(value="修改操作需要传入后台的值")
     @PutMapping(value="/update")
     public String update(Version version) {
 

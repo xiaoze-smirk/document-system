@@ -7,10 +7,15 @@ import edu.fjnu.entity.State;
 import edu.fjnu.service.DocumentService;
 import edu.fjnu.service.StateService;
 import edu.fjnu.utils.Utils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import springfox.documentation.annotations.ApiIgnore;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -23,6 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Controller
+@Api(tags ="文档管理")
 @RequestMapping("/document")
 public class DocumentController extends BaseController {
 
@@ -45,6 +51,7 @@ public class DocumentController extends BaseController {
             map.put("document", document);
     }
 
+    @ApiOperation(value="新增文档界面")
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {
 
@@ -54,6 +61,7 @@ public class DocumentController extends BaseController {
         return "document/input_document";
     }
 
+    @ApiOperation(value="新增操作需要传入后台的值")
     @PostMapping(value="/create")
     public String create(@RequestParam("files") MultipartFile[] files, Document document) {
 
@@ -69,6 +77,8 @@ public class DocumentController extends BaseController {
 
     }
 
+    @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
+    @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
     @GetMapping("/list")
     public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
 
@@ -94,6 +104,8 @@ public class DocumentController extends BaseController {
         return "document/list_document";
     }
 
+    @ApiOperation(value="删除操作后台所需要的值")
+    @ApiImplicitParam(name = "docNum", value = "文档docNum", required = true, dataType = "String")
     @DeleteMapping(value="/remove/{docNum}")
     public String remove(@PathVariable("docNum") String docNum) {
 
@@ -102,6 +114,8 @@ public class DocumentController extends BaseController {
         return "redirect:/document/list";
     }
 
+    @ApiOperation(value="进入文档修改界面")
+    @ApiImplicitParam(name = "docNum", value = "文档docNum", dataType = "String")
     @GetMapping(value="/preUpdate/{docNum}")
     public String preUpdate(@PathVariable("docNum") String docNum, Map<String, Object> map){
 
@@ -114,6 +128,7 @@ public class DocumentController extends BaseController {
         return "document/update_document";
     }
 
+    @ApiOperation(value="修改操作需要传入后台的值")
     @PutMapping(value="/update")
     public String update(@RequestParam("files") MultipartFile[] files,Document document) {
 
@@ -124,6 +139,11 @@ public class DocumentController extends BaseController {
         return "redirect:/document/list";
     }
 
+    @ApiOperation(value="下载操作", notes="选定文件下载")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "docNum", value = "文档docNum", dataType = "String"),
+            @ApiImplicitParam(name = "testNum", value = "文档testNum", dataType = "testNum")
+    })
     @GetMapping(value="/download/{docNum}/{testNum}")
     public String downLoad(@PathVariable("docNum") String docNum , @PathVariable("testNum") String testNum , HttpServletResponse response){
 

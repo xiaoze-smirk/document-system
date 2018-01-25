@@ -8,6 +8,9 @@ import edu.fjnu.entity.Item;
 import edu.fjnu.service.ClientService;
 import edu.fjnu.service.ItemService;
 import edu.fjnu.utils.StringUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +23,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Controller
+@Api(tags ="项目管理")
 @RequestMapping("/item")
 public class ItemController extends BaseController {
 
@@ -39,6 +43,7 @@ public class ItemController extends BaseController {
             map.put("item", item);
     }
 
+    @ApiOperation(value="新增项目界面")
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {
         map.put("item", new Item());
@@ -47,6 +52,7 @@ public class ItemController extends BaseController {
         return "item/input_item";
     }
 
+    @ApiOperation(value="新增操作需要传入后台的值")
     @PostMapping(value="/create")
     public String create(Item item) {
 
@@ -65,6 +71,8 @@ public class ItemController extends BaseController {
 
     }
 
+    @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
+    @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
     @GetMapping("/list")
     public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
 
@@ -86,6 +94,8 @@ public class ItemController extends BaseController {
         return "item/list_item";
     }
 
+    @ApiOperation(value="删除操作后台所需要的值")
+    @ApiImplicitParam(name = "autoId", value = "项目autoId", required = true, dataType = "Integer")
     @DeleteMapping(value="/remove/{autoId}")
     public String remove(@PathVariable("autoId") Integer autoId) {
 
@@ -94,6 +104,8 @@ public class ItemController extends BaseController {
         return "redirect:/item/list";
     }
 
+    @ApiOperation(value="进入项目修改界面")
+    @ApiImplicitParam(name = "autoId", value = "项目autoId", dataType = "Integer")
     @GetMapping(value="/preUpdate/{autoId}")
     public String preUpdate(@PathVariable("autoId") Integer autoId, Map<String, Object> map){
 
@@ -105,6 +117,7 @@ public class ItemController extends BaseController {
         return "item/update_item";
     }
 
+    @ApiOperation(value="修改操作需要传入后台的值")
     @PutMapping(value="/update")
     public String update(Item item , @RequestParam(value="clientId",required=false) String clientId) {
 

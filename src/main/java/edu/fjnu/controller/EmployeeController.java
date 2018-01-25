@@ -7,15 +7,20 @@ import edu.fjnu.entity.Employee;
 import edu.fjnu.service.DepartmentService;
 import edu.fjnu.service.EmployeeService;
 import edu.fjnu.utils.EntityUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 import java.util.Map;
 
 
 @Controller
+@Api(tags ="员工管理")
 @RequestMapping("/employee")
 public class EmployeeController extends BaseController {
 
@@ -36,12 +41,14 @@ public class EmployeeController extends BaseController {
             map.put("employee", employee);
     }
 
+    @ApiOperation(value="进入主界面")
     @GetMapping("/enter")
     public String enter() {
 
         return "main";
     }
 
+    @ApiOperation(value="新增员工界面")
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {
         map.put("employee", new Employee());
@@ -51,6 +58,7 @@ public class EmployeeController extends BaseController {
         return "employee/input_employee";
     }
 
+    @ApiOperation(value="新增操作需要传入后台的值")
     @PostMapping(value="/create")
     public String create(Employee employee) {
 
@@ -60,6 +68,8 @@ public class EmployeeController extends BaseController {
 
     }
 
+    @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
+    @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
     @GetMapping("/list")
     public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
 
@@ -91,6 +101,8 @@ public class EmployeeController extends BaseController {
         return "employee/list_employee";
     }
 
+    @ApiOperation(value="删除操作后台所需要的值")
+    @ApiImplicitParam(name = "empId", value = "员工empId", required = true, dataType = "Integer")
     @DeleteMapping(value="/remove/{empId}")
     public String remove(@PathVariable("empId") Integer empId) {
 
@@ -99,6 +111,8 @@ public class EmployeeController extends BaseController {
         return "redirect:/employee/list";
     }
 
+    @ApiOperation(value="进入员工修改界面")
+    @ApiImplicitParam(name = "empId", value = "员工empId", required = true, dataType = "Integer")
     @GetMapping(value="/preUpdate/{empId}")
     public String preUpdate(@PathVariable("empId") Integer empId, Map<String, Object> map){
 
@@ -109,6 +123,7 @@ public class EmployeeController extends BaseController {
         return "employee/update_employee";
     }
 
+    @ApiOperation(value="修改操作需要传入后台的值")
     @PutMapping(value="/update")
     public String update(Employee employee) {
 
