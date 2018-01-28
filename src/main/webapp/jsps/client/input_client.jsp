@@ -1,48 +1,50 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ include file="/jsps/common/taglibs.jsp"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
-  </head>
-
-  <body style="padding:8px;">
-    <h3 class="title">新增客户</h3>
-    <form:form action="${pageContext.request.contextPath}/client/create" method="post" modelAttribute="client">
-       <div>
-            <span>客户号:</span>
-            <form:input path="clientId"/>
-       </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
+    <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
+    <script src="<c:url value="/js/home/home.js"/>"></script>
+</head>
+<body>
+<div class="title">
+    <p>新增客户</p>
+</div>
+<div class="box">
+    <form:form class="formStyle" action="${pageContext.request.contextPath}/client/create" method="post" modelAttribute="client">
         <div>
-            <span>公司名称:</span>
-            <form:input path="clientCompany"/>
+            <label class="labelFirst">客户编号:</label>
+            <form:input class="clientNumber" path="clientId" />
         </div>
         <div>
-            <span>联系人:</span>
-            <form:input path="clientPerson"/>
+            <label class="labelFirst">公司名称:</label>
+            <form:input class="compName" path="clientCompany" />
         </div>
         <div>
-            <span>联系电话:</span>
-            <form:input path="clientPhone"/>
+            <label class="labelFirst">客户姓名:</label>
+            <form:input class="clientName" path="clientPerson" />
         </div>
         <div>
-            <span>邮件:</span>
-            <form:input path="clientEmail"/>
+            <label class="labelFirst">联系电话:</label>
+            <form:input class="clientPhone" path="clientPhone" />
         </div>
         <div>
-            <span>地址:</span>
-            <form:input path="clientAddr"/>
+            <label class="labelFirst">邮箱:</label>
+            <form:input class="clientEmail" path="clientEmail" />
         </div>
-       <div>
-         <input type="submit" value=" 确定 "/>
-       </div>
+        <div>
+            <label class="labelFirst">公司地址:</label>
+            <form:input class="clientAddr" path="clientAddr" />
+        </div>
+        <div>
+            <div class="addStyle"><input type="submit" value="确定" /></div>
+            <div class="addStyle"><input type="reset" value="重置" /></div>
+        </div>
     </form:form>
-  </body>
+</div>
+</body>
 </html>

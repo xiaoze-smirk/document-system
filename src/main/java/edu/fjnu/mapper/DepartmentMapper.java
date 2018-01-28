@@ -3,6 +3,7 @@ package edu.fjnu.mapper;
 import edu.fjnu.entity.Department;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DepartmentMapper {
     int deleteByPrimaryKey(String deptId);
@@ -18,4 +19,6 @@ public interface DepartmentMapper {
     int updateByPrimaryKey(Department record);
 
     List<Department> findAllDepartment();
+
+    List<Department> findByDeptName(Map map);
 }

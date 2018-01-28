@@ -1,0 +1,367 @@
+.fileDetail {
+    display: block;
+}
+/********************操作栏******************/
+.box_function {
+    width: 100%;
+    height: 45px;
+    border-bottom: 0.5px solid gray;
+    padding-left: 10px;
+}
+.function {
+    width: 80px;
+    height: 32px;
+    float: left;
+    position: relative;
+    margin-top: 6px;
+    margin-right: 15px;
+}
+.function span {
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #b3b5b7;
+    border-radius: 5px;
+    color: #b3b5b7;
+    font-size: 16px;
+    background-color: transparent;
+    display: block;
+    cursor: default;
+}
+.function .tFunc {
+    color: #008CBA;
+    border-color: #008CBA;
+}
+.function .funcNow {
+    color: white;
+    background-color: #008CBA;
+    cursor: pointer;
+}
+.function span img {
+    width: 24px;
+    height: 24px;
+    margin: 3px 5px 0 5px;
+    float: left;
+}
+.function span img:hover {
+    width: 24px;
+    height: 24px;
+}
+.btn_upload {
+    overflow: hidden;
+}
+.input-file input[type="file"] {
+    font-size: 16px;
+    background-color: #fff;
+    transform: translate(-300px, 0px) scale(4);
+    height: 20px;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    cursor: pointer;
+}
+.txt_function {
+    width: 80px;
+}
+.searchFile {
+    margin-top: -2px;
+}
+/********************************************/
+
+/******************当前位置******************/
+.box_position {
+    width: 100%;
+    height: 30px;
+    border-bottom: solid 1px gray;
+}
+.box_position span {
+    height: 30px;
+    font-size: 12px;
+    line-height: 30px;
+    margin-right: 10px;
+    float: left;
+    cursor: pointer;
+    display: none;
+}
+.box_position .posNow {
+    display: block;
+}
+.box_position span:hover {
+    color: #008CBA;
+}
+.box_position span:first-child {
+    margin-left: 10px;
+}
+.box_position img {
+    height: 20px;
+    margin: 5px 10px 5px 0;
+    float: left;
+    display: none;
+}
+.box_position .imgNow {
+    display: block;
+}
+/********************************************/
+.fileDetail .now {
+    display: block;
+}
+/******************一级目录******************/
+.firstFile {
+    width: 72%;
+    height: 500px;
+    display: none;
+}
+.box_file {
+    width: 130px;
+    height: 140px;
+    border: 1px solid #F5F5F5;
+    border-radius: 5px;
+    font-size: 14px;
+    text-align: center;
+    float: left;
+    margin-right: 13px;
+    margin-top: 10px;
+}
+.box_file:hover {
+    background-color: #E4EFE8;
+}
+.box_file img {
+    width: 110px;
+    margin-left: 4px;
+}
+.box_file span {
+    width: 100%;
+    text-align: center;
+    float: left;
+}
+.box_file .imgSelect {
+    width: 20px;
+    position: relative;
+    float: left;
+    left: 5px;
+    top: 5px;
+    z-index: 100;
+    opacity: 0;
+}
+.box_file div {
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+.box_file div img {
+    width: 110px;
+    margin-left: 4px;
+    margin-top: -15px;
+}
+.box_file div span {
+    width: 100%;
+    text-align: center;
+    margin-top: 0px;
+    float: left;
+}
+.fileNow {
+    background-color: #E4EFE8;
+}
+/********************************************/
+/******************二级目录******************/
+.secondFile {
+    width: 72%;
+    height: 500px;
+    display: none;
+}
+.secondFile .second {
+    width: 100%;
+    display: none;
+}
+.secondFile .secondNow {
+    display: block;
+}
+/********************************************/
+/******************三级目录******************/
+.thirdFile {
+    width: 100%;
+    height: 500px;
+    display: none;
+}
+.thirdFile .third {
+    width: 72%;
+    display: none;
+}
+.thirdFile .thirdNow {
+    display: block;
+}
+/********************************************/
+
+/****************文档具体信息****************/
+.infoDetail {
+    width: 27.5%;
+    height: 485px;
+    background-color: rgba(77, 186, 121, 0.1);
+    position: absolute;
+    right: 0;
+    bottom: 38px;
+}
+.infoForm {
+    width: 100%;
+    margin-top: 10px;
+}
+.infoForm .labelInfo {
+    width: 100%;
+    height: 30px;
+}
+.infoForm .labelInfo:first-child {
+    height: 20px;
+}
+.infoForm .labelInfo .labelFirst {
+    width: 80px;
+    height: 30px;
+    line-height: 30px;
+    text-align: right;
+    float: left;
+}
+.infoForm .labelInfo input {
+    width: 210px;
+    height: 25px;
+    line-height: 25px;
+    font-size: 15px;
+    margin-top: 1px;
+    margin-left: 6px;
+}
+input[type="datetime-local"] {
+    width: 210px;
+    height: 35px;
+    font: 18px 微软雅黑;
+}
+/********************************************/
+
+/******************编辑按钮******************/
+.edit {
+    width: 48px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    position: relative;
+    right: 10px;
+    margin-top: 3px;
+    vertical-align: middle;
+    display: block;
+}
+.edit button {
+    width: 48px;
+    height: 24px;
+    line-height: 24px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.edit button:hover {
+    top: -3.5px;
+}
+.edit button:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}
+/****************历史版本按钮****************/
+.hVersion {
+    width: 66px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    position: absolute;
+    right: 5px;
+    margin-top: -25px;
+    vertical-align: middle;
+    display: none;
+}
+.hVersion button {
+    width: 66px;
+    height: 24px;
+    line-height: 24px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.hVersion button a {
+    color: white;
+}
+.hVersion button:hover {
+    top: -3.5px;
+}
+.hVersion button:active {
+    background-color: rgb(44,160,202);
+    top: 0;
+}
+.hVersion button a:active {
+    color: #156785;
+}
+.infoForm .labelInfo {
+    margin-top: 15px;
+}
+.version {
+    display: none;
+}
+.history tr td:nth-child(1) {
+    width: 117px;
+}
+.history tr td:nth-child(2) {
+    width: 10%;
+}
+.history tr td:nth-child(3) {
+    width: 15%;
+}
+.history tr td:nth-child(4) {
+    width: 10%;
+}
+.history tr td:nth-child(5) {
+    width: 40%;
+}
+.history tr td:nth-child(6) {
+    width: 15%;
+}
+/******************返回按钮******************/
+.return {
+    width: 48px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    position: relative;
+    right: 32px;
+    margin-top: -35px;
+    vertical-align: middle;
+}
+.return button {
+    width: 48px;
+    height: 24px;
+    line-height: 24px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.return button:hover {
+    top: -3.5px;
+}
+.return button:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -55,10 +56,14 @@ public class ClientController extends BaseController {
 
     @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
     @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
-    @GetMapping("/list")
-    public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
+    @RequestMapping("/list")
+    public String list(Map<String, Object> map,
+                       @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr,
+                       @RequestParam(value="pageSize", required=false, defaultValue="3") String pageSizeStr,
+                       @RequestParam(value="searchClientId", required=false) String searchClientId) {
 
-        int pageNo = 1;
+        Integer pageNo = 1;
+        Integer pageSize = 3;
 
         //对 pageNo 的校验
         pageNo = Integer.parseInt(pageNoStr);
@@ -66,12 +71,27 @@ public class ClientController extends BaseController {
             pageNo = 1;
         }
 
-        PageHelper.startPage(pageNo, 3);
-        List<Client> clientList = clientService.findAllClient();
+        //校验pageSize
+        pageSize = Integer.parseInt(pageSizeStr);
+        if(pageSize < 1){
+            pageSize = 3;
+        }
+
+        Map<String,Object> map1 = new HashMap<>();
+        if(isNotEmpty(searchClientId))
+            map1.put("searchClientId", searchClientId);
+
+        PageHelper.startPage(pageNo, pageSize);
+        List<Client> clientList = clientService.findByClientId(map1);
 
         PageInfo<Client> page=new PageInfo<Client>(clientList);
 
         map.put("page", page);
+
+        map.put("pageSize", pageSize);
+
+        if(isNotEmpty(searchClientId))
+            map.put("searchClientId", searchClientId);
 
         return "client/list_client";
     }

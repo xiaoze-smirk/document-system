@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -50,5 +51,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public List<Employee> findAllEmployee() {
         return employeeMapper.findAllEmployee();
+    }
+
+    @Override
+    public List<Employee> findByEmpName(Map map) {
+        return employeeMapper.findByEmpName(map);
     }
 }

@@ -21,6 +21,15 @@
     from tb_dept
     order by dept_id
   </select>
+  <select id="findByDeptName" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_dept p
+    <where>
+      <if test="searchDeptname!=null">and p.dept_name like concat('%', #{searchDeptname}, '%')</if>
+    </where>
+    order by dept_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_dept
     where dept_id = #{deptId,jdbcType=VARCHAR}

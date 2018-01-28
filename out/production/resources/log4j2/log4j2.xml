@@ -52,6 +52,7 @@
         <logger name="org.mybatis.spring" level="info"/>
         <logger name="com.alibaba.druid" level="info"/>
         <logger name="org.springframework" level="info"/>
+        <logger name="springfox" level="info"/>
 
         <!--共有8个级别，按照从低到高为：all < trace < debug < info < warn < error < fatal < off-->
         <root level="all">

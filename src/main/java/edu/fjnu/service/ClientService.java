@@ -4,6 +4,7 @@ import edu.fjnu.entity.Client;
 import edu.fjnu.entity.Department;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ClientService {
 
@@ -22,5 +23,7 @@ public interface ClientService {
     Client selectLikePrimaryKey(String clientId);
 
     List<Client> findAllClient();
+
+    List<Client> findByClientId(Map map);
 
 }

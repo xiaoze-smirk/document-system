@@ -1,0 +1,6 @@
+input[type="date"] {
+    width: 184px;
+    height: 25px;
+    font-size: 16px;
+    margin: 3.5px 0 0 10px;
+}

@@ -1,5 +1,7 @@
 server:                  #配置server
   context-path: /dept
+  tomcat:       #springboot乱码解决
+    uri-encoding: UTF-8
 
 spring:
   datasource:
@@ -27,6 +29,11 @@ spring:
       suffix: .jsp
   devtools:      #热部署
     restart:
+      enabled: true
+  http:       #springboot乱码解决
+    encoding:
+      force: true
+      charset: utf-8
       enabled: true
 
 

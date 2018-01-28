@@ -3,6 +3,7 @@ package edu.fjnu.service;
 import edu.fjnu.entity.Employee;
 
 import java.util.List;
+import java.util.Map;
 
 public interface EmployeeService {
     void insert(Employee record);
@@ -18,4 +19,6 @@ public interface EmployeeService {
     Employee selectByPrimaryKey(Integer empId);
 
     List<Employee> findAllEmployee();
+
+    List<Employee> findByEmpName(Map map);
 }

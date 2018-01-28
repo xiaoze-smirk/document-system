@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -50,6 +51,11 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public List<Department> findAllDepartment() {
         return  departmentMapper.findAllDepartment();
+    }
+
+    @Override
+    public List<Department> findByDeptName(Map map) {
+        return departmentMapper.findByDeptName(map);
     }
 
 

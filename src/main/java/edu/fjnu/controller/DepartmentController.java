@@ -11,8 +11,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import springfox.documentation.annotations.ApiIgnore;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,10 +56,15 @@ public class DepartmentController extends BaseController {
 
     @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
     @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
-    @GetMapping("/list")
-    public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
+    @RequestMapping("/list")
+    public String list(Map<String, Object> map,
+                       @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr,
+                       @RequestParam(value="pageSize", required=false, defaultValue="3") String pageSizeStr,
+                       @RequestParam(value="searchDeptname", required=false) String searchDeptname) {
+        System.out.println(searchDeptname+"啊啊");
 
-        int pageNo = 1;
+        Integer pageNo = 1;
+        Integer pageSize = 3;
 
         //对 pageNo 的校验
         pageNo = Integer.parseInt(pageNoStr);
@@ -67,12 +72,27 @@ public class DepartmentController extends BaseController {
             pageNo = 1;
         }
 
-        PageHelper.startPage(pageNo, 3);
-        List<Department> departmentList = departmentService.findAllDepartment();
+        //校验pageSize
+        pageSize = Integer.parseInt(pageSizeStr);
+        if(pageSize < 1){
+            pageSize = 3;
+        }
+
+        Map<String,Object> map1 = new HashMap<String,Object>();
+        if(isNotEmpty(searchDeptname))
+            map1.put("searchDeptname", searchDeptname);
+
+        PageHelper.startPage(pageNo, pageSize);
+        List<Department> departmentList = departmentService.findByDeptName(map1);
 
         PageInfo<Department> page=new PageInfo<Department>(departmentList);
 
         map.put("page", page);
+
+        map.put("pageSize", pageSize);
+
+        if(isNotEmpty(searchDeptname))
+            map.put("searchDeptname", searchDeptname);
 
         return "department/list_department";
     }

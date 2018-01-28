@@ -1,0 +1,8 @@
+.formStyle div textarea {
+    width: 400px;
+    height: 200px;
+    margin-left: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 22px;
+}

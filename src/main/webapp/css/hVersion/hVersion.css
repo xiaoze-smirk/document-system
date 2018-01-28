@@ -1,0 +1,52 @@
+.hVersion tr td:nth-child(1) {
+    width: 116px;
+}
+.hVersion tr td:nth-child(2) {
+    width: 10%;
+}
+.hVersion tr td:nth-child(3) {
+     width: 15%;
+ }
+.hVersion tr td:nth-child(4) {
+    width: 10%;
+}
+.hVersion tr td:nth-child(5) {
+    width: 40%;
+}
+.hVersion tr td:nth-child(6) {
+    width: 15%;
+}
+/******************返回按钮******************/
+.return {
+    width: 48px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: right;
+    position: relative;
+    right: 33px;
+    margin-top: -35px;
+    vertical-align: middle;
+}
+.return button {
+    width: 48px;
+    height: 24px;
+    line-height: 24px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.return button:hover {
+    top: -3.5px;
+}
+.return button:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}

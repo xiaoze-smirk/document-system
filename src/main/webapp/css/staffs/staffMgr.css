@@ -1,0 +1,28 @@
+.staffMgr tr td:nth-child(1) {
+    width: 136.6px;
+}
+.staffMgr tr td:nth-child(2) {
+    width: 10%;
+}
+.staffMgr tr td:nth-child(3) {
+    width: 10%;
+}
+.staffMgr tr td:nth-child(4) {
+    width: 10%;
+}
+.staffMgr tr td:nth-child(5) {
+    width: 10%;
+}
+.staffMgr tr td:nth-child(6) {
+    width: 16.5%;
+}
+.staffMgr tr td:nth-child(7) {
+    width: 16.5%;
+}
+.staffMgr tr td:nth-child(8) {
+    width: 16.5%;
+    margin: 0 auto;
+}
+.staffMgr tr td:nth-child(8) div {
+    left: 23%;
+}

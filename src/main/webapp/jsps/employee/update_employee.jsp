@@ -1,32 +1,32 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ include file="/jsps/common/taglibs.jsp"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
-  </head>
-  
-  <body style="padding:8px;">
-    <form:form action="${pageContext.request.contextPath}/employee/update" method="post" modelAttribute="employee">
-    <h3 class="title">修改${employee.empName}的信息</h3>
-       <input type="hidden" name="_method" value="PUT"/>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
+    <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
+    <script src="<c:url value="/js/home/home.js"/>"></script>
+</head>
+<body>
+<div class="title">
+    <p>修改${employee.empName}的信息</p>
+</div>
+<div class="box">
+    <form:form class="formStyle" action="${pageContext.request.contextPath}/employee/update" method="post" modelAttribute="employee">
+        <input type="hidden" name="_method" value="PUT"/>
         <div>
-            <span>工号:</span>
-            <form:input id="updateEmpId" path="empId"/>
+            <label class="labelFirst">工号:</label>
+            <form:input path="empId"/>
         </div>
         <div>
-            <span>姓名:</span>
+            <label class="labelFirst">姓名:</label>
             <form:input path="empName"/>
         </div>
         <div>
-            <span>性别:</span>
+            <label class="labelFirst">性别:</label>
             <%
                 Map<String, String> status = new TreeMap<String, String>();
                 status.put("M", "男");
@@ -37,24 +37,26 @@
             <form:radiobuttons  path="empSex" items="${status}"/>
         </div>
         <div>
-            <span>职务:</span>
-            <form:input path="empDuty"/>
-        </div>
-        <div>
-            <span>部门:</span>
-            <form:checkboxes path="empDept" items="${deptList}" itemLabel="deptName" itemValue="deptId"/>
-        </div>
-        <div>
-            <span>电话:</span>
+            <label class="labelFirst">手机号:</label>
             <form:input path="empPhone"/>
         </div>
         <div>
-            <span>邮件:</span>
+            <label class="labelFirst">邮箱:</label>
             <form:input path="empEmail"/>
         </div>
-       <div>
-         <input type="submit" value="确定"/>
-       </div>              
+        <div>
+            <label class="labelFirst">部门:</label>
+            <form:checkboxes path="empDept" items="${deptList}" itemLabel="deptName" itemValue="deptId"/>
+        </div>
+        <div>
+            <label class="labelFirst">职务:</label>
+            <form:input path="empDuty"/>
+        </div>
+        <div>
+            <div class="addStyle"><input type="submit" value="确定" /></div>
+            <div class="addStyle"><input type="reset" id="rbutton" value="重置" /></div>
+        </div>
     </form:form>
-  </body>
+</div>
+</body>
 </html>

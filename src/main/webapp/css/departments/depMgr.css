@@ -1,0 +1,12 @@
+.depMgr tr td:nth-child(1) {
+    width: 205px;
+}
+.depMgr tr td:nth-child(2) {
+    width: 15%;
+}
+.depMgr tr td:nth-child(3) {
+    width: 55%;
+}
+.depMgr tr td:nth-child(4) {
+    width: 15%;
+}

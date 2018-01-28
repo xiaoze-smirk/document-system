@@ -1,0 +1,21 @@
+.clientMgr tr td:nth-child(1){
+    width: 136.6px;
+}
+.clientMgr tr td:nth-child(2){
+    width: 10%;
+}
+.clientMgr tr td:nth-child(3){
+    width: 10%;
+}
+.clientMgr tr td:nth-child(4){
+    width: 15%;
+}
+.clientMgr tr td:nth-child(5){
+    width: 20%;
+}
+.clientMgr tr td:nth-child(6){
+    width: 20%;
+}
+.clientMgr tr td:nth-child(7){
+    width: 15%;
+}

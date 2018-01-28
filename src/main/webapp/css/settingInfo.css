@@ -1,0 +1,321 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+* {
+    padding: 0;
+    margin: 0;
+}
+body {
+    width: 100%;
+    height: 100%;
+    background-color: rgba(77, 186, 121, 0.1);
+    font-family: 微软雅黑;
+}
+/********************标题栏*******************/
+.box_title {
+    width: 100%;
+    height: 50px;
+    background-color: #008CBA;
+}
+.box_title img {
+    width: 50px;
+    margin-left: 5px;
+    float: left;
+}
+.box_title .title {
+    height: 50px;
+    font: 25px "微软雅黑";
+    color: white;
+    line-height: 50px;
+    float: left;
+    margin-left: 10px;
+}
+.back_settingInfo {
+    width: 130px;
+    height: 50px;
+    margin-right: 20px;
+    float: right;
+}
+.back_settingInfo span, .back_settingInfo span:link {
+    width: 80px;
+    height: 30px;
+    color: rgba(0, 0, 0, 0.38);
+    line-height: 30px;
+    text-align: center;
+    display: block;
+    margin: 10px 0 0 40px;
+    text-shadow: 0 2px 0 rgba(128, 128, 128, 0.27);
+    background: #008CBA; /* Old browsers */
+    background: -webkit-linear-gradient(top, rgba(0, 166, 216, 0.87) 0%, #2d6aff 100%); /* Chrome10+,Safari5.1+ */
+    border-radius: 4px;
+    box-shadow: inset 0 1px 0 #3c82ff, 0 1px 1px #2b61e0;
+    transition: all 0.5s ease;
+}
+.back_settingInfo span:hover {
+    color: #fff;
+    text-shadow: 0 1.5px 1.5px #beaa9b;
+    background: #2d6aff; /* Old browsers */
+    background: -webkit-linear-gradient(top, #2d6aff 0%,rgba(0, 166, 216, 0.87) 99%,rgba(0, 166, 216, 0.87) 100%); /* Chrome10+,Safari5.1+ */
+    transition: all 0.5s ease;
+    cursor: pointer;
+}
+.back_settingInfo span.selected, .back_settingInfo span:active {
+    background: #2d6aff;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.6), 0 1px 0px rgb(0, 169, 214);
+    transition: all 0.5s ease;
+}
+/*********************************************/
+
+/********************设置*********************/
+.box_setting {
+    width: 65%;
+    height: 500px;
+    border: 1px solid gray;
+    margin: 0 auto;
+    margin-top: 20px;
+    background-color: white;
+}
+.setting_menu {
+    width: 200px;
+    height: 100%;
+    float: left;
+}
+.setting_menu div {
+    width: 200px;
+    height: 100px;
+    border-bottom: 1px solid gray;
+    border-right: 1px solid gray;
+    background-color: rgba(60, 130, 255, 0.04);
+}
+.setting_menu div img {
+    margin-top: 20px;
+    float: left;
+    margin-left: 15px;
+}
+.setting_menu div span {
+    height: 100px;
+    line-height: 100px;
+    margin-left: 10px;
+    float: left;
+}
+.setting_menu ul {
+    width: 200px;
+    position: absolute;
+    top: 172px;
+    left: 17.4%;
+}
+.setting_menu ul li {
+    width: 185px;
+    height: 35px;
+    font-size: 14px;
+    text-align: left;
+    line-height: 35px;
+    padding-left: 15px;
+    list-style: none;
+    border: 1px solid gray;
+    border-top-width: 0px;
+    background-color: rgba(60, 130, 255, 0.04);
+    cursor: pointer;
+}
+.setting_menu ul li:last-child {
+    height: 255px;
+    cursor: auto;
+}
+.setting_menu ul .nowLi {
+    width: 186px;
+    border-right: none;
+    background-color: white;
+}
+/*********************************************/
+
+/*****************编辑标题栏****************/
+.setting_detail {
+    width: 77%;
+    margin-left: 200px;
+    background-color: white;
+}
+.setting_title {
+    width: 95%;
+    height: 50px;
+    border-bottom: 2px solid rgba(128, 128, 128, 0.54);
+    float: left;
+    margin-left: 20px;
+}
+.setting_title  p {
+    font: 20px "微软雅黑";
+    line-height: 10px;
+    float: left;
+    margin-left: 16px;
+    margin-top: 20px;
+}
+/******************保存按钮*******************/
+.setting_title .saveInfo {
+    color: gray;
+    border-color: gray;
+    float: right;
+    margin-top: 15px;
+}
+.saveInfo {
+    width: 48px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: left;
+    position: relative;
+    vertical-align: middle;
+}
+.saveInfo button {
+    width: 48px;
+    height: 24px;
+    line-height: 26px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.saveInfo button:hover {
+    top: -3.5px;
+}
+.saveInfo button:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}
+/*********************************************/
+
+/********************编辑区*******************/
+.box_detail {
+    width: 95%;
+    float: left;
+    margin: 5px 0 0 20px;
+}
+.form {
+    width: 100%;
+    height: auto;
+    display: none;/*不占屏幕的空间*/
+}
+.active {
+    display: block;
+}
+form div {
+    width: 100%;
+    height: 30px;
+    margin-top: 15px;
+}
+form div .firstLabel {
+    width: 100px;
+    height: 30px;
+    text-align: right;
+    line-height: 30px;
+    display: inline-block;
+}
+form div input {
+    height: 25px;
+    line-height: 20px;
+}
+form div input[type="radio"] {
+    border: solid 1px black;
+    vertical-align:middle;
+    margin-top:-2px;
+    margin-bottom:1px;
+}
+form div select {
+    width: 150px;
+    height: 30px;
+}
+textarea {
+    margin: -30px 0 0 105px;
+    padding: 7px 5px 0 5px;
+    font-size: 15px;
+}
+/*********************************************/
+
+/*******************上传头像*******************/
+/*上传图片*/
+.box_detail div div {
+    margin-top: 10px;
+    float: left;
+}
+.uploadImg {
+    width: 170px;
+    height: 170px;
+    border: 1px solid gray;
+    margin-left: 30px;
+}
+.uploadImg img {
+    width: 170px;
+}
+.uploadImg div {
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: left;
+    margin-top: 3px;
+    vertical-align: middle;
+}
+.uploadImg div:first-child {
+    width: 66px;
+}
+.uploadImg div:last-child {
+    width: 48px;
+    margin-left: 58px;
+}
+.uploadImg div input {
+    height: 24px;
+    line-height: 26px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.uploadImg div:first-child input {
+    width: 66px;
+}
+.uploadImg div:last-child input {
+    width: 48px;
+}
+.uploadImg div input:hover {
+    top: -3.5px;
+}
+.uploadImg div input:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}
+/*预览*/
+.preview {
+    width: 80px;
+    height: 80px;
+    border: 1px solid gray;
+    margin-left: 50px;
+    text-align: center;
+}
+.preview img {
+    width: 80px;
+}
+.box_detail div span {
+    margin-top: 10px;
+}
+/*原始头像*/
+.originalImg {
+    width: 170px;
+    height: 170px;
+    border: 1px solid gray;
+    margin-left: 120px;
+    text-align: center;
+}
+.originalImg img {
+    width: 170px;
+}
+/*********************************************/

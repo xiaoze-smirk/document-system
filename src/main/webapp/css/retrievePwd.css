@@ -1,0 +1,83 @@
+html {
+    width: 100%;
+    height: 100%;
+}
+* {
+    margin: 0;
+    padding: 0;
+}
+body {
+    background-color: rgba(77, 186, 121, 0.1);
+    font-family: 微软雅黑;
+}
+/********************标题栏*******************/
+.box_title {
+    width: 100%;
+    height: 50px;
+    background-color: #008CBA;
+    color: white;
+}
+.box_title img {
+    width: 50px;
+    margin-left: 5px;
+    float: left;
+}
+.box_title .title {
+    height: 50px;
+    font: 25px "微软雅黑";
+    line-height: 50px;
+    margin-left: 10px;
+}
+.title {
+    width: 99.3%;
+    border: none;
+}
+.title .backToLogin {
+    color: gray;
+    border-color: gray;
+    float: right;
+    margin-top: -32px;
+}
+.backToLogin {
+    width: 48px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    float: left;
+    position: relative;
+    vertical-align: middle;
+}
+.backToLogin button {
+    width: 48px;
+    height: 24px;
+    line-height: 26px;
+    color: white;
+    font-family: 微软雅黑;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.backToLogin button:hover {
+    top: -3.5px;
+}
+.backToLogin button:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}
+/*********************************************/
+.box {
+    border-top: 1px solid gray;
+}
+.formStyle div:nth-child(2) .addStyle {
+    margin-left: 5px;
+    margin-top: 8px;
+}
+.formStyle div .addStyle input {
+    line-height: 26px;
+}

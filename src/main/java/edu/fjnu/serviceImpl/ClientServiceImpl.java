@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -54,5 +55,10 @@ public class ClientServiceImpl implements ClientService {
     @Override
     public List<Client> findAllClient() {
         return clientMapper.findAllClient();
+    }
+
+    @Override
+    public List<Client> findByClientId(Map map) {
+        return clientMapper.findByClientId(map);
     }
 }

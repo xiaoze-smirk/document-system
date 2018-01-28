@@ -30,6 +30,15 @@
     from tb_client
     order by client_id
   </select>
+  <select id="findByClientId" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_client p
+    <where>
+      <if test="searchClientId!=null">and p.client_id like concat('%', #{searchClientId}, '%')</if>
+    </where>
+    order by client_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_client
     where client_id = #{clientId,jdbcType=VARCHAR}

@@ -1,0 +1,89 @@
+.box_Mgr .box {
+    width: 100%;
+    float: right;
+}
+.formStyle {
+    width: 100%;
+}
+.formStyle div {
+    width: 100%;
+    height: 30px;
+    margin-top: 15px;
+}
+.formStyle .labelFirst {
+    width: 80px;
+    height: 30px;
+    line-height: 35px;
+    text-align: right;
+    float: left;
+    margin-left: 50px;
+    display: block;
+}
+.formStyle div input[type="text"],input[type="password"] {
+    width: 185px;
+    height: 22px;
+    margin: 5px 0 0 10px;
+    float: left;
+    display: block;
+}
+.formStyle div input[type="radio"] {
+    margin-top: 11px;
+    margin-left: 10px;
+    vertical-align: text-bottom;
+    margin-bottom: 3px;
+}
+.formStyle div select {
+    width: 189px;
+    height: 28px;
+    margin: 5px 0 0 10px
+}
+/***************确定、重置按钮****************/
+.formStyle div .addStyle {
+    width: 48px;
+    height: 24px;
+    outline: none;
+    background-color: #1c6b61;
+    border: none;
+    border-radius: 5px;
+    margin-left: 50px;
+    float: left;
+    margin-top: 3px;
+    vertical-align: middle;
+}
+.formStyle div .addStyle input {
+    width: 48px;
+    height: 24px;
+    line-height: 24px;
+    color: white;
+    outline: none;
+    background-color: #3bb3e0;
+    border: none;
+    border-radius: 5px;
+    position: relative;
+    top: -4px;
+}
+.formStyle div .addStyle:first-child {
+    margin-left: 150px;
+}
+.formStyle div .addStyle input:hover {
+    top: -3.5px;
+}
+.formStyle div .addStyle input:active {
+    color: #156785;
+    background-color: rgb(44,160,202);
+    top: 0;
+}
+
+.formStyle div textarea {
+    width: 400px;
+    height: 200px;
+    margin-left: 10px;
+    margin-top: 5px;
+    font-size: 16px;
+    line-height: 22px;
+}
+.formStyle .funcBtn {
+    margin-top: 200px;
+    display: inline-block;
+}
+/********************************************/

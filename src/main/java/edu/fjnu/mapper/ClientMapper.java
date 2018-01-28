@@ -3,6 +3,7 @@ package edu.fjnu.mapper;
 import edu.fjnu.entity.Client;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ClientMapper {
     void insert(Client record);
@@ -20,4 +21,6 @@ public interface ClientMapper {
     Client selectLikePrimaryKey(String clientId);
 
     List<Client> findAllClient();
+
+    List<Client> findByClientId(Map map);
 }
