@@ -3,6 +3,7 @@ package edu.fjnu.service;
 import edu.fjnu.entity.Document;
 
 import java.util.List;
+import java.util.Map;
 
 public interface DocumentService {
 
@@ -19,5 +20,7 @@ public interface DocumentService {
     Document selectByPrimaryKey(String docNum);
 
     List<Document> findAllDocument();
+
+    List<Document> findByDocTitle(Map map);
 
 }

@@ -1,85 +1,74 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ include file="/jsps/common/taglibs.jsp"%>
 
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
-  </head>
-
-  <body style="padding:8px;">
-    <h3 class="title">新增文档信息</h3>
-    <form:form action="${pageContext.request.contextPath}/document/create" method="post" enctype="multipart/form-data" modelAttribute="document">
-       <div>
-            <span>序号:</span>
-            <form:input path="docNum"/>
-       </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
+    <link href="<c:url value="/css/documents/addDocument.css"/>" type="text/css" rel="stylesheet" />
+    <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
+    <script src="<c:url value="/js/home/home.js"/>"></script>
+</head>
+<body>
+<div class="title">
+    <p>新增文档信息</p>
+</div>
+<div class="box">
+    <form:form class="formStyle" method="post" action="${pageContext.request.contextPath}/document/create" modelAttribute="document">
         <div>
-            <span>标题:</span>
+            <label class="labelFirst">序号:</label>
+            <form:input path="docNum"/>
+        </div>
+        <div>
+            <label class="labelFirst">标题:</label>
             <form:input path="docTitle"/>
         </div>
         <div>
-            <span>撰写人:</span>
+            <label class="labelFirst">撰写人:</label>
             <form:input path="docAuthor"/>
         </div>
         <div>
-            <span>版本号:</span>
+            <label class="labelFirst">版本号:</label>
             <form:input path="verNum"/>
         </div>
         <div>
-            <span>状态:</span>
+            <label class="labelFirst">状态:</label>
             <form:select path="docState">
                 <option value="">=请选择=</option>
                 <form:options items="${stateList}" itemLabel="stateStrName" itemValue="stateStr" />
             </form:select>
         </div>
         <div>
-            <span>审核人:</span>
+            <label class="labelFirst">发布日期:</label>
+            <input name="dateDocReleaseDate" type="date" class="dateRelease"/>
+        </div>
+        <div>
+            <label class="labelFirst">审核人:</label>
             <form:input path="docCheckPerson"/>
         </div>
         <div>
-            <span>测试计划编号:</span>
-            <form:input path="testJh"/>
-            <span>测试计划文件:</span>
-            <input type="file" name="files" />
-        </div>
-        <div>
-            <span>测试用例编号:</span>
-            <form:input path="testYl"/>
-            <span>测试用例文件:</span>
-            <input type="file" name="files" />
-        </div>
-        <div>
-            <span>测试记录编号:</span>
-            <form:input path="testJl"/>
-            <span>测试记录文件:</span>
-            <input type="file" name="files" />
-        </div>
-        <div>
-            <span>缺陷报告编号:</span>
-            <form:input path="testQx"/>
-            <span>缺陷报告文件:</span>
-            <input type="file" name="files" />
-        </div>
-        <div>
-            <span>测试报告编号:</span>
-            <form:input path="testBg"/>
-            <span>测试报告文件:</span>
-            <input type="file" name="files" />
-        </div>
-        <div>
-            <span>摘要:</span>
+            <label class="labelFirst">摘要:</label>
             <form:textarea path="docContent" rows="6" cols="60" />
         </div>
-       <div>
-         <input type="submit" value=" 确定 "/>
-       </div>
+        <div>
+            <div class="addStyle"><input type="submit" value="确定" /></div>
+            <div class="addStyle"><input type="reset" value="重置" /></div>
+        </div>
     </form:form>
-  </body>
+<script type="text/javascript">
+
+    $(function(){
+
+        /*时间控件*/
+        var myDate = new Date();
+        var year = myDate.getFullYear();  //获取当前年
+        var month = ("0" + (myDate.getMonth() + 1)).slice(-2);//获取当前月
+        var day = ("0" + myDate.getDate()).slice(-2);//获取当前日，如果小于9，前面补0
+        var today = year + "-" + month + "-" + day;
+        $(".dateRelease").attr("value", today);
+    });
+</script>
+</body>
 </html>

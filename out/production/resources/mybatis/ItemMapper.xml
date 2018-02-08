@@ -36,6 +36,15 @@
     from tb_item
     order by auto_id
   </select>
+  <select id="findByItemName" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_item p
+    <where>
+      <if test="searchItemName!=null">and p.item_name like concat('%', #{searchItemName}, '%')</if>
+    </where>
+    order by auto_id
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from tb_item
     where auto_id = #{id,jdbcType=INTEGER}

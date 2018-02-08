@@ -47,6 +47,11 @@ public class VersionServiceImpl implements VersionService {
     }
 
     @Override
+    public List<Version> selectByDocNum(String docNum) {
+        return versionMapper.selectByDocNum(docNum);
+    }
+
+    @Override
     public List<Version> findAllVersion() {
         return versionMapper.findAllVersion();
     }

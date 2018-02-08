@@ -1,5 +1,6 @@
 package edu.fjnu.entity;
 
+import edu.fjnu.utils.Utils;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -26,4 +27,5 @@ public class State {
     public void setStateStrName(String stateStrName) {
         this.stateStrName = stateStrName == null ? null : stateStrName.trim();
     }
+
 }

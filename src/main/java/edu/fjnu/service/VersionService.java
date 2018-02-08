@@ -18,6 +18,8 @@ public interface VersionService {
 
     Version selectByPrimaryKey(Integer verId);
 
+    List<Version> selectByDocNum(String docNum);
+
     List<Version> findAllVersion();
 
 }

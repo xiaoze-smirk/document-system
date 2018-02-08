@@ -16,6 +16,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -54,10 +56,18 @@ public class ItemController extends BaseController {
 
     @ApiOperation(value="新增操作需要传入后台的值")
     @PostMapping(value="/create")
-    public String create(Item item) {
+    public String create(Item item ,
+                         @RequestParam(value="dateItemStartDate", required=false) Date dateItemStartDate,
+                         @RequestParam(value="dateItemDeadline", required=false) Date dateItemDeadline) {
 
         if(isEmpty(item.getClientId()))
             return "redirect:/item/toInput";
+
+        if(dateItemStartDate!=null)
+            item.setItemStartDate(dateItemStartDate);
+        if(dateItemDeadline!=null)
+            item.setItemDeadline(dateItemDeadline);
+        System.out.println(dateItemStartDate + "是大法官" + dateItemDeadline);
 
         item.setClientId(item.getClientId().substring(4,7));
         LocalDateTime localDateTime = LocalDateTime.now();
@@ -73,10 +83,14 @@ public class ItemController extends BaseController {
 
     @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
     @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
-    @GetMapping("/list")
-    public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
+    @RequestMapping("/list")
+    public String list(Map<String, Object> map,
+                       @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr,
+                       @RequestParam(value="pageSize", required=false, defaultValue="3") String pageSizeStr,
+                       @RequestParam(value="searchItemName", required=false) String searchItemName) {
 
-        int pageNo = 1;
+        Integer pageNo = 1;
+        Integer pageSize = 3;
 
         //对 pageNo 的校验
         pageNo = Integer.parseInt(pageNoStr);
@@ -84,12 +98,27 @@ public class ItemController extends BaseController {
             pageNo = 1;
         }
 
-        PageHelper.startPage(pageNo, 3);
-        List<Item> itemList =  itemService.findAllItem();
+        //校验pageSize
+        pageSize = Integer.parseInt(pageSizeStr);
+        if(pageSize < 1){
+            pageSize = 3;
+        }
+
+        Map<String,Object> map1 = new HashMap<>();
+        if(isNotEmpty(searchItemName))
+            map1.put("searchItemName", searchItemName);
+
+        PageHelper.startPage(pageNo, pageSize);
+        List<Item> itemList =  itemService.findByItemName(map1);
 
         PageInfo<Item> page=new PageInfo<Item>(itemList);
         page.setList((List<Item>)JSON.toJSON(page.getList()));
         map.put("page", page);
+
+        if(isNotEmpty(searchItemName))
+            map.put("searchItemName", searchItemName);
+
+        map.put("pageSize", pageSize);
 
         return "item/list_item";
     }
@@ -119,7 +148,15 @@ public class ItemController extends BaseController {
 
     @ApiOperation(value="修改操作需要传入后台的值")
     @PutMapping(value="/update")
-    public String update(Item item , @RequestParam(value="clientId",required=false) String clientId) {
+    public String update(Item item , @RequestParam(value="clientId",required=false) String clientId,
+                         @RequestParam(value="dateItemStartDate", required=false) Date dateItemStartDate,
+                         @RequestParam(value="dateItemDeadline", required=false) Date dateItemDeadline) {
+
+        System.out.println(item + "jajajjaj");
+        if(dateItemStartDate!=null)
+            item.setItemStartDate(dateItemStartDate);
+        if(dateItemDeadline!=null)
+            item.setItemDeadline(dateItemDeadline);
 
         if(clientId.length()==7){
             item.setClientId(clientId.substring(4,7));

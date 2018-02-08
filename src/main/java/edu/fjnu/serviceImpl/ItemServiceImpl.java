@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -55,6 +56,11 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public List<Item> findAllItem() {
         return itemMapper.findAllItem();
+    }
+
+    @Override
+    public List<Item> findByItemName(Map map) {
+        return itemMapper.findByItemName(map);
     }
 
     @Override

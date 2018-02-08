@@ -8,15 +8,32 @@
     <result column="ver_alert_time" jdbcType="TIMESTAMP" property="verAlertTime" />
     <result column="ver_alert_people" jdbcType="VARCHAR" property="verAlertPeople" />
     <result column="ver_content" jdbcType="VARCHAR" property="verContent" />
+    <result column="test_jh" jdbcType="VARCHAR" property="testJh" />
+    <result column="test_yl" jdbcType="VARCHAR" property="testYl" />
+    <result column="test_jl" jdbcType="VARCHAR" property="testJl" />
+    <result column="test_qx" jdbcType="VARCHAR" property="testQx" />
+    <result column="test_bg" jdbcType="VARCHAR" property="testBg" />
+    <result column="test_jh_path" jdbcType="LONGVARCHAR" property="testJhPath" />
+    <result column="test_yl_path" jdbcType="LONGVARCHAR" property="testYlPath" />
+    <result column="test_jl_path" jdbcType="LONGVARCHAR" property="testJlPath" />
+    <result column="test_qx_path" jdbcType="LONGVARCHAR" property="testQxPath" />
+    <result column="test_bg_path" jdbcType="LONGVARCHAR" property="testBgPath" />
   </resultMap>
   <sql id="Base_Column_List">
-    ver_id, doc_num, ver_num, ver_alert_time, ver_alert_people, ver_content
+    ver_id, doc_num, ver_num, ver_alert_time, ver_alert_people, ver_content, test_jh, test_yl, test_jl,
+    test_qx, test_bg, test_jh_path, test_yl_path, test_jl_path, test_qx_path, test_bg_path
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_version
     where ver_id = #{verId,jdbcType=INTEGER}
+  </select>
+  <select id="selectByDocNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_version
+    where doc_num = #{docNum,jdbcType=VARCHAR}
   </select>
   <select id="findAllVersion" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
@@ -30,10 +47,18 @@
   </delete>
   <insert id="insert" parameterType="edu.fjnu.entity.Version">
     insert into tb_version (ver_id, doc_num, ver_num,
-      ver_alert_time, ver_alert_people, ver_content
+      ver_alert_time, ver_alert_people, ver_content, test_jh,
+      test_yl, test_jl, test_qx,
+      test_bg, test_jh_path,
+      test_yl_path, test_jl_path, test_qx_path,
+      test_bg_path
       )
     values (#{verId,jdbcType=INTEGER}, #{docNum,jdbcType=VARCHAR}, #{verNum,jdbcType=VARCHAR},
-      #{verAlertTime,jdbcType=TIMESTAMP}, #{verAlertPeople,jdbcType=VARCHAR}, #{verContent,jdbcType=VARCHAR}
+      #{verAlertTime,jdbcType=TIMESTAMP}, #{verAlertPeople,jdbcType=VARCHAR}, #{verContent,jdbcType=VARCHAR}, #{testJh,jdbcType=VARCHAR},
+      #{testYl,jdbcType=VARCHAR}, #{testJl,jdbcType=VARCHAR}, #{testQx,jdbcType=VARCHAR},
+      #{testBg,jdbcType=VARCHAR}, #{testJhPath,jdbcType=LONGVARCHAR},
+      #{testYlPath,jdbcType=LONGVARCHAR}, #{testJlPath,jdbcType=LONGVARCHAR}, #{testQxPath,jdbcType=LONGVARCHAR},
+      #{testBgPath,jdbcType=LONGVARCHAR})
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.fjnu.entity.Version">
@@ -57,6 +82,36 @@
       <if test="verContent != null">
         ver_content,
       </if>
+      <if test="testJh != null">
+        test_jh,
+      </if>
+      <if test="testYl != null">
+        test_yl,
+      </if>
+      <if test="testJl != null">
+        test_jl,
+      </if>
+      <if test="testQx != null">
+        test_qx,
+      </if>
+      <if test="testBg != null">
+        test_bg,
+      </if>
+      <if test="testJhPath != null">
+        test_jh_path,
+      </if>
+      <if test="testYlPath != null">
+        test_yl_path,
+      </if>
+      <if test="testJlPath != null">
+        test_jl_path,
+      </if>
+      <if test="testQxPath != null">
+        test_qx_path,
+      </if>
+      <if test="testBgPath != null">
+        test_bg_path,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="verId != null">
@@ -76,6 +131,36 @@
       </if>
       <if test="verContent != null">
         #{verContent,jdbcType=VARCHAR},
+      </if>
+      <if test="testJh != null">
+        #{testJh,jdbcType=VARCHAR},
+      </if>
+      <if test="testYl != null">
+        #{testYl,jdbcType=VARCHAR},
+      </if>
+      <if test="testJl != null">
+        #{testJl,jdbcType=VARCHAR},
+      </if>
+      <if test="testQx != null">
+        #{testQx,jdbcType=VARCHAR},
+      </if>
+      <if test="testBg != null">
+        #{testBg,jdbcType=VARCHAR},
+      </if>
+      <if test="testJhPath != null">
+        #{testJhPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testYlPath != null">
+        #{testYlPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testJlPath != null">
+        #{testJlPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testQxPath != null">
+        #{testQxPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testBgPath != null">
+        #{testBgPath,jdbcType=LONGVARCHAR},
       </if>
     </trim>
   </insert>
@@ -97,6 +182,36 @@
       <if test="verContent != null">
         ver_content = #{verContent,jdbcType=VARCHAR},
       </if>
+      <if test="testJh != null">
+        test_jh = #{testJh,jdbcType=VARCHAR},
+      </if>
+      <if test="testYl != null">
+        test_yl = #{testYl,jdbcType=VARCHAR},
+      </if>
+      <if test="testJl != null">
+        test_jl = #{testJl,jdbcType=VARCHAR},
+      </if>
+      <if test="testQx != null">
+        test_qx = #{testQx,jdbcType=VARCHAR},
+      </if>
+      <if test="testBg != null">
+        test_bg = #{testBg,jdbcType=VARCHAR},
+      </if>
+      <if test="testJhPath != null">
+        test_jh_path = #{testJhPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testYlPath != null">
+        test_yl_path = #{testYlPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testJlPath != null">
+        test_jl_path = #{testJlPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testQxPath != null">
+        test_qx_path = #{testQxPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testBgPath != null">
+        test_bg_path = #{testBgPath,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where ver_id = #{verId,jdbcType=INTEGER}
   </update>
@@ -106,7 +221,17 @@
     ver_num = #{verNum,jdbcType=VARCHAR},
     ver_alert_time = #{verAlertTime,jdbcType=TIMESTAMP},
     ver_alert_people = #{verAlertPeople,jdbcType=VARCHAR},
-    ver_content = #{verContent,jdbcType=VARCHAR}
+    ver_content = #{verContent,jdbcType=VARCHAR},
+    test_jh = #{testJh,jdbcType=VARCHAR},
+    test_yl = #{testYl,jdbcType=VARCHAR},
+    test_jl = #{testJl,jdbcType=VARCHAR},
+    test_qx = #{testQx,jdbcType=VARCHAR},
+    test_bg = #{testBg,jdbcType=VARCHAR},
+    test_jh_path = #{testJhPath,jdbcType=LONGVARCHAR},
+    test_yl_path = #{testYlPath,jdbcType=LONGVARCHAR},
+    test_jl_path = #{testJlPath,jdbcType=LONGVARCHAR},
+    test_qx_path = #{testQxPath,jdbcType=LONGVARCHAR},
+    test_bg_path = #{testBgPath,jdbcType=LONGVARCHAR}
     where ver_id = #{verId,jdbcType=INTEGER}
   </update>
 </mapper>

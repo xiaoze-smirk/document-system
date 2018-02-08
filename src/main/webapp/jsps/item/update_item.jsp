@@ -1,56 +1,78 @@
 <%@ page language="java" import="java.util.*" pageEncoding="utf-8"%>
 <%@ include file="/jsps/common/taglibs.jsp"%>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
-<html>
-  <head>
-    <title></title>
-	<meta http-equiv="pragma" content="no-cache">
-	<meta http-equiv="cache-control" content="no-cache">
-	<meta http-equiv="expires" content="0">    
-	<meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
-	<meta http-equiv="description" content="This is my page">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/css/style.css"/>">
-  </head>
-  
-  <body style="padding:8px;">
-    <form:form action="${pageContext.request.contextPath}/item/update" method="post" modelAttribute="item">
-    <h3 class="title">修改项目名为${item.itemName}的信息</h3>
-       <input type="hidden" name="_method" value="PUT"/>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
+    <link href="<c:url value="/css/items/addItem.css"/>" type="text/css" rel="stylesheet" />
+    <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
+    <script src="<c:url value="/js/home/home.js"/>"></script>
+</head>
+<body>
+<div class="title">
+    <p>新增项目</p>
+</div>
+<div class="box">
+    <form:form class="formStyle" action="${pageContext.request.contextPath}/item/update" method="post" modelAttribute="item">
+        <input type="hidden" name="_method" value="PUT"/>
         <form:hidden path="autoId" />
         <div>
-            <span>编号: ${item.autoId}</span>
-        </div>
-        <div>
-            <span>项目号:</span>
-            <form:input path="itemId"/>
-        </div>
-        <div>
-            <span>所属客户:</span>
+            <label class="labelFirst">所属客户:</label>
             <form:select path="clientId">
                 <option value="">${client.clientPerson}</option>
                 <form:options items="${clientList}" itemLabel="clientPerson" itemValue="clientId" />
             </form:select>
         </div>
         <div>
-            <span>项目名:</span>
-            <form:input path="itemName"/>
+            <label class="labelFirst">项目名称:</label>
+            <form:input class="projName" path="itemName"/>
         </div>
         <div>
-            <span>起始日期:</span>
-            <form:input path="itemStartDateStr"/>
+            <label class="labelFirst">起始日期:</label>
+            <input name="dateItemStartDate" type="date" class="dateBegin" value=""/>
+
         </div>
         <div>
-            <span>结束日期:</span>
-            <form:input path="itemDeadlineStr"/>
+            <label class="labelFirst">结束日期:</label>
+            <input name="dateItemDeadline" type="date" class="dateEnd" value=""/>
+
         </div>
         <div>
-            <span>业务负责人:</span>
-            <form:input path="itemPrincipal"/>
+            <label class="labelFirst">负责人:</label>
+            <form:input class="official" path="itemPrincipal"/>
         </div>
-       <div>
-         <input type="submit" value="确定"/>
-       </div>              
+        <div>
+            <div class="addStyle"><input type="submit" value="确定" /></div>
+            <div class="addStyle"><input type="reset" value="重置" /></div>
+        </div>
     </form:form>
-  </body>
+</div>
+<script type="text/javascript">
+
+    $(function(){
+
+        /*开始时间控件*/
+        var myDate = new Date('${item.itemStartDate}');
+        var year = myDate.getFullYear();  //获取当前年
+        var month = ("0" + (myDate.getMonth() + 1)).slice(-2);//获取当前月
+        var day = ("0" + myDate.getDate()).slice(-2);//获取当前日，如果小于9，前面补0
+        var today = year + "-" + month + "-" + day;
+        $(".dateBegin").attr("value", today);
+
+        /*结束时间控件*/
+        var sDate = new Date('${item.itemDeadline}');
+        var year = sDate.getFullYear();  //获取当前年
+        var month = ("0" + (sDate.getMonth() + 1)).slice(-2);//获取当前月
+        var day = ("0" + sDate.getDate()).slice(-2);//获取当前日，如果小于9，前面补0
+        var today = year + "-" + month + "-" + day;
+        $(".dateEnd").attr("value", today);
+
+
+    });
+
+</script>
+</body>
 </html>

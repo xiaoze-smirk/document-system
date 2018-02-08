@@ -10,21 +10,10 @@
     <result column="doc_release_date" jdbcType="TIMESTAMP" property="docReleaseDate" />
     <result column="doc_check_person" jdbcType="VARCHAR" property="docCheckPerson" />
     <result column="doc_content" jdbcType="VARCHAR" property="docContent" />
-    <result column="test_jh" jdbcType="VARCHAR" property="testJh" />
-    <result column="test_yl" jdbcType="VARCHAR" property="testYl" />
-    <result column="test_jl" jdbcType="VARCHAR" property="testJl" />
-    <result column="test_qx" jdbcType="VARCHAR" property="testQx" />
-    <result column="test_bg" jdbcType="VARCHAR" property="testBg" />
-    <result column="test_jh_path" jdbcType="VARCHAR" property="testJhPath" />
-    <result column="test_yl_path" jdbcType="VARCHAR" property="testYlPath" />
-    <result column="test_jl_path" jdbcType="VARCHAR" property="testJlPath" />
-    <result column="test_qx_path" jdbcType="VARCHAR" property="testQxPath" />
-    <result column="test_bg_path" jdbcType="VARCHAR" property="testBgPath" />
   </resultMap>
   <sql id="Base_Column_List">
     doc_num, doc_title, doc_author, ver_num, doc_state, doc_release_date, doc_check_person, 
-    doc_content, test_jh, test_yl, test_jl, test_qx, test_bg, test_jh_path, test_yl_path, 
-    test_jl_path, test_qx_path, test_bg_path
+    doc_content
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select 
@@ -38,6 +27,15 @@
     from tb_document
     order by doc_num
   </select>
+  <select id="findByDocTitle" parameterType="map" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_document p
+    <where>
+      <if test="searchDocTitle!=null">and p.doc_title like concat('%', #{searchDocTitle}, '%')</if>
+    </where>
+    order by doc_num
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     delete from tb_document
     where doc_num = #{docNum,jdbcType=VARCHAR}
@@ -45,17 +43,11 @@
   <insert id="insert" parameterType="edu.fjnu.entity.Document">
     insert into tb_document (doc_num, doc_title, doc_author, 
       ver_num, doc_state, doc_release_date, 
-      doc_check_person, doc_content, test_jh, 
-      test_yl, test_jl, test_qx, 
-      test_bg, test_jh_path, test_yl_path, 
-      test_jl_path, test_qx_path, test_bg_path
+      doc_check_person, doc_content
       )
     values (#{docNum,jdbcType=VARCHAR}, #{docTitle,jdbcType=VARCHAR}, #{docAuthor,jdbcType=VARCHAR}, 
       #{verNum,jdbcType=VARCHAR}, #{docState,jdbcType=VARCHAR}, #{docReleaseDate,jdbcType=TIMESTAMP}, 
-      #{docCheckPerson,jdbcType=VARCHAR}, #{docContent,jdbcType=VARCHAR}, #{testJh,jdbcType=VARCHAR}, 
-      #{testYl,jdbcType=VARCHAR}, #{testJl,jdbcType=VARCHAR}, #{testQx,jdbcType=VARCHAR}, 
-      #{testBg,jdbcType=VARCHAR}, #{testJhPath,jdbcType=VARCHAR}, #{testYlPath,jdbcType=VARCHAR}, 
-      #{testJlPath,jdbcType=VARCHAR}, #{testQxPath,jdbcType=VARCHAR}, #{testBgPath,jdbcType=VARCHAR}
+      #{docCheckPerson,jdbcType=VARCHAR}, #{docContent,jdbcType=VARCHAR}
       )
   </insert>
   <insert id="insertSelective" parameterType="edu.fjnu.entity.Document">
@@ -85,36 +77,6 @@
       <if test="docContent != null">
         doc_content,
       </if>
-      <if test="testJh != null">
-        test_jh,
-      </if>
-      <if test="testYl != null">
-        test_yl,
-      </if>
-      <if test="testJl != null">
-        test_jl,
-      </if>
-      <if test="testQx != null">
-        test_qx,
-      </if>
-      <if test="testBg != null">
-        test_bg,
-      </if>
-      <if test="testJhPath != null">
-        test_jh_path,
-      </if>
-      <if test="testYlPath != null">
-        test_yl_path,
-      </if>
-      <if test="testJlPath != null">
-        test_jl_path,
-      </if>
-      <if test="testQxPath != null">
-        test_qx_path,
-      </if>
-      <if test="testBgPath != null">
-        test_bg_path,
-      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="docNum != null">
@@ -140,36 +102,6 @@
       </if>
       <if test="docContent != null">
         #{docContent,jdbcType=VARCHAR},
-      </if>
-      <if test="testJh != null">
-        #{testJh,jdbcType=VARCHAR},
-      </if>
-      <if test="testYl != null">
-        #{testYl,jdbcType=VARCHAR},
-      </if>
-      <if test="testJl != null">
-        #{testJl,jdbcType=VARCHAR},
-      </if>
-      <if test="testQx != null">
-        #{testQx,jdbcType=VARCHAR},
-      </if>
-      <if test="testBg != null">
-        #{testBg,jdbcType=VARCHAR},
-      </if>
-      <if test="testJhPath != null">
-        #{testJhPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testYlPath != null">
-        #{testYlPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testJlPath != null">
-        #{testJlPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testQxPath != null">
-        #{testQxPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testBgPath != null">
-        #{testBgPath,jdbcType=VARCHAR},
       </if>
     </trim>
   </insert>
@@ -197,36 +129,6 @@
       <if test="docContent != null">
         doc_content = #{docContent,jdbcType=VARCHAR},
       </if>
-      <if test="testJh != null">
-        test_jh = #{testJh,jdbcType=VARCHAR},
-      </if>
-      <if test="testYl != null">
-        test_yl = #{testYl,jdbcType=VARCHAR},
-      </if>
-      <if test="testJl != null">
-        test_jl = #{testJl,jdbcType=VARCHAR},
-      </if>
-      <if test="testQx != null">
-        test_qx = #{testQx,jdbcType=VARCHAR},
-      </if>
-      <if test="testBg != null">
-        test_bg = #{testBg,jdbcType=VARCHAR},
-      </if>
-      <if test="testJhPath != null">
-        test_jh_path = #{testJhPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testYlPath != null">
-        test_yl_path = #{testYlPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testJlPath != null">
-        test_jl_path = #{testJlPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testQxPath != null">
-        test_qx_path = #{testQxPath,jdbcType=VARCHAR},
-      </if>
-      <if test="testBgPath != null">
-        test_bg_path = #{testBgPath,jdbcType=VARCHAR},
-      </if>
     </set>
     where doc_num = #{docNum,jdbcType=VARCHAR}
   </update>
@@ -238,17 +140,7 @@
       doc_state = #{docState,jdbcType=VARCHAR},
       doc_release_date = #{docReleaseDate,jdbcType=TIMESTAMP},
       doc_check_person = #{docCheckPerson,jdbcType=VARCHAR},
-      doc_content = #{docContent,jdbcType=VARCHAR},
-      test_jh = #{testJh,jdbcType=VARCHAR},
-      test_yl = #{testYl,jdbcType=VARCHAR},
-      test_jl = #{testJl,jdbcType=VARCHAR},
-      test_qx = #{testQx,jdbcType=VARCHAR},
-      test_bg = #{testBg,jdbcType=VARCHAR},
-      test_jh_path = #{testJhPath,jdbcType=VARCHAR},
-      test_yl_path = #{testYlPath,jdbcType=VARCHAR},
-      test_jl_path = #{testJlPath,jdbcType=VARCHAR},
-      test_qx_path = #{testQxPath,jdbcType=VARCHAR},
-      test_bg_path = #{testBgPath,jdbcType=VARCHAR}
+      doc_content = #{docContent,jdbcType=VARCHAR}
     where doc_num = #{docNum,jdbcType=VARCHAR}
   </update>
 </mapper>

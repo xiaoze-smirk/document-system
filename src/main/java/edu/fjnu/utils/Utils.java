@@ -1,12 +1,15 @@
 package edu.fjnu.utils;
 
 import edu.fjnu.entity.Document;
+import edu.fjnu.entity.Version;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
+
+import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 public class Utils {
 
@@ -86,39 +89,245 @@ public class Utils {
 
     }
 
-    public Document docm(MultipartFile[] files, Document document){
+    public Version ver(MultipartFile[] files, Version version,String theDocNum){
         String path ;
+        int j=0;
         for(int i=0;i<files.length;i++){
             path="F:/xiaoze/abc/";
-            if(i==0&&!files[i].isEmpty()) {
-                path = path + "测试计划/" + document.getTestJh() + "/";
+            if(theDocNum.equals(version.getTestJh())&&!files[i].isEmpty()) {
+                path = path + "测试计划/"+theDocNum+"/";
                 saveFile(path , files[i]);
                 path=path+files[i].getOriginalFilename();
-                document.setTestJhPath(path);
-            }else if(i==1&&!files[i].isEmpty()) {
-                path = path + "测试用例/" + document.getTestYl() + "/";
+
+                if(isNotEmpty(version.getTestJhPath())) {
+                    String[] strArray=version.getTestJhPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestJhPath(version.getTestJhPath() + "!" + path);
+                }
+                else
+                    version.setTestJhPath(path);
+            }else if(theDocNum.equals(version.getTestYl())&&!files[i].isEmpty()) {
+                path = path + "测试用例/"+theDocNum+"/" ;
                 saveFile(path , files[i]);
                 path=path+files[i].getOriginalFilename();
-                document.setTestYlPath(path);
-            }else if(i==2&&!files[i].isEmpty()) {
-                path = path + "测试记录/" + document.getTestJl() + "/";
+                if(isNotEmpty(version.getTestYlPath())) {
+                    String[] strArray=version.getTestYlPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestYlPath(version.getTestYlPath() + "!" + path);
+                }
+                else
+                    version.setTestYlPath(path);
+            }else if(theDocNum.equals(version.getTestJl())&&!files[i].isEmpty()) {
+                path = path + "测试记录/"+theDocNum+"/";
                 saveFile(path , files[i]);
                 path=path+files[i].getOriginalFilename();
-                document.setTestJlPath(path);
-            }else if(i==3&&!files[i].isEmpty()) {
-                path = path + "缺陷报告/" + document.getTestQx() + "/";
+                if(isNotEmpty(version.getTestJlPath())) {
+                    String[] strArray=version.getTestJlPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestJlPath(version.getTestJlPath() + "!" + path);
+                }
+                else
+                    version.setTestJlPath(path);
+            }else if(theDocNum.equals(version.getTestQx())&&!files[i].isEmpty()) {
+                path = path + "缺陷报告/"+theDocNum+"/";
                 saveFile(path , files[i]);
                 path=path+files[i].getOriginalFilename();
-                document.setTestQxPath(path);
-            }else if(i==4&&!files[i].isEmpty()) {
-                path = path + "测试报告/" + document.getTestBg() + "/";
+                if(isNotEmpty(version.getTestQxPath())) {
+                    String[] strArray=version.getTestQxPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestQxPath(version.getTestQxPath() + "!" + path);
+                }
+                else
+                    version.setTestQxPath(path);
+            }else if(theDocNum.equals(version.getTestBg())&&!files[i].isEmpty()) {
+                path = path + "测试报告/"+theDocNum+"/";
                 saveFile(path , files[i]);
                 path=path+files[i].getOriginalFilename();
-                document.setTestBgPath(path);
+                if(isNotEmpty(version.getTestBgPath())) {
+                    String[] strArray=version.getTestBgPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestBgPath(version.getTestBgPath() + "!" + path);
+                }
+                else
+                    version.setTestBgPath(path);
             }
 
         }
-        return document;
+        return version;
     }
 
+    public Integer getStateLength(String str){
+
+        Integer length = 0;
+        if(str.equals("a"))
+            length=0;
+        else if(str.equals("b"))
+            length=16;
+        else if(str.equals("c"))
+            length=33;
+        else if(str.equals("d"))
+            length=50;
+        else if(str.equals("e"))
+            length=66;
+        else if(str.equals("f"))
+            length=83;
+        else if(str.equals("g"))
+            length=100;
+
+        return length;
+
+    }
+
+    //去字符串最后一个字符串，即（文件名）
+    public String lastStr(String str){
+        String[] strArray = str.split("\\/");
+        return strArray[strArray.length-1];
+    }
+
+    public Map<String, Object> map(Version version,String theDocNum){
+
+        Map<String, Object> map = new HashMap<>();
+
+        String[] stringArray = null;
+        List<String> stringList = new ArrayList<>();
+        if(version.getTestJh()!=null&&theDocNum.equals(version.getTestJh())) {
+            if(version.getTestJhPath()!=null) {
+                stringArray = version.getTestJhPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
+            map.put("getFileName", "测试计划");
+        }
+        else if(version.getTestYl()!=null&&theDocNum.equals(version.getTestYl())){
+            if(version.getTestYlPath()!=null) {
+                stringArray = version.getTestYlPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
+            map.put("getFileName", "测试用例");
+        }
+        else if(version.getTestJl()!=null&&theDocNum.equals(version.getTestJl())){
+            if(version.getTestJlPath()!=null) {
+                stringArray = version.getTestJlPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
+            map.put("getFileName", "测试记录");
+        }
+        else if(version.getTestQx()!=null&&theDocNum.equals(version.getTestQx())){
+            if(version.getTestQxPath()!=null) {
+                stringArray = version.getTestQxPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
+            map.put("getFileName", "缺陷报告");
+        }
+        else if(version.getTestBg()!=null&&theDocNum.equals(version.getTestBg())){
+            if(version.getTestBgPath()!=null) {
+                stringArray = version.getTestBgPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
+            map.put("getFileName", "测试报告");
+        }
+
+        if(stringList!=null)
+            map.put("stringList", stringList);
+        return map;
+    }
+
+    public String getOneFilePath(Version version,String theDocNum,String fileName){
+        String path=null;
+        String[] strArray=null;
+        if(version.getTestJh().equals(theDocNum)) {
+            strArray = version.getTestJhPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }
+        else if (version.getTestYl().equals(theDocNum)) {
+            strArray = version.getTestYlPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }
+        else if (version.getTestJl().equals(theDocNum)) {
+            strArray = version.getTestJlPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }
+        else if (version.getTestQx().equals(theDocNum)) {
+            strArray = version.getTestQxPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }
+        else if (version.getTestBg().equals(theDocNum)) {
+            strArray = version.getTestBgPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }
+        return path;
+    }
+
+    public String getPath (String[] sArray , String[] strArray){
+        String path="";
+        for(int i=0;i<sArray.length;i++) {
+            for(int j =0;j<strArray.length;j++){
+                if(strArray[j].equals(lastStr(sArray[i]))){
+                    sArray[i]="#";
+                }
+            }
+        }
+        for(int i=0;i<sArray.length;i++) {
+            if(!sArray[i].equals("#"))
+                path=path+"!"+sArray[i];
+        }
+
+        if(path.length()>0)
+            path=path.substring(1, path.length());
+        return path;
+    }
 }

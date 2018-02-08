@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 
 public interface ItemService {
@@ -24,6 +25,8 @@ public interface ItemService {
     Integer selectNextAutoId();
 
     List<Item> findAllItem();
+
+    List<Item> findByItemName(Map map);
 
     Item selectByLastRecord();
 }

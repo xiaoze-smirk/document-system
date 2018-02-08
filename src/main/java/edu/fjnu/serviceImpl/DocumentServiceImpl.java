@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -49,5 +50,10 @@ public class DocumentServiceImpl implements DocumentService {
     @Override
     public List<Document> findAllDocument() {
         return documentMapper.findAllDocument();
+    }
+
+    @Override
+    public List<Document> findByDocTitle(Map map) {
+        return documentMapper.findByDocTitle(map);
     }
 }

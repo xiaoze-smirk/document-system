@@ -3,6 +3,7 @@ package edu.fjnu.mapper;
 import edu.fjnu.entity.Item;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ItemMapper {
 
@@ -21,6 +22,8 @@ public interface ItemMapper {
     Integer selectNextAutoId();
 
     List<Item> findAllItem();
+
+    List<Item> findByItemName(Map map);
 
     Item selectByLastRecord();
 }

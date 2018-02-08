@@ -66,8 +66,22 @@
         <li>
             <h4 >项目管理</h4>
             <div class="list-item none">
-                <a href="../projects/addProj.html" target="contentFrame">新增项目</a>
-                <a href="../projects/projMgr.html" target="contentFrame">项目管理</a>
+                <a href="<c:url value="/item/toInput"/>" target="contentFrame">新增项目</a>
+                <a href="<c:url value="/item/list"/>" target="contentFrame">项目管理</a>
+            </div>
+        </li>
+        <li>
+            <h4 >文档管理</h4>
+            <div class="list-item none">
+                <a href="<c:url value="/document/toInput"/>" target="contentFrame">新增文档</a>
+                <a href="<c:url value="/document/list"/>" target="contentFrame">文档管理</a>
+            </div>
+        </li>
+        <li>
+            <h4 >版本管理</h4>
+            <div class="list-item none">
+                <a href="<c:url value="/version/toInput"/>" target="contentFrame">新增版本</a>
+                <a href="<c:url value="/version/list"/>" target="contentFrame">版本管理</a>
             </div>
         </li>
     </ul>

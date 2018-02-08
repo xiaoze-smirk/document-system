@@ -1,7 +1,9 @@
 package edu.fjnu.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import edu.fjnu.entity.Department;
 import edu.fjnu.entity.Document;
 import edu.fjnu.entity.State;
 import edu.fjnu.service.DocumentService;
@@ -21,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -63,13 +66,14 @@ public class DocumentController extends BaseController {
 
     @ApiOperation(value="新增操作需要传入后台的值")
     @PostMapping(value="/create")
-    public String create(@RequestParam("files") MultipartFile[] files, Document document) {
+    public String create(Document document,
+                         @RequestParam(value="dateDocReleaseDate", required=false) Date dateDocReleaseDate) {
 
         if(isEmpty(document.getDocState()))
             return "redirect:/document/toInput";
-        document.setDocReleaseDate(new Date());
-        Utils utils = new Utils();
-        document= utils.docm(files, document);
+
+        if(dateDocReleaseDate!=null)
+            document.setDocReleaseDate(dateDocReleaseDate);
 
         documentService.insert(document);
 
@@ -79,10 +83,14 @@ public class DocumentController extends BaseController {
 
     @ApiOperation(value="获取分页列表", notes="用来获取分页列表")
     @ApiImplicitParam(name = "pageNoStr", value = "页码:pageNoStr")
-    @GetMapping("/list")
-    public String list(Map<String, Object> map, @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr) {
+    @RequestMapping("/list")
+    public String list(Map<String, Object> map,
+                       @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr,
+                       @RequestParam(value="pageSize", required=false, defaultValue="3") String pageSizeStr,
+                       @RequestParam(value="searchDocTitle", required=false) String searchDocTitle) {
 
-        int pageNo = 1;
+        Integer pageNo = 1;
+        Integer pageSize = 3;
 
         //对 pageNo 的校验
         pageNo = Integer.parseInt(pageNoStr);
@@ -90,16 +98,28 @@ public class DocumentController extends BaseController {
             pageNo = 1;
         }
 
-        /*
-         * 第一个参数：第几页;
-         * 第二个参数：每页获取的条数.
-         */
-        PageHelper.startPage(pageNo, 3);
-        List<Document> documentList = documentService.findAllDocument();
+        //校验pageSize
+        pageSize = Integer.parseInt(pageSizeStr);
+        if(pageSize < 1){
+            pageSize = 3;
+        }
+
+        Map<String,Object> map1 = new HashMap<>();
+        if(isNotEmpty(searchDocTitle))
+            map1.put("searchDocTitle", searchDocTitle);
+
+        PageHelper.startPage(pageNo, pageSize);
+        List<Document> documentList = documentService.findByDocTitle(map1);
 
         PageInfo<Document> page=new PageInfo<>(documentList);
+        page.setList((List<Document>) JSON.toJSON(page.getList()));
 
         map.put("page", page);
+
+        map.put("pageSize", pageSize);
+
+        if(isNotEmpty(searchDocTitle))
+            map.put("searchDocTitle", searchDocTitle);
 
         return "document/list_document";
     }
@@ -130,71 +150,13 @@ public class DocumentController extends BaseController {
 
     @ApiOperation(value="修改操作需要传入后台的值")
     @PutMapping(value="/update")
-    public String update(@RequestParam("files") MultipartFile[] files,Document document) {
+    public String update(Document document) {
 
-        Utils utils = new Utils();
-        document= utils.docm(files, document);
         documentService.updateByPrimaryKey(document);
 
         return "redirect:/document/list";
     }
 
-    @ApiOperation(value="下载操作", notes="选定文件下载")
-    @ApiImplicitParams({
-            @ApiImplicitParam(name = "docNum", value = "文档docNum", dataType = "String"),
-            @ApiImplicitParam(name = "testNum", value = "文档testNum", dataType = "testNum")
-    })
-    @GetMapping(value="/download/{docNum}/{testNum}")
-    public String downLoad(@PathVariable("docNum") String docNum , @PathVariable("testNum") String testNum , HttpServletResponse response){
-
-        String path=null;
-        Document document= documentService.selectByPrimaryKey(docNum);
-        if(document.getTestJh().equals(testNum))
-            path=document.getTestJhPath();
-        else if (document.getTestYl().equals(testNum))
-            path=document.getTestYlPath();
-        else if (document.getTestJl().equals(testNum))
-            path=document.getTestJlPath();
-        else if (document.getTestQx().equals(testNum))
-            path=document.getTestQxPath();
-        else if (document.getTestBg().equals(testNum))
-            path=document.getTestBgPath();
-
-        File file = new File(path);
-
-        if(file.exists()){ //判断文件父目录是否存在
-            try {
-                String filename=file.getName();
-                System.out.println("----------file download" + filename);
-                response.setContentType("application/force-download;charset=UTF-8");
-                response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(filename, "UTF-8"));
-
-                byte[] buffer = new byte[1024];
-                FileInputStream fis = null; //文件输入流
-                BufferedInputStream bis = null;
-
-                OutputStream os = null; //输出流
-
-                os = response.getOutputStream();
-                fis = new FileInputStream(file);
-                bis = new BufferedInputStream(fis);
-                int i = bis.read(buffer);
-                while(i != -1){
-                    os.write(buffer);
-                    i = bis.read(buffer);
-                }
-                bis.close();
-                fis.close();
-
-            } catch (Exception e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-
-
-        }
-        return null;
-    }
 
 
 }
