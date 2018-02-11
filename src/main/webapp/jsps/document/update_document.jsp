@@ -17,7 +17,8 @@
 </div>
 <div class="box">
     <form:form class="formStyle" method="post" action="${pageContext.request.contextPath}/document/update" modelAttribute="document">
-        <input type="hidden" name="_method" value="PUT"/>
+    <input type="hidden" name="_method" value="PUT"/>
+    <div>
         <label class="labelFirst">序号:</label>
         <form:input path="docNum"/>
     </div>
@@ -52,7 +53,7 @@
         <label class="labelFirst">摘要:</label>
         <form:textarea path="docContent" rows="6" cols="60" />
     </div>
-    <div>
+    <div class="funcBtn">
         <div class="addStyle"><input type="submit" value="确定" /></div>
         <div class="addStyle"><input type="reset" value="重置" /></div>
     </div>

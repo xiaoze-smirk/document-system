@@ -75,52 +75,38 @@ table {
     width: 100%;
     border-collapse:collapse;
 }
-table tr:nth-child(2n+1) {
+table tr {
     width: 100%;
-    height: 50px;
-}
-table tr:nth-child(2n) {
-    width: 100%;
-    height: 10px;
-    position: fixed;
-    margin-top: -5px;
+    height: 40px;
+    border-bottom: 1px dashed black;
 }
 table tr:nth-child(1) {
     height: 40px;
     border-bottom: 1px solid black;
 }
-table tr:nth-child(2) {
-    display: none;
-}
 .projMgr tr td {
     text-align: center;
 }
 .projMgr tr td:nth-child(1){
-    width: 95px;
+    width: 100px;
 }
 .projMgr tr td:nth-child(2){
-    width: 14%;
+    width: 15%;
 }
 .projMgr tr td:nth-child(3){
-    width: 7%;
+    width: 25%;
 }
 .projMgr tr td:nth-child(4){
-    width: 20%;
+    width: 15%;
 }
 .projMgr tr td:nth-child(5){
-    width: 7%;
+    width: 15%;
 }
 .projMgr tr td:nth-child(6){
     width: 10%;
 }
 .projMgr tr td:nth-child(7){
-    width: 10%;
-}
-.projMgr tr td:nth-child(8){
-    width: 5%;
-}
-.projMgr tr td:nth-child(9){
-    width: 20%;
+    width: 15%;
 }
 .projMgr tr td:nth-child(4) a {
     color: black;
@@ -165,199 +151,77 @@ table tr:nth-child(2n) td {
     float: left;
 }
 
-table tr td .btn {
-    width: 48px;
-    height: 24px;
-    outline: none;
-    background-color: #1c6b61;
-    border: none;
-    border-radius: 5px;
-    float: left;
-    position: relative;
-    left: 20%;
-    margin-right: 10px;
-    margin-top: 3px;
-    vertical-align: middle;
-}
-table tr td .btn:first-child {
-    margin-right: 10px;
-}
-table tr td .btn button {
-    width: 48px;
-    height: 24px;
-    line-height: 24px;
-    color: white;
-    font-family: 微软雅黑;
-    outline: none;
-    background-color: #3bb3e0;
-    border: none;
-    border-radius: 5px;
-    position: relative;
-    top: -4px;
-}
-table tr td .btn button:hover {
-    top: -3.5px;
-}
-table tr td .btn button:active {
-    color: #156785;
-    background-color: rgb(44,160,202);
-    top: 0px;
-}
-.history {
-    width: 48px;
-    height: 24px;
-    outline: none;
-    background-color: #1c6b61;
-    border: none;
-    border-radius: 5px;
-    float: right;
-    position: relative;
-    right: 0;
-    z-index: 10;
-    margin-top: 3px;
-    margin-left: -50px;
-    vertical-align: middle;
-}
-.history button {
-    width: 48px;
-    height: 24px;
-    line-height: 24px;
-    color: white;
-    font-family: 微软雅黑;
-    outline: none;
-    background-color: #3bb3e0;
-    border: none;
-    border-radius: 5px;
-    position: relative;
-    top: -4px;
-}
-.history button:hover {
-    top: -3.5px;
-}
-.history button:active {
-    color: #156785;
-    background-color: rgb(44,160,202);
-    top: 0px;
-}
-/*************表格底部操作栏*************/
-.fStyle {
-    width: 450px;
-    height: 40px;
-    float: right;
-    margin-top: 20px;
-    margin-right: 20px;
-}
-.fStyle p {
-    height: 100%;
-    line-height: 40px;
-    font-size: 18px;
-    position: relative;
-    left: 10px;
-}
-.fStyle .select {
-    width: 65px;
-    border-radius: 3px;
-    position: relative;
-    margin-left: 70px;
-    margin-top: -35px;
-}
-.fStyle .select select {
-    width: 65px;
-    height: 30px;
-    font-size: 18px;
-}
-.fStyle .pageTurn {
-    height: 28px;
-    line-height: 30px;
-    border-radius: 3px;
-    float: right;
-    margin-right: 170px;
-    margin-top: -30px;
-}
-.fStyle .pageTurn li {
-    width: 28px;
-    height: 28px;
-    float: left;
-    list-style: none;
-}
-.fStyle .pageTurn li:first-child {
-    width: 28px;
-    border: 1px solid #A9A9A9;
-    border-right: none;
-}
-.fStyle .pageTurn li:last-child {
-    width: 28px;
-    border: 1px solid #A9A9A9;
-    border-left: none;
-}
-.fStyle .pageTurn li img {
-    width: 28px;
-    height: 28px;
-    cursor: pointer;
-}
-.fStyle .pageTurn li img:hover {
-    background-color: #008CBA;
-}
-.fStyle .pageTurn li span {
-    width: 28px;
-    height: 30px;
-    font-size: 18px;
-    text-align: center;
-    line-height: 32px;
-    color: white;
-    background-color: #3BB3E0;
-    display: block;
-}
-.fStyle .jumpTo {
-    width: 60px;
-    height: 25px;
-    color: gray;
-    text-align: center;
-    position: absolute;
-    right: 70px;
-    margin-top: -30px;
-}
-/********************************************/
-
-/********************按钮********************/
-.fStyle .addStyle {
-    width: 40px;
-    height: 24px;
-    outline: none;
-    background-color: #1c6b61;
-    border: none;
-    border-radius: 5px;
-    position: absolute;
-    right: 20px;
-    margin-top: -25px;
-    vertical-align: middle;
-}
-/*首页按钮*/
-.fStyle .addStyle:nth-child(3) {
-    margin-right: 265px;
-}
-/*尾页按钮*/
-.fStyle .addStyle:nth-child(5) {
-    margin-right: 123px;
-}
-.fStyle .addStyle input {
-    width: 40px;
-    height: 24px;
-    line-height: 24px;
-    color: white;
-    font-family: 微软雅黑;
-    outline: none;
-    background-color: #3bb3e0;
-    border: none;
-    border-radius: 5px;
-    position: relative;
-    top: -4px;
-}
-.fStyle .addStyle input:hover {
-    top: -3.5px;
-}
-.fStyle .addStyle input:active {
-    color: #156785;
-    background-color: rgb(44,160,202);
-    top: 0;
-}
+/*table tr td .btn {*/
+    /*width: 48px;*/
+    /*height: 24px;*/
+    /*outline: none;*/
+    /*background-color: #1c6b61;*/
+    /*border: none;*/
+    /*border-radius: 5px;*/
+    /*float: left;*/
+    /*position: relative;*/
+    /*left: 20%;*/
+    /*margin-right: 10px;*/
+    /*margin-top: 3px;*/
+    /*vertical-align: middle;*/
+/*}*/
+/*table tr td .btn:first-child {*/
+    /*margin-right: 10px;*/
+/*}*/
+/*table tr td .btn button {*/
+    /*width: 48px;*/
+    /*height: 24px;*/
+    /*line-height: 24px;*/
+    /*color: white;*/
+    /*font-family: 微软雅黑;*/
+    /*outline: none;*/
+    /*background-color: #3bb3e0;*/
+    /*border: none;*/
+    /*border-radius: 5px;*/
+    /*position: relative;*/
+    /*top: -4px;*/
+/*}*/
+/*table tr td .btn button:hover {*/
+    /*top: -3.5px;*/
+/*}*/
+/*table tr td .btn button:active {*/
+    /*color: #156785;*/
+    /*background-color: rgb(44,160,202);*/
+    /*top: 0px;*/
+/*}*/
+/*.history {*/
+    /*width: 48px;*/
+    /*height: 24px;*/
+    /*outline: none;*/
+    /*background-color: #1c6b61;*/
+    /*border: none;*/
+    /*border-radius: 5px;*/
+    /*float: right;*/
+    /*position: relative;*/
+    /*right: 0;*/
+    /*z-index: 10;*/
+    /*margin-top: 3px;*/
+    /*margin-left: -50px;*/
+    /*vertical-align: middle;*/
+/*}*/
+/*.history button {*/
+    /*width: 48px;*/
+    /*height: 24px;*/
+    /*line-height: 24px;*/
+    /*color: white;*/
+    /*font-family: 微软雅黑;*/
+    /*outline: none;*/
+    /*background-color: #3bb3e0;*/
+    /*border: none;*/
+    /*border-radius: 5px;*/
+    /*position: relative;*/
+    /*top: -4px;*/
+/*}*/
+/*.history button:hover {*/
+    /*top: -3.5px;*/
+/*}*/
+/*.history button:active {*/
+    /*color: #156785;*/
+    /*background-color: rgb(44,160,202);*/
+    /*top: 0px;*/
+/*}*/

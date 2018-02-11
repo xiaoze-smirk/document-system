@@ -92,9 +92,9 @@
         </select>
         <div class="addStyle"><input id="one" type="button" class="first linkspan" value="首页" /></div>
         <ul class="pageTurn">
-            <li class="prevBtn"><a class="linkspan" id="two" href="#">上一页</a></li>
+            <li class="prevBtn linkspan" id="two"><img src="${pageContext.request.contextPath}/images/prev.jpg"/></a></li>
             <li><span class="pageNow">${page.pageNum}</span></li>
-            <li class="nextBtn"><a class="linkspan" id="three"  href="#">下一页</a></li>
+            <li class="nextBtn linkspan" id="three"><img src="${pageContext.request.contextPath}/images/next.jpg"/></a></li>
         </ul>
         <div class="addStyle"><input id="four" class="last linkspan" type="button" value="尾页" /></div>
         <input id="pageNo" type="text" class="jumpTo" placeholder="输入页码" />
@@ -107,16 +107,18 @@
 
         var rePageSize = String(${pageSize});
         $("#pageSize").val(rePageSize);
+        
 
         $(document).ready(function () {
-            var percentage = 0;
+            var percentage = 80;
             var value = 500;        /*停止的值*/
-
+            
             var interval = setInterval(function () {
                 if (percentage < value) {
                     percentage++;
                     var widthTemp = (percentage / 10).toFixed(1) + '%';
-                    $(".progressBar").css('width', widthTemp);
+                    var w = ((percentage-80) /10).toFixed(1) + '%';
+                    $(".progressBar").css('width', w);
                     $(".progressBar").text(widthTemp);
                 } else {
                     clearInterval(interval);

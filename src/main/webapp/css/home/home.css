@@ -81,6 +81,12 @@ a {
 .box {
     width: 100%;
 }
+.box table {
+    width: 100% ! important;
+}
+.box table tr {
+    width: 100% ! important;
+}
 
 /******************表单样式******************/
 .formStyle {
@@ -118,7 +124,14 @@ a {
     height: 28px;
     margin: 5px 0 0 10px
 }
-/********************************************/
+.formStyle div span input[type="checkbox"] {
+    margin-top: 13px;
+    margin-left: 8px;
+}
+.formStyle div span label {
+    font-size: 17px;
+}
+    /********************************************/
 
 /***************确定、重置按钮****************/
 .formStyle div .addStyle {
@@ -157,9 +170,13 @@ a {
     background-color: rgb(44,160,202);
     top: 0;
 }
-.formStyle .funcBtn {
-    margin-top: 200px;
-    display: inline-block;
+textarea {
+    height: 100px;
+    margin-top: 5px;
+    margin-left: 10px;
+    font-size: 14px;
+    font-family: 微软雅黑;
+    line-height: 22px;
 }
 /********************************************/
 
@@ -242,23 +259,22 @@ a {
     margin-right: 20px;
 }
 .fStyle p {
+    width: 100px;
     height: 100%;
     line-height: 40px;
     font-size: 18px;
     position: relative;
     left: 10px;
+    top: 4px;
 }
-.fStyle .select {
-    width: 65px;
-    border-radius: 3px;
-    position: relative;
-    margin-left: 70px;
-    margin-top: -35px;
-}
-.fStyle .select select {
+.fStyle .number {
     width: 65px;
     height: 30px;
     font-size: 18px;
+    border-radius: 3px;
+    position: relative;
+    margin-left: 70px;
+    top: -30px;
 }
 .fStyle .pageTurn {
     height: 28px;
@@ -323,7 +339,7 @@ a {
     border-radius: 5px;
     position: absolute;
     right: 20px;
-    margin-top: -25px;
+    margin-top: -55px;
     vertical-align: middle;
 }
 /*首页按钮*/
@@ -355,3 +371,4 @@ a {
     background-color: rgb(44,160,202);
     top: 0;
 }
+

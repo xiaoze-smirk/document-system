@@ -7,6 +7,7 @@
 	<meta charset="UTF-8">
 	<title>Title</title>
 	<link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
+	<link href="<c:url value="/css/versions/versionMgr.css"/>" type="text/css" rel="stylesheet" />
 	<script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
 	<script src="<c:url value="/js/home/home.js"/>"></script>
 </head>
@@ -15,24 +16,24 @@
 	<p>版本管理</p>
 </div>
 <div class="box">
-	<table class="depMgr">
+	<table class="verMgr">
 		<tr class="trNow">
-			<th>序号</th>
-			<th>文档号</th>
-			<th>版本号</th>
-			<th>修改时间</th>
-			<th>修改人</th>
-			<th>修改摘要</th>
-			<th>操作</th>
+			<td>序号</td>
+			<td>文档号</td>
+			<td>版本号</td>
+			<td>修改时间</td>
+			<td>修改人</td>
+			<td>修改摘要</td>
+			<td>操作</td>
 		</tr>
 		<c:forEach var="version" items="${page.list}" >
 			<tr class="trNow">
-				<td nowrap>${version.verId}</td>
-				<td nowrap>${version.docNum}</td>
-				<td nowrap>${version.verNum}</td>
-				<td nowrap>${version.verAlertTime}</td>
-				<td nowrap>${version.verAlertPeople}</td>
-				<td nowrap>${version.verContent}</td>
+				<td>${version.verId}</td>
+				<td>${version.docNum}</td>
+				<td>${version.verNum}</td>
+				<td>${version.verAlertTime}</td>
+				<td>${version.verAlertPeople}</td>
+				<td>${version.verContent}</td>
 				<td>
 					<div><button class="update" href="${pageContext.request.contextPath}/version/preWatch/${version.verId}">查看</button></div>
 				</td>
@@ -50,9 +51,9 @@
 		</select>
 		<div class="addStyle"><input id="one" type="button" class="first linkspan" value="首页" /></div>
 		<ul class="pageTurn">
-			<li class="prevBtn"><a class="linkspan" id="two" href="#">上一页</a></li>
+			<li class="prevBtn linkspan" id="two"><img src="${pageContext.request.contextPath}/images/prev.jpg"/></a></li>
 			<li><span class="pageNow">${page.pageNum}</span></li>
-			<li class="nextBtn"><a class="linkspan" id="three"  href="#">下一页</a></li>
+			<li class="nextBtn linkspan" id="three"><img src="${pageContext.request.contextPath}/images/next.jpg"/></a></li>
 		</ul>
 		<div class="addStyle"><input id="four" class="last linkspan" type="button" value="尾页" /></div>
 		<input id="pageNo" type="text" class="jumpTo" placeholder="输入页码" />

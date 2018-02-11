@@ -61,10 +61,12 @@
                 <div class="edit"><button>编辑</button></div>
             </div>
             <div class="labelInfo">
-                <label class="labelFirst">文档号:</label>${version.docNum}
+                <label class="labelFirst">文档号:</label>
+                    <input type="text" class="noedit" value="${version.docNum}" disabled />
             </div>
             <div class="labelInfo">
-                <label class="labelFirst">版本号:</label>${version.verNum}
+                <label class="labelFirst">版本号:</label>
+                    <input type="text" class="noedit" value="${version.verNum}" disabled />
             </div>
             <div class="labelInfo">
                 <label class="labelFirst">修改时间:</label>
@@ -133,6 +135,10 @@
                 $(".labelInfo").find("textarea").attr("disabled",false);
                 $(".labelInfo").find("textarea").css("border","1px solid gray");
                 $(".labelInfo").find("textarea").css("background-color","white");
+
+                $(".labelInfo").find(".noedit").attr("disabled",true);
+                $(".labelInfo").find(".noedit").css("border","1px solid #EDF8F1");
+                $(".labelInfo").find(".noedit").css("background-color","#EDF8F1");
             } else {
                 $("form:eq(0)").submit();
             }
