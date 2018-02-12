@@ -107,7 +107,7 @@
 
         var rePageSize = String(${pageSize});
         $("#pageSize").val(rePageSize);
-        
+
 
         $(document).ready(function () {
             var percentage = 80;

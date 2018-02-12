@@ -85,6 +85,22 @@
 
     $(function(){
 
+        /*文件图片实现*/
+        for(var i = 0;i < $(".box_file").length;i ++ ){
+            var type = $(".box_file").eq(i).find("span").html();
+            var index = type .lastIndexOf(".");
+            type  = type .substring(index + 1, type .length);
+            if (type == "doc" || type == "docx")
+                $(".box_file").eq(i).find("div").find("img").attr("src","${pageContext.request.contextPath}/images/folders/word.png");
+            else if (type == "xls" || type == "xlsx")
+                $(".box_file").eq(i).find("div").find("img").attr("src","${pageContext.request.contextPath}/images/folders/excel.png");
+            else if(type == "txt")
+                $(".box_file").eq(i).find("div").find("img").attr("src","${pageContext.request.contextPath}/images/folders/txt.png");
+            else if (type == "jpg" || type == "jpeg")
+                $(".box_file").eq(i).find("div").find("img").attr("src","${pageContext.request.contextPath}/images/folders/img.png");
+        }
+
+
         /*表示操作栏可点击时*/
         var ImgPosition = ["${pageContext.request.contextPath}/images/folders/upload.png",
             "${pageContext.request.contextPath}/images/folders/download.png",
