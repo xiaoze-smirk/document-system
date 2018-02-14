@@ -152,6 +152,7 @@ table tr:nth-child(2n) td {
     border-radius: 5px;
 }
 .progressBar{
+    width: 0%;
     height: 100%;
     display: inline-block;
     background: #3bb3e0;
@@ -161,8 +162,9 @@ table tr:nth-child(2n) td {
     padding-right: 5px;
     position: relative;
     text-align: right;
-    border-radius: 5px;
+    border-radius: 0.5px 5px 0;
     float: left;
+    transition: width 2s;
 }
 
 table tr td .btn {

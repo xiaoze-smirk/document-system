@@ -92,9 +92,9 @@
         </select>
         <div class="addStyle"><input id="one" type="button" class="first linkspan" value="首页" /></div>
         <ul class="pageTurn">
-            <li class="prevBtn linkspan" id="two"><img src="${pageContext.request.contextPath}/images/prev.jpg"/></a></li>
+            <li class="prevBtn linkspan" id="two"><img src="${pageContext.request.contextPath}/images/prev.jpg"/></li>
             <li><span class="pageNow">${page.pageNum}</span></li>
-            <li class="nextBtn linkspan" id="three"><img src="${pageContext.request.contextPath}/images/next.jpg"/></a></li>
+            <li class="nextBtn linkspan" id="three"><img src="${pageContext.request.contextPath}/images/next.jpg"/></li>
         </ul>
         <div class="addStyle"><input id="four" class="last linkspan" type="button" value="尾页" /></div>
         <input id="pageNo" type="text" class="jumpTo" placeholder="输入页码" />
@@ -110,20 +110,14 @@
 
 
         $(document).ready(function () {
-            var percentage = 80;
-            var value = 500;        /*停止的值*/
-            
-            var interval = setInterval(function () {
-                if (percentage < value) {
-                    percentage++;
-                    var widthTemp = (percentage / 10).toFixed(1) + '%';
-                    var w = ((percentage-80) /10).toFixed(1) + '%';
-                    $(".progressBar").css('width', w);
-                    $(".progressBar").text(widthTemp);
-                } else {
-                    clearInterval(interval);
-                }
-            }, 10);
+            var value=${intList};          /*停止的值*/
+
+            var bar = $(".projMgr").find(".progressBar");
+            for(var i = 1;i < bar.length;i ++){
+                var widthTemp = ((value[i-1]-50) / 10).toFixed(1) + '%';
+                bar.eq(i).css('width', widthTemp);
+                bar.eq(i).text(value[i-1]/10+ '%');
+            }
         });
 
 

@@ -56,9 +56,9 @@
 		</select>
 		<div class="addStyle"><input id="one" type="button" class="first linkspan" value="首页" /></div>
 		<ul class="pageTurn">
-			<li class="prevBtn linkspan" id="two"><img src="${pageContext.request.contextPath}/images/prev.jpg"/></a></li>
+			<li class="prevBtn linkspan" id="two"><img src="${pageContext.request.contextPath}/images/prev.jpg"/></li>
 			<li><span class="pageNow">${page.pageNum}</span></li>
-			<li class="nextBtn linkspan" id="three"><img src="${pageContext.request.contextPath}/images/next.jpg"/></a></li>
+			<li class="nextBtn linkspan" id="three"><img src="${pageContext.request.contextPath}/images/next.jpg"/></li>
 		</ul>
 		<div class="addStyle"><input id="four" class="last linkspan" type="button" value="尾页" /></div>
 		<input id="pageNo" type="text" class="jumpTo" placeholder="输入页码" />

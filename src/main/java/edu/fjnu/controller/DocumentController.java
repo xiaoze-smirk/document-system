@@ -22,10 +22,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -111,7 +108,16 @@ public class DocumentController extends BaseController {
         PageHelper.startPage(pageNo, pageSize);
         List<Document> documentList = documentService.findByDocTitle(map1);
 
+        Utils utils=new Utils();
         PageInfo<Document> page=new PageInfo<>(documentList);
+        List<Integer> intList = new ArrayList<>();
+        if(page.getList()!=null){
+            for(Document document:page.getList()){
+                intList.add(utils.getStateLength(document.getDocState()));
+            }
+        }
+
+
         page.setList((List<Document>) JSON.toJSON(page.getList()));
 
         map.put("page", page);
@@ -120,6 +126,8 @@ public class DocumentController extends BaseController {
 
         if(isNotEmpty(searchDocTitle))
             map.put("searchDocTitle", searchDocTitle);
+
+        map.put("intList", intList);
 
         return "document/list_document";
     }

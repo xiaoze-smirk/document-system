@@ -182,17 +182,17 @@ public class Utils {
         if(str.equals("a"))
             length=0;
         else if(str.equals("b"))
-            length=16;
+            length=160;
         else if(str.equals("c"))
-            length=33;
+            length=330;
         else if(str.equals("d"))
-            length=50;
+            length=500;
         else if(str.equals("e"))
-            length=66;
+            length=660;
         else if(str.equals("f"))
-            length=83;
+            length=830;
         else if(str.equals("g"))
-            length=100;
+            length=1000;
 
         return length;
 
