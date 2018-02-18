@@ -2,8 +2,10 @@ package edu.fjnu.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
-public class Client {
+public class Client implements Serializable {
 
     //客户号:地区号+客户序列号
     private String clientId;

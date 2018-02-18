@@ -16,7 +16,7 @@
 
 	<script type="text/javascript">
 	    
-	    var loginPage = "employee/enter";
+	    var loginPage = "security/toLogin";
 	    location.href=loginPage;
 	    
 	</script>

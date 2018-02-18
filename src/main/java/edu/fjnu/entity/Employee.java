@@ -3,8 +3,10 @@ package edu.fjnu.entity;
 import edu.fjnu.utils.StringUtil;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
-public class Employee {
+public class Employee implements Serializable {
 
     //工号（序号）
     private Integer empId;

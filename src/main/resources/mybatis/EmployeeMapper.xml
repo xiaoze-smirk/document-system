@@ -19,7 +19,7 @@
     from tb_emp
     where emp_id = #{empId,jdbcType=INTEGER}
   </select>
-  <select id="findAllEmployee" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findAllEmployee" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_emp

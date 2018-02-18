@@ -30,7 +30,7 @@
     from tb_item
     order by auto_id desc LIMIT 1
   </select>
-  <select id="findAllItem" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findAllItem" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_item

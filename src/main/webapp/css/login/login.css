@@ -82,7 +82,18 @@ input[type="text"],input[type="password"]{
 }
 .input-style .iCode {
 	width: 76px;
-	margin-left: -37px;
+	margin-left: 0;
+}
+.code {
+	width: 60px;
+	height: 29px;
+	line-height: 29px;
+	border: 1px solid rgba(90, 224, 238, 0.5);
+	font-size: 16px;
+	margin-right: 49px;
+	display: block;
+	float: right;
+	cursor: pointer;
 }
 input[type="checkbox"] {
 	float: left;
@@ -247,3 +258,4 @@ button:hover {
 	background: #b63e1a;
 }
 /**********************************************/
+

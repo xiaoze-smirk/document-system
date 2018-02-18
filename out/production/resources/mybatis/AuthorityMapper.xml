@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.fjnu.mapper.AuthorityMapper">
+  <resultMap id="BaseResultMap" type="edu.fjnu.entity.Authority">
+    <id column="authority_id" jdbcType="VARCHAR" property="authorityId" />
+    <result column="authority_English_name" jdbcType="VARCHAR" property="authorityEnglishName" />
+    <result column="authority_Chinese_name" jdbcType="VARCHAR" property="authorityChineseName" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    authority_id, authority_English_name, authority_Chinese_name
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_authority
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </select>
+  <select id="findAllAuthority" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from tb_authority
+    order by authority_id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from tb_authority
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="edu.fjnu.entity.Authority">
+    insert into tb_authority (authority_id, authority_English_name,
+    authority_Chinese_name)
+    values (#{authorityId,jdbcType=VARCHAR}, #{authorityEnglishName,jdbcType=VARCHAR},
+    #{authorityChineseName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="edu.fjnu.entity.Authority">
+    insert into tb_authority
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="authorityId != null">
+        authority_id,
+      </if>
+      <if test="authorityEnglishName != null">
+        authority_English_name,
+      </if>
+      <if test="authorityChineseName != null">
+        authority_Chinese_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="authorityId != null">
+        #{authorityId,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityEnglishName != null">
+        #{authorityEnglishName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityChineseName != null">
+        #{authorityChineseName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="edu.fjnu.entity.Authority">
+    update tb_authority
+    <set>
+      <if test="authorityEnglishName != null">
+        authority_English_name = #{authorityEnglishName,jdbcType=VARCHAR},
+      </if>
+      <if test="authorityChineseName != null">
+        authority_Chinese_name = #{authorityChineseName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="edu.fjnu.entity.Authority">
+    update tb_authority
+    set authority_English_name = #{authorityEnglishName,jdbcType=VARCHAR},
+      authority_Chinese_name = #{authorityChineseName,jdbcType=VARCHAR}
+    where authority_id = #{authorityId,jdbcType=VARCHAR}
+  </update>
+</mapper>

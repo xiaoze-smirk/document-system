@@ -44,13 +44,6 @@ public class EmployeeController extends BaseController {
             map.put("employee", employee);
     }
 
-    @ApiOperation(value="进入主界面")
-    @GetMapping("/enter")
-    public String enter() {
-
-        return "main";
-    }
-
     @ApiOperation(value="新增员工界面")
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {

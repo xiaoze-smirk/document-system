@@ -21,7 +21,7 @@
     from tb_document
     where doc_num = #{docNum,jdbcType=VARCHAR}
   </select>
-  <select id="findAllDocument" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findAllDocument" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_document

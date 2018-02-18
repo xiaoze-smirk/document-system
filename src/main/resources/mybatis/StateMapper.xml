@@ -14,7 +14,7 @@
     from tb_state
     where state_str = #{stateStr,jdbcType=VARCHAR}
   </select>
-  <select id="findAllState" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findAllState" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_state

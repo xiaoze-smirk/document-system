@@ -3,10 +3,11 @@ package edu.fjnu.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class Version {
+public class Version implements Serializable {
 
     //序号
     private Integer verId;

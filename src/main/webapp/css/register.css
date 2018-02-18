@@ -87,7 +87,7 @@ body {
     color: gray;
     margin: 10px 0 10px 0;
 }
-.box_register span {
+.box_register .userReg {
     width: 100px;
     height: 30px;
     border: solid 1px #008CBA;
@@ -137,17 +137,22 @@ body {
     margin:5px 0 0 -270px;
 }
 .form div input[type="radio"] {
+    margin-left: -100px;
     margin-top: 12px;
     padding-left: 20px;
 }
-.male {
-    margin-left: -360px;
-    margin-top: 12px;
+.sexSelect {
+    width: 170px;
+    margin-left: 275px;
 }
 .form div input[type="checkbox"] {
     margin-left: 200px;
     margin-top: 11px;
     float: left;
+}
+.form div input[type="file"] {
+    margin-top: 8px;
+    margin-left: -190px;
 }
 .labelSecond {
     font: 15px gray;

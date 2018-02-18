@@ -28,28 +28,4 @@ $(document).ready(function(){
     },6000); //6000为轮播的时间
 
 
-
-    $(".btnReg").click(function () {
-        $(location).attr('href','register.html');
-    })
-    $(".btn_login").click(function () {
-        $(location).attr('href','main/main.html');
-    })
-
-    /****************************第三方登录***************************/
-    var imgHover = ["../images/login/QQ.png","../images/login/weixin.png","../images/login/weibo.png"];
-    var images = ["../images/login/QQ_gray.png","../images/login/weixin_gray.png","../images/login/weibo_gray.png"];
-    $(".tAccount").find(".third_account").mouseover(function () {
-        var index = $(this).index();
-        $(this).attr("src",imgHover[index-1]);
-    });
-    $(".tAccount").find(".third_account").mouseleave(function () {
-        var index = $(this).index();
-        $(this).attr("src",images[index-1]);
-    });
-
-    $(".forget_pwd").click(function () {
-        $(location).attr("href","${pageContext.request.contextPath}/../retrievePwd.html");
-    })
-
 })

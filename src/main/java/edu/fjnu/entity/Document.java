@@ -3,10 +3,11 @@ package edu.fjnu.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class Document {
+public class Document implements Serializable {
 
     //序号（文档号）
     private String docNum;

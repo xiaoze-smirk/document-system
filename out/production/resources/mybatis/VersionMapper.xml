@@ -35,7 +35,7 @@
     from tb_version
     where doc_num = #{docNum,jdbcType=VARCHAR}
   </select>
-  <select id="findAllVersion" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+  <select id="findAllVersion" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_version

@@ -2,8 +2,10 @@ package edu.fjnu.entity;
 
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
-public class Department {
+public class Department implements Serializable {
 
     //部门编号
     private String deptId;

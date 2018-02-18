@@ -15,7 +15,7 @@
     from tb_dept
     where dept_id = #{deptId,jdbcType=VARCHAR}
   </select>
-  <select id="findAllDepartment" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="findAllDepartment" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_dept

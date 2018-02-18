@@ -1,10 +1,11 @@
 package edu.fjnu.entity;
 
-import edu.fjnu.utils.Utils;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
+
 @Component
-public class State {
+public class State implements Serializable {
 
     //状态标识符:未测(a)、启动(b)、计划(c)、用例(d)、报告(e)、结束(f)、投诉(g)
     private String stateStr;

@@ -3,10 +3,11 @@ package edu.fjnu.entity;
 import com.alibaba.fastjson.annotation.JSONField;
 import org.springframework.stereotype.Component;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Component
-public class Item {
+public class Item implements Serializable {
 
     //顺序号：编号
     private Integer autoId;
