@@ -18,7 +18,7 @@
         <ul>
             <li><a target="_blank">个人信息</a></li>
             <li><a target="_blank">修改密码</a></li>
-            <li><a target="_blank">帮助中心</a></li>
+            <li><a target="_blank">头像设置</a></li>
         </ul>
     </div>
     <div class="box_setting">
@@ -116,11 +116,11 @@
         var setInfo = $(".personal_info").find("ul").find("li");
         setInfo.click(function () {
             var setNum = $(this).index();
-            $(this).find("a").attr("href","../settingInfo.html?setNum="+setNum);
+            $(this).find("a").attr("href","${pageContext.request.contextPath}/user/toSettingInfo?setNum="+setNum);
         });
         /*注销账号跳转至登录页面*/
         $(".logout").click(function () {
-            $(location).attr("href","../login.html");
+            $(location).attr("href","${pageContext.request.contextPath}/security/logOut");
         })
         /********************************菜单*******************************/
         /*菜单*/

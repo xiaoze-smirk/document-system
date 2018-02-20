@@ -119,7 +119,7 @@ body {
     cursor: pointer;
 }
 .setting_menu ul li:last-child {
-    height: 255px;
+    height: 291px;
     cursor: auto;
 }
 .setting_menu ul .nowLi {
@@ -207,6 +207,16 @@ form div {
     width: 100%;
     height: 30px;
     margin-top: 15px;
+}
+.form .canvas {
+    width: 200px;
+    height: 200px;
+    position: relative;
+    margin-top: -300px;
+    float: right;
+}
+canvas {
+    border: 0px solid gray;
 }
 form div .firstLabel {
     width: 100px;

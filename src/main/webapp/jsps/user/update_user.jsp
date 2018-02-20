@@ -7,8 +7,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
+    <link href="<c:url value="/css/users/update_user.css"/>" type="text/css" rel="stylesheet" />
     <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
     <script src="<c:url value="/js/home/home.js"/>"></script>
+
 
 </head>
 <body>
@@ -17,7 +19,7 @@
 </div>
 <div class="box">
 
-    <canvas id="cvs"  width="700" height="200" style="float:right;border:0px solid #ccc;margin:20px auto;display: block;">
+    <canvas id="cvs"  width="150" height="200" style="overflow: hidden">
         当前浏览器不支持canvas
         <!-- 如果浏览器支持canvas，则canvas标签里的内容不会显示出来 -->
     </canvas>
@@ -85,15 +87,6 @@
         ctx.drawImage(this, 0, 0,150,200);//改变图片的大小到1024*768
     }
 
-
-    function doInput(id){
-        var inputObj = document.createElement('input');
-        inputObj.addEventListener('change',readFile,false);
-        inputObj.type = 'file';
-        inputObj.accept = 'image/*';
-        inputObj.id = id;
-        inputObj.click();
-    }
     document.querySelector('input[id=personPhoto]').onchange = function(e){
         readFile(e.target.files[0]);
     }

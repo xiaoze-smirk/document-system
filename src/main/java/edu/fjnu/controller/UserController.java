@@ -31,6 +31,7 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 @Controller
 @Api(tags ="用户管理")
 @RequestMapping("/user")
+@SessionAttributes("loginUser")
 public class UserController extends BaseController{
 
     @Autowired
@@ -110,7 +111,7 @@ public class UserController extends BaseController{
     public String update(User user,
                          @RequestParam("personPhoto") MultipartFile file) throws IOException {
 
-        if(file!=null||file.getSize()>0)
+        if(!file.isEmpty())
             user.setUserFaceAvatar(file.getBytes());
         userService.updateByPrimaryKeySelective(user);
 
@@ -142,5 +143,72 @@ public class UserController extends BaseController{
 
     }
 
+    @ApiOperation(value="修改操作需要传入后台的值")
+    @ApiImplicitParam(name = "setNum", value = "个人信息等所在位置的值setNum", required = true, dataType = "Integer")
+    @GetMapping(value="/toSettingInfo")
+    public String toSettingInfo(Map<String, Object> map,
+            @RequestParam(value="setNum", required=false, defaultValue="0") Integer setNum,
+            @SessionAttribute("loginUser") User user) {
+
+        map.put("setNum",setNum);
+        User user1=userService.selectByPrimaryKey(user.getUserAccount());
+        map.put("loginUser",user1);
+        map.put("user",user1);
+
+        return "user/settingInfo";
+    }
+
+    @ApiOperation(value="修改个人信息操作需要传入后台的值")
+    @PostMapping(value="/updateSelfInfo")
+    public String updateSelfInfo(User user,Map<String, Object> map,
+                         @RequestParam("personPhoto") MultipartFile file) throws IOException {
+
+        Integer setNum=0;
+        if(!file.isEmpty()) {
+            System.out.println("坏蛋坏蛋");
+            user.setUserFaceAvatar(file.getBytes());
+        }
+        userService.updateByPrimaryKeySelective(user);
+
+        map.put("setNum",setNum);
+        map.put("loginUser",user);
+        map.put("user",user);
+
+        return "user/settingInfo";
+    }
+
+    @ApiOperation(value="修改操作需要传入后台的值")
+    @PostMapping(value="/updatePassword")
+    public String updatePassword(String affirmPassword,Map<String, Object> map,
+                                 @SessionAttribute("loginUser") User user) {
+
+        user.setUserPassword(affirmPassword);
+        map.put("loginUser",user);
+        map.put("user",user);
+
+        Integer setNum=1;
+        map.put("setNum",setNum);
+
+        if(isNotEmpty(affirmPassword))
+            userService.updateByPrimaryKeySelective(user);
+
+        return "user/settingInfo";
+    }
+
+    @ApiOperation(value="ajax检查原始密码正确性")
+    @ApiImplicitParam(name = "originalPassword", value = "原始密码originalPassword", required = true, dataType = "String")
+    @ResponseBody
+    @PostMapping(value="/ajaxValidatePassword")
+    public String validateCourseNo(String originalPassword,
+                                   @SessionAttribute("loginUser") User user){
+
+        if(user.getUserPassword().equals(originalPassword)){
+            System.out.println(1);
+            return "1";
+        }
+        System.out.println(0);
+        return "0";
+
+    }
 
 }

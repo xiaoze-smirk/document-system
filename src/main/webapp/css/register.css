@@ -9,6 +9,7 @@ html {
 }
 body {
     background-color: rgba(77, 186, 121, 0.1);
+    overflow: hidden;
 }
 /********************标题栏*******************/
 .box_title {
@@ -226,3 +227,18 @@ body {
     margin: 0;
 }
 /*********************************************/
+.preview {
+    width: 210px;
+    height: 230px;
+    position: absolute;
+    right: 0;
+    top: 66px;
+}
+canvas {
+    border: 1px solid #008CBA;
+}
+.preview span {
+    width: 100%;
+    text-align: center;
+    display: block;
+}

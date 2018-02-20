@@ -74,7 +74,7 @@
             </div>
             <div class="label">
                 <label class="labelFirst">个人证照:</label>
-                <input type="file" name="personPhoto" />
+                <input id="personPhoto" accept="image/*" type="file" name="personPhoto" />
                 <label class="labelSecond"></label>
             </div>
             <div class="label">
@@ -84,8 +84,42 @@
         </form:form>
     </div>
 </div><!--注册区-->
+<div class="preview">
+    <canvas id="cvs" width="200" height="200"></canvas>
+    <span>证照预览</span>
+</div>
 <script type="text/javascript">
     $(function(){
+
+        document.querySelector('input[id=personPhoto]').onchange = function(e){
+            readFile(e.target.files[0]);
+        }
+
+        function readFile(files){
+            var file = files;//获取input输入的图片
+            if(!/image\/\w+/.test(file.type)){
+                alert("请确保文件为图像类型");
+                return false;
+            }//判断是否图片，在移动端由于浏览器对调用file类型处理不同，虽然加了accept = 'image/*'，但是还要再次判断
+            var reader = new FileReader();
+            reader.readAsDataURL(file);//转化成base64数据类型
+            reader.onload = function(e){
+                drawToCanvas(this.result);
+            }
+        }
+        function drawToCanvas(imgData){
+            var cvs = document.querySelector('#cvs');
+
+            var ctx = cvs.getContext('2d');
+            var img = new Image;
+            img.src = imgData;
+            img.onload = function(){//必须onload之后再画
+                ctx.drawImage(img,25,0,150,200);
+                strDataURI = cvs.toDataURL();//获取canvas base64数据
+            }
+        }
+
+
 
         var t = 0;  /*文本框输入正确的个数*/
         $(".label").find("input").blur(function(){
@@ -178,6 +212,10 @@
                 alert("表单输入有误！请重新确认！");
                 return false;
             }
+        });
+
+        $(".btn_reg").click(function () {
+            $(location).attr("href","${pageContext.request.contextPath}/security/toLogin");
         });
 
     });

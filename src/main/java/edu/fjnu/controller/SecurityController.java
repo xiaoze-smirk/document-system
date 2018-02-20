@@ -32,8 +32,9 @@ public class SecurityController extends BaseController {
 
     @ApiOperation(value="进入主界面")
     @GetMapping("/enter")
-    public String enter() {
+    public String enter(@SessionAttribute("loginUser") User user,Map<String, Object> map) {
 
+        map.put("loginUser",user);
         return "main";
     }
 
@@ -81,10 +82,21 @@ public class SecurityController extends BaseController {
     public String register(User user,
                            @RequestParam("personPhoto") MultipartFile file) throws IOException {
 
-        if(file!=null||file.getSize()>0)
+        if(!file.isEmpty())
             user.setUserFaceAvatar(file.getBytes());
         userService.insertSelective(user);
         return "redirect:/security/toLogin";
     }
+
+    @ApiOperation(value="退出带登录界面")
+    @GetMapping("/logOut")
+    public String logOut(HttpSession httpSession,Map<String, Object> map) {
+
+        httpSession.removeAttribute("loginUser");
+        map.put("user", new User());
+        return "security/login";
+    }
+
+
 
 }
