@@ -7,18 +7,19 @@
     <meta charset="UTF-8">
     <title>个人设置</title>
     <link href="<c:url value="/css/settingInfo.css"/>" rel="stylesheet" type="text/css">
-    <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
+    <script src="<c:url value="/js/jquery-1.11.0.min.js"/>"></script>
+    <script type="text/javascript" src="<c:url value="/js/cropbox.js"/>"></script>
 </head>
 <body>
 <div class="box_title">
-    <img src="<c:url value="/images/logo.png"/>" class="logo">
+    <img src="${pageContext.request.contextPath}/images/logo.png" class="logo">
     <span class="title">项目文档管理系统</span>
     <div class="back_settingInfo"><span>返回</span></div>
 </div>
 <div class="box_setting">
     <div class="setting_menu">
         <div>
-            <img src="<c:url value="/images/main/person-img.png"/>" class="person-img">
+            <img onerror="this.src='${pageContext.request.contextPath}/images/main/person-img.png'" src="${user.userAvatar}" class="person-img">
             <span class="user_name">高富帅</span>
         </div>
         <ul>
@@ -84,33 +85,38 @@
                 <div>
                     <label class="firstLabel">原始密码：</label>
                     <input id="originalPassword" type="password" name="originalPassword">
-                    <label id="originalPasswordError" class="firstLabel" style="color: red"></label>
+                    <label id="originalPasswordError" class="secondLabel"></label>
                 </div>
                 <div>
                     <label class="firstLabel">修改密码：</label>
                     <input id="alertPassword" type="password" name="alertPassword">
+                    <label id="orinalPasswordError" class="secondLabel" style="color: red"></label>
                 </div>
                 <div>
                     <label class="firstLabel">确认密码：</label>
                     <input id="affirmPassword" type="password" name="affirmPassword">
-                    <label class="firstLabel" style="color: red"></label>
-                    <label id="affirmPasswordError" class="firstLabel" style="color: red"></label>
+                    <label id="affirmPasswordError" class="secondLabel" style="color: red"></label>
                 </div>
             </form:form><!--修改密码-->
             <div class="form">
-                <div class="uploadImg">
-                    <img src="<c:url value="/images/main/person-img.png"/>">
-                    <div><input type="button" value="上传图片" style="padding-left: 5px;padding-right: 5px;"></div>
-                    <div><input type="button" value="裁 剪"></div>
-                </div><!--上传图片预览窗口-->
-                <div class="preview">
-                    <img src="<c:url value="/images/main/person-img.png"/>">
-                    <span>预览</span>
-                </div><!--裁剪图片预览窗口-->
-                <div class="originalImg">
-                    <img src="<c:url value="/images/main/person-img.png"/>">
-                    <span>原始头像</span>
-                </div><!--原始头像-->
+                <div class="container">
+                    <div class="imageBox">
+                        <div class="thumbBox"></div>
+                        <div class="spinner" style="display: none">Loading...</div>
+                    </div>
+                    <div class="action">
+                        <div class="new-contentarea tc">
+                            <a href="javascript:void(0)" class="upload-img">
+                                <label for="upload-file">上传图像</label>
+                            </a>
+                            <input type="file" class="" name="upload-file" id="upload-file" />
+                        </div>
+                        <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
+                        <input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+"  >
+                        <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-" >
+                    </div>
+                    <div class="cropped"></div>
+                </div>
             </div><!--头像设置-->
         </div>
     </div>
@@ -143,16 +149,7 @@
             saveNum = $(this).index();
         });
 
-        $("#saveInformation").click(function () {
-            if(saveNum==0){
-                $("form:eq("+setNum+")").submit();
-                return false;
-            }else{
-                $("form:eq("+saveNum+")").submit();
-                return false;
-            }
 
-        });
 
         /*返回主页*/
         $(".back_settingInfo").click( function () {
@@ -160,40 +157,205 @@
             $(location).attr("href","${pageContext.request.contextPath}/security/enter");
         });
 
-        $("#originalPassword").change(function(){
-            var val = $(this).val();
-            val = $.trim(val);
-            if(val==null||val=="")
-                return false;
+        <%--$("#originalPassword").change(function(){--%>
+        <%--var val = $(this).val();--%>
+        <%--val = $.trim(val);--%>
+        <%--if(val==null||val=="")--%>
+        <%--return false;--%>
 
-            var url = "${pageContext.request.contextPath }/user/ajaxValidatePassword";
-            var args = {"originalPassword":val,"date":new Date()};
+        <%--var url = "${pageContext.request.contextPath }/user/ajaxValidatePassword";--%>
+        <%--var args = {"originalPassword":val,"date":new Date()};--%>
 
-            $.post(url, args, function(data){
-                if(data=="0"){
-                    $("#originalPasswordError").html("密码不正确！");
+        <%--$.post(url, args, function(data){--%>
+        <%--if(data=="0"){--%>
+        <%--$("#originalPasswordError").html("密码不正确！");--%>
 
-                }else if(data=="1"){
-                    $("#originalPasswordError").html("");
+        <%--}else if(data=="1"){--%>
+        <%--$("#originalPasswordError").html("");--%>
+        <%--}else{--%>
+        <%--alert("网络或程序出错. ");--%>
+        <%--}--%>
+        <%--},"json");--%>
+
+
+        <%--});--%>
+
+        // $("#affirmPassword").change(function () {
+        //     var firstPassword = $("#alertPassword").val();
+        //     var secondPassword = $("#affirmPassword").val();
+        //     if(firstPassword!=secondPassword)
+        //         $("#affirmPasswordError").html("请再次确认密码！");
+        //     else
+        //         $("#affirmPasswordError").html("");
+        // });
+
+        $(".form").find("input").blur(function(){
+            var index = $(this).parent().index();    /*点击的文本框*/
+            var value = $(this).val();     /*点击的文本框的值*/
+            var length = value.replace(/[^/x00-\xff]/g,"**").length;    /*文本框输入的长度*/
+            var right = "<img src='${pageContext.request.contextPath}/images/folders/selected.png' />";     /*输入正确时*/
+            var wrong = "<img src='${pageContext.request.contextPath}/images/folders/wrong.png' />"+"<p>输入错误！请重新输入！</p>";       /*输入错误时*/
+            if(index == 0){
+                if(length > 6 && length < 10) {
+                    $(this).parent().find(".secondLabel").html(right);
+                } else
+                    $(this).parent().find(".secondLabel").html(wrong);
+            }
+            if(index == 1){
+                if (length > 2 && length < 9){
+                    $(this).parent().find(".secondLabel").html(right);
+                } else
+                    $(this).parent().find(".secondLabel").html(wrong);
+            }
+            if(index == 2){
+                var firstPwd = $("#alertPassword").val();
+                var secondPwd = $("#affirmPassword").val();
+                if (secondPwd == firstPwd){
+                    $(this).parent().find(".secondLabel").html(right);
+                } else
+                    $(this).parent().find(".secondLabel").html(wrong);
+            }
+        });
+
+        /********************************上传图片函数*******************************/
+        /**
+         * 将以base64的图片url数据转换为Blob
+         * @param urlData
+         *            用url方式表示的base64图片数据
+         */
+        function convertBase64UrlToBlob(urlData){
+
+            var bytes=window.atob(urlData.split(',')[1]);        //去掉url的头，并转换为byte
+
+            //处理异常,将ascii码小于0的转换为大于0
+            var ab = new ArrayBuffer(bytes.length);
+            var ia = new Uint8Array(ab);
+            for (var i = 0; i < bytes.length; i++) {
+                ia[i] = bytes.charCodeAt(i);
+            }
+
+            return new Blob( [ab] , {type : 'image/png'});
+        }
+        var options =
+            {
+                thumbBox: '.thumbBox',
+                spinner: '.spinner',
+                imgSrc: '${pageContext.request.contextPath}/images/avatar.jpg'
+            }
+        var cropper = $('.imageBox').cropbox(options);
+        $('#upload-file').on('change', function(){
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                options.imgSrc = e.target.result;
+                cropper = $('.imageBox').cropbox(options);
+            }
+            reader.readAsDataURL(this.files[0]);
+            this.files = [];
+        })
+        $('#btnCrop').on('click', function(){
+            var img = cropper.getDataURL();
+            $('.cropped').html('');
+            $('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:64px;margin-top:4px;border-radius:64px;box-shadow:0px 0px 12px #7E7E7E;" ><p>64px*64px</p>');
+            $('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:128px;margin-top:4px;border-radius:128px;box-shadow:0px 0px 12px #7E7E7E;"><p>128px*128px</p>');
+            $('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:180px;margin-top:4px;border-radius:180px;box-shadow:0px 0px 12px #7E7E7E;"><p>180px*180px</p>');
+        })
+        $('#btnZoomIn').on('click', function(){
+            cropper.zoomIn();
+        })
+        $('#btnZoomOut').on('click', function(){
+            cropper.zoomOut();
+        })
+
+        $("#saveInformation").click(function () {
+            if(saveNum==0){
+                if(setNum!=2){
+                    $("form:eq("+setNum+")").submit();
+                    return false;
                 }else{
-                    alert("网络或程序出错. ");
+                    // 提交用户头像的图片数据
+                    var formData = new FormData();   //不需要提交其他参数可以直接FormData无参数的构造函数,如果需要提交form里面其他参数在form里面写
+                    var base64Codes = cropper.getDataURL();
+                    formData.append("fileName",String(parseInt(String(Math.random()*1000000)))+".jpg");
+                    formData.append("file",convertBase64UrlToBlob(base64Codes));  //append函数的第一个参数是后台获取数据的参数名,和html标签的input的name属性功能相同
+
+                    $.ajax({
+                        url: 'http://localhost:8081/upload',
+                        type: 'POST',
+                        cache: false,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data){
+
+                            var avatarUrl = data;
+
+                            // 保存头像更改到数据库
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/user/saveAvatar",
+                                type: 'POST',
+                                data: {"userAccount":${user.userAccount}, "avatarUrl":avatarUrl},
+                                success: function(data){
+                                    $(location).attr("href","${pageContext.request.contextPath}/user/returnPerson");
+                                },
+                                error : function() {
+                                    alert("网络或程序出错1. ");
+                                }
+                            });
+                        },
+                        error : function() {
+                            alert("网络或程序出错2. ");
+                        }
+                    })
                 }
-            },"json");
+
+            }else{
+                if(saveNum!=2){
+                    $("form:eq("+saveNum+")").submit();
+                    return false;
+                }else{
+                    // 提交用户头像的图片数据
+                    var formData = new FormData();   //不需要提交其他参数可以直接FormData无参数的构造函数,如果需要提交form里面其他参数在form里面写
+                    var base64Codes = cropper.getDataURL();
+                    formData.append("fileName",String(parseInt(String(Math.random()*1000000)))+".jpg");
+                    formData.append("file",convertBase64UrlToBlob(base64Codes));  //append函数的第一个参数是后台获取数据的参数名,和html标签的input的name属性功能相同
+
+                    $.ajax({
+                        url: 'http://localhost:8081/upload',
+                        type: 'POST',
+                        cache: false,
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function(data){
+
+                            var avatarUrl = data;
+
+                            // 保存头像更改到数据库
+                            $.ajax({
+                                url: "${pageContext.request.contextPath}/user/saveAvatar",
+                                type: 'POST',
+                                data: {"userAccount":${user.userAccount}, "avatarUrl":avatarUrl},
+                                success: function(data){
+                                    $(location).attr("href","${pageContext.request.contextPath}/user/returnPerson");
+                                },
+                                error : function() {
+                                    alert("网络或程序出错1. ");
+                                }
+                            });
+                        },
+                        error : function() {
+                            alert("网络或程序出错2. ");
+                        }
+                    })
+                }
+            }
+        })
 
 
-        });
-
-        $("#affirmPassword").change(function () {
-            var firstPassword = $("#alertPassword").val();
-            var secondPassword = $("#affirmPassword").val();
-            if(firstPassword!=secondPassword)
-                $("#affirmPasswordError").html("请再次确认密码！");
-            else
-                $("#affirmPasswordError").html("");
-        });
 
 
-        //获取canvas元素
+        /********************************Canvas图片函数*******************************/
+            //获取canvas元素
         var cvs = document.getElementById("cvs");
         //创建image对象
         var imgObj = new Image();

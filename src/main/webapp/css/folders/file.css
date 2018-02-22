@@ -25,6 +25,9 @@
     width: 100%;
     text-align: center;
     float: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .box_file .imgSelect {
     width: 20px;

@@ -89,6 +89,9 @@ body {
     background-color: rgba(60, 130, 255, 0.04);
 }
 .setting_menu div img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
     margin-top: 20px;
     float: left;
     margin-left: 15px;
@@ -229,11 +232,33 @@ form div input {
     height: 25px;
     line-height: 20px;
 }
+form div .secondLabel {
+    width: 200px;
+    height: 28px;
+    line-height: 28px;
+    color: red;
+}
+
+form div .secondLabel img {
+    position: relative;
+    top: 5px;
+}
+form div .secondLabel p {
+    width: 200px;
+    font-size: 16px;
+    color: black;
+    line-height: 14px;
+    margin-left: 5px;
+    display: inline-block;
+}
 form div input[type="radio"] {
     border: solid 1px black;
     vertical-align:middle;
     margin-top:-2px;
     margin-bottom:1px;
+}
+form div #userSex2 {
+    margin-left: 20px;
 }
 form div select {
     width: 150px;
@@ -247,85 +272,131 @@ textarea {
 /*********************************************/
 
 /*******************上传头像*******************/
-/*上传图片*/
-.box_detail div div {
-    margin-top: 10px;
-    float: left;
-}
-.uploadImg {
-    width: 170px;
-    height: 170px;
-    border: 1px solid gray;
-    margin-left: 30px;
-}
-.uploadImg img {
-    width: 170px;
-}
-.uploadImg div {
-    height: 24px;
-    outline: none;
-    background-color: #1c6b61;
-    border: none;
-    border-radius: 5px;
-    float: left;
-    margin-top: 3px;
-    vertical-align: middle;
-}
-.uploadImg div:first-child {
-    width: 66px;
-}
-.uploadImg div:last-child {
-    width: 48px;
-    margin-left: 58px;
-}
-.uploadImg div input {
-    height: 24px;
-    line-height: 26px;
-    color: white;
-    outline: none;
-    background-color: #3bb3e0;
-    border: none;
-    border-radius: 5px;
+.container {
+    width: 400px;
+    margin: 40px auto 0 auto;
     position: relative;
-    top: -4px;
+    font-family: 微软雅黑;
+    font-size: 12px;
 }
-.uploadImg div:first-child input {
-    width: 66px;
+.container p {
+    line-height: 12px;
+    line-height: 0px;
+    height: 0px;
+    margin: 10px;
+    color: #bbb
 }
-.uploadImg div:last-child input {
-    width: 48px;
+.action {
+    width: 400px;
+    height: 30px;
+    margin: 10px 0;
 }
-.uploadImg div input:hover {
-    top: -3.5px;
-}
-.uploadImg div input:active {
-    color: #156785;
-    background-color: rgb(44,160,202);
+.cropped {
+    position: absolute;
+    right: -230px;
     top: 0;
-}
-/*预览*/
-.preview {
-    width: 80px;
-    height: 80px;
-    border: 1px solid gray;
-    margin-left: 50px;
+    width: 200px;
+    border: 1px #ddd solid;
+    height: 460px;
+    padding: 4px;
+    box-shadow: 0px 0px 12px #ddd;
     text-align: center;
 }
-.preview img {
-    width: 80px;
+.imageBox {
+    position: relative;
+    height: 400px;
+    width: 400px;
+    border: 1px solid #aaa;
+    background: #fff;
+    overflow: hidden;
+    background-repeat: no-repeat;
+    cursor: move;
+    box-shadow: 4px 4px 12px #B0B0B0;
 }
-.box_detail div span {
-    margin-top: 10px;
+.imageBox .thumbBox {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 200px;
+    height: 200px;
+    margin-top: -100px;
+    margin-left: -100px;
+    box-sizing: border-box;
+    border: 1px solid rgb(102, 102, 102);
+    box-shadow: 0 0 0 1000px rgba(0, 0, 0, 0.5);
+    background: none repeat scroll 0% 0% transparent;
 }
-/*原始头像*/
-.originalImg {
-    width: 170px;
-    height: 170px;
-    border: 1px solid gray;
-    margin-left: 120px;
+.imageBox .spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
     text-align: center;
+    line-height: 400px;
+    background: rgba(0,0,0,0.7);
 }
-.originalImg img {
-    width: 170px;
+.Btnsty_peyton{ float: right;
+    width: 66px;
+    display: inline-block;
+    margin-bottom: 10px;
+    height: 57px;
+    line-height: 57px;
+    font-size: 20px;
+    color: #FFFFFF;
+    margin:0px 2px;
+    background-color: #f38e81;
+    border-radius: 3px;
+    text-decoration: none;
+    cursor: pointer;
+    box-shadow: 0px 0px 5px #B0B0B0;
+    border: 0px #fff solid;}
+/*选择文件上传*/
+.new-contentarea {
+    width: 165px;
+    overflow:hidden;
+    margin: 0 auto;
+    position:relative;float:left;
 }
+.new-contentarea label {
+    width:100%;
+    height:100%;
+    display:block;
+}
+.new-contentarea input[type=file] {
+    width:188px;
+    height:60px;
+    background:#333;
+    margin: 0 auto;
+    position:absolute;
+    right:50%;
+    margin-right:-94px;
+    top:0;
+    right/*\**/:0px\9;
+    margin-right/*\**/:0px\9;
+    width/*\**/:10px\9;
+    opacity:0;
+    filter:alpha(opacity=0);
+    z-index:2;
+}
+a.upload-img{
+    width:165px;
+    display: inline-block;
+    margin-bottom: 10px;
+    height:57px;
+    line-height: 57px;
+    font-size: 20px;
+    color: #FFFFFF;
+    background-color: #f38e81;
+    border-radius: 3px;
+    text-decoration:none;
+    cursor:pointer;
+    border: 0px #fff solid;
+    box-shadow: 0px 0px 5px #B0B0B0;
+}
+a.upload-img:hover{
+    background-color: #ec7e70;
+}
+
+.tc{text-align:center;}
 /*********************************************/

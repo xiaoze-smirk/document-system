@@ -63,11 +63,6 @@
                 <label class="labelSecond"></label>
             </div>
             <div class="label">
-                <label class="labelFirst">验证码:</label>
-                <input type="text" class="iCode" value="" />
-                <div class="addStyle getCode"><input type="button" class="get" value="获  取" /></div>
-            </div>
-            <div class="label">
                 <label class="labelFirst">邮箱:</label>
                 <form:input path="userEmail" class="email" />
                 <label class="labelSecond"></label>
@@ -90,6 +85,11 @@
 </div>
 <script type="text/javascript">
     $(function(){
+
+        var faceError="${faceError}";
+
+        if(faceError!="")
+            alert(faceError);
 
         document.querySelector('input[id=personPhoto]').onchange = function(e){
             readFile(e.target.files[0]);
@@ -121,7 +121,6 @@
 
 
 
-        var t = 0;  /*文本框输入正确的个数*/
         $(".label").find("input").blur(function(){
             var index = $(this).parent().index();    /*点击的文本框*/
             var value = $(this).val();     /*点击的文本框的值*/
@@ -134,7 +133,6 @@
                 if(length != 0) {
                     if(length > 6 && length < 10) {
                         $(this).parent().find(".labelSecond").html(right);
-                        t ++;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
@@ -143,7 +141,6 @@
                 if(length != 0) {
                     if (length > 2 && length < 9){
                         $(this).parent().find(".labelSecond").html(right);
-                        t ++;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
@@ -152,7 +149,6 @@
                 if(length != 0) {
                     if (length > 7 && length < 16){
                         $(this).parent().find(".labelSecond").html(right);
-                        t ++;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
@@ -161,7 +157,6 @@
                 if(length != 0) {
                     if (firstPwd == secondPwd) {
                         $(this).parent().find(".labelSecond").html(right);
-                        t ++;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
@@ -171,17 +166,15 @@
                 if(length != 0 ) {
                     if (phone.test(value)){
                         $(this).parent().find(".labelSecond").html(right);
-                        t ++;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
             }
-            if(index == 7){
+            if(index == 6){
                 var email = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((\.[a-zA-Z0-9_-]{2,3}){1,2})$/;
                 if(length != 0 ) {
                     if (value.match(email)) {
                         $(this).parent().find(".labelSecond").html(right);
-                        t ++;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
@@ -207,11 +200,8 @@
             }
         })
         $(".sbutton").click(function () {
-            var val = $('select option:selected').val();
-            if(t != 6){
-                alert("表单输入有误！请重新确认！");
-                return false;
-            }
+
+            $("form:eq(0)").submit();
         });
 
         $(".btn_reg").click(function () {

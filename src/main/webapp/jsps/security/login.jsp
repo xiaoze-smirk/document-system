@@ -23,7 +23,7 @@
         </div>
         <div class="input-style">
             <span class="login-hint">密&nbsp;&nbsp;&nbsp; 码：</span>
-            <form:password path="userPassword" placeholder="密&nbsp;&nbsp;&nbsp;码" />
+            <form:password path="userPassword" placeholder="密码" />
         </div>
         <div class="input-style">
             <span class="login-hint">验证码：</span>
@@ -48,9 +48,9 @@
     </form:form>
     <div class="input-style tAccount" >
         <span class="login-hint">第三方账号登录</span>
+        <img id="faceLogin" src="${pageContext.request.contextPath}/images/login/Face_gray.png" class="third_account" />
         <img src="${pageContext.request.contextPath}/images/login/QQ_gray.png" class="third_account" />
         <img src="${pageContext.request.contextPath}/images/login/weixin_gray.png" class="third_account" />
-        <img src="${pageContext.request.contextPath}/images/login/weibo_gray.png" class="third_account" />
     </div>
 </div>
 <div class="show_advantage">
@@ -81,8 +81,8 @@
 
 
     /****************************第三方登录***************************/
-    var imgHover = ["${pageContext.request.contextPath}/images/login/QQ.png","${pageContext.request.contextPath}/images/login/weixin.png","${pageContext.request.contextPath}/images/login/weibo.png"];
-    var images = ["${pageContext.request.contextPath}/images/login/QQ_gray.png","${pageContext.request.contextPath}/images/login/weixin_gray.png","${pageContext.request.contextPath}/images/login/weibo_gray.png"];
+    var imgHover = ["${pageContext.request.contextPath}/images/login/Face.png","${pageContext.request.contextPath}/images/login/QQ.png","${pageContext.request.contextPath}/images/login/weixin.png"];
+    var images = ["${pageContext.request.contextPath}/images/login/Face_gray.png","${pageContext.request.contextPath}/images/login/QQ_gray.png","${pageContext.request.contextPath}/images/login/weixin_gray.png"];
     $(".tAccount").find(".third_account").mouseover(function () {
         var index = $(this).index();
         $(this).attr("src",imgHover[index-1]);
@@ -94,13 +94,17 @@
 
     $(".forget_pwd").click(function () {
         $(location).attr("href","${pageContext.request.contextPath}/security/toRetrievePwd");
-    })
+    });
 
     $(".btnReg").click(function () {
         $(location).attr("href","${pageContext.request.contextPath}/security/toRegister");
-    })
+    });
+    $("#faceLogin").click(function () {
+        $(location).attr("href","${pageContext.request.contextPath}/security/toFaceLogin");
+    });
 
 
+    /****************************校验码实现***************************/
     var codes;// 重新初始化验证码
     function change(){
         // 验证码组成库

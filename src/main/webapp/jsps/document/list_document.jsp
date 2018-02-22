@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>文档管理</title>
     <link href="<c:url value="/css/documents/documentMgr.css"/>" type="text/css" rel="stylesheet" />
     <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
 </head>

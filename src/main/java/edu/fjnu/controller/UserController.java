@@ -7,6 +7,7 @@ import edu.fjnu.service.AuthorityService;
 import edu.fjnu.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -178,6 +179,7 @@ public class UserController extends BaseController{
     }
 
     @ApiOperation(value="修改操作需要传入后台的值")
+    @ApiImplicitParam(name = "affirmPassword", value = "新密码affirmPassword", required = true, dataType = "String")
     @PostMapping(value="/updatePassword")
     public String updatePassword(String affirmPassword,Map<String, Object> map,
                                  @SessionAttribute("loginUser") User user) {
@@ -208,6 +210,46 @@ public class UserController extends BaseController{
         }
         System.out.println(0);
         return "0";
+
+    }
+
+    @ApiOperation(value="头像路径保存操作")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "userAccount", value = "用户账号userAccount", dataType = "String"),
+            @ApiImplicitParam(name = "avatarUrl", value = "头像路径avatarUrl", dataType = "String")
+    })
+    @ResponseBody
+    @PostMapping(value="/saveAvatar")
+    public String saveAvatar(String userAccount,String avatarUrl,
+             Map<String, Object> map) {
+
+        User user = new User();
+
+        if(isNotEmpty(userAccount)&&isNotEmpty(avatarUrl)){
+            System.out.println(userAccount+"和"+avatarUrl);
+            user=userService.selectByPrimaryKey(userAccount);
+        }
+
+        if(user!=null)
+            user.setUserAvatar(avatarUrl);
+
+        userService.updateByPrimaryKeySelective(user);
+
+        map.put("loginUser",user);
+        if(isNotEmpty(avatarUrl))
+            return avatarUrl;
+        return null;
+    }
+
+    @ApiOperation(value="返回图像界面")
+    @GetMapping(value="/returnPerson")
+    public String returnPerson(@SessionAttribute("loginUser") User user,
+                               Map<String, Object> map) {
+
+        map.put("user",user);
+        Integer setNum=2;
+        map.put("setNum",setNum);
+        return "user/settingInfo";
 
     }
 

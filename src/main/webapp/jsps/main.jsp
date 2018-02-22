@@ -13,12 +13,12 @@
 <div class="box_title">
     <span class="title">项目文档管理系统</span>
     <div class="personal_info">
-        <img src="${pageContext.request.contextPath}/images/main/person-img.png" class="person-img">
+        <img  onerror="this.src='${pageContext.request.contextPath}/images/main/person-img.png'" src="${loginUser.userAvatar}" class="person-img">
         <span class="user_name">${loginUser.userName}</span>
         <ul>
-            <li><a target="_blank">个人信息</a></li>
-            <li><a target="_blank">修改密码</a></li>
-            <li><a target="_blank">头像设置</a></li>
+            <li><a>个人信息</a></li>
+            <li><a>修改密码</a></li>
+            <li><a>头像设置</a></li>
         </ul>
     </div>
     <div class="box_setting">
@@ -32,7 +32,7 @@
 <div class="box_menu">
     <div class="personInfo">
         <div>
-            <img src="${pageContext.request.contextPath}/images/main/person-img.png">
+            <img  onerror="this.src='${pageContext.request.contextPath}/images/main/person-img.png'" src="${loginUser.userAvatar}">
         </div>
         <div class="information">
             <span class="username">${loginUser.userName}</span>
@@ -91,7 +91,7 @@
     </ul>
 </div><!--菜单栏-->
 <div class="content">
-    <iframe id="contentFrame" width="100%" scrolling="yes" height="600px" frameborder="0" name="contentFrame" allowtransparency="true" src="${pageContext.request.contextPath}/jsps/welcome.jsp">
+    <iframe id="contentFrame" width="100%" scrolling="yes" height="550px" frameborder="0" name="contentFrame" allowtransparency="true" src="${pageContext.request.contextPath}/jsps/welcome.jsp">
     </iframe>
 </div>
 
@@ -122,6 +122,11 @@
         $(".logout").click(function () {
             $(location).attr("href","${pageContext.request.contextPath}/security/logOut");
         })
+
+        $(".quit").click(function () {
+            $(location).attr("href","${pageContext.request.contextPath}/security/logOut");
+        })
+
         /********************************菜单*******************************/
         /*菜单*/
         var $obj = $("#nav_dot");
