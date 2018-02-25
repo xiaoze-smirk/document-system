@@ -1,11 +1,19 @@
 package edu.fjnu.entity;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Component
-public class User implements Serializable {
+public class User implements UserDetails, Serializable {
 
     //用户账号
     private String userAccount;
@@ -126,4 +134,45 @@ public class User implements Serializable {
     public void setAuthority(Authority authority) {
         this.authority = authority;
     }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        //  需将 List<Authority> 转成 List<SimpleGrantedAuthority>，否则前端拿不到角色列表名称
+        List<SimpleGrantedAuthority> simpleAuthorities = new ArrayList<>();
+
+        simpleAuthorities.add(new SimpleGrantedAuthority(this.authority.getAuthority()));
+
+        return simpleAuthorities;
+    }
+
+    @Override
+    public String getPassword() {
+        return this.userPassword;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userAccount;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
 }

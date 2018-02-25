@@ -40,7 +40,7 @@
             <div class="label">
                 <label class="labelFirst">确认密码:</label>
                 <input type="password" name="checkPassword" class="rpwd" />
-                <label class="labelSecond"></label>
+                <label id="affPassword" class="labelSecond"></label>
             </div>
             <div class="label ">
                 <label class="labelFirst">性别:</label>
@@ -85,7 +85,7 @@
 </div>
 <script type="text/javascript">
     $(function(){
-
+        $("#userSex1").attr("checked",true);
         var faceError="${faceError}";
 
         if(faceError!="")
@@ -122,6 +122,9 @@
 
 
         $(".label").find("input").blur(function(){
+
+            var tIndex=0;
+
             var index = $(this).parent().index();    /*点击的文本框*/
             var value = $(this).val();     /*点击的文本框的值*/
             var length = value.replace(/[^/x00-\xff]/g,"**").length;    /*文本框输入的长度*/
@@ -149,12 +152,13 @@
                 if(length != 0) {
                     if (length > 7 && length < 16){
                         $(this).parent().find(".labelSecond").html(right);
+                        tIndex=1;
                     } else
                         $(this).parent().find(".labelSecond").html(wrong);
                 }
             }
-            if(index == 3){
-                if(length != 0) {
+            if (index == 3) {
+                if (length != 0) {
                     if (firstPwd == secondPwd) {
                         $(this).parent().find(".labelSecond").html(right);
                     } else
@@ -201,7 +205,26 @@
         })
         $(".sbutton").click(function () {
 
+            var i = 0;
+            for(i = 0;i < 4;i ++) {
+                if($(".form").find("input[type='text']").eq(i).val() == ""){
+                    break;
+                }
+            }
+            if(i!=4){
+                alert("表单输入有误1！");
+                return false;
+            }
+            if($(".form").find("input[type='password']").val() == ""){
+                alert("表单输入有误2！");
+                return false;
+            }
+            if($(".form").find("input[type='file']").val() == ""){
+                alert("表单输入有误3！");
+                return false;
+            }
             $("form:eq(0)").submit();
+            return false;
         });
 
         $(".btn_reg").click(function () {

@@ -1,9 +1,13 @@
 package edu.fjnu.serviceImpl;
 
 import edu.fjnu.entity.User;
+import edu.fjnu.mapper.AuthorityMapper;
 import edu.fjnu.mapper.UserMapper;
 import edu.fjnu.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,10 +19,13 @@ import java.util.List;
  */
 @Service
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     UserMapper userMapper;
+
+    @Autowired
+    AuthorityMapper authorityMapper;
 
     @Override
     public void insert(User record) {
@@ -47,11 +54,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User selectByPrimaryKey(String userAccount) {
-        return userMapper.selectByPrimaryKey(userAccount);
+        User user = userMapper.selectByPrimaryKey(userAccount);
+        user.setAuthority(authorityMapper.selectByPrimaryKey(user.getUserAuthorityId()));
+        return user;
     }
 
     @Override
     public List<User> findAllUser() {
         return userMapper.findAllUser();
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userMapper.selectByPrimaryKey(username);
+        user.setAuthority(authorityMapper.selectByPrimaryKey(user.getUserAuthorityId()));
+        return user;
     }
 }

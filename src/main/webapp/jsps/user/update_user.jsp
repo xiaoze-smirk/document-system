@@ -64,7 +64,7 @@
         <div>
             <label class="labelFirst">权限:</label>
             <form:select path="userAuthorityId">
-                <form:options items="${authorityList}" itemLabel="authorityChineseName" itemValue="authorityId" />
+                <form:options items="${user.authorities}" itemLabel="authorityChineseName" itemValue="authorityId" />
             </form:select>
         </div>
         <div>

@@ -40,12 +40,14 @@
         </div>
     </div>
     <ul id="nav_dot" class="nav_dot">
-        <li>
-            <h4 >用户管理</h4>
-            <div class="list-item none">
-                <a href="<c:url value="/user/list"/>" target="contentFrame">用户管理</a>
-            </div>
-        </li>
+        <sec:authorize access="hasRole('ROLE_SUPERADMIN')">
+            <li>
+                <h4 >用户管理</h4>
+                <div class="list-item none">
+                    <a href="<c:url value="/user/list"/>" target="contentFrame">用户管理</a>
+                </div>
+            </li>
+        </sec:authorize>
         <li>
             <h4 >员工管理</h4>
             <div class="list-item none">

@@ -3,18 +3,32 @@ package edu.fjnu.controller;
 import edu.fjnu.entity.User;
 import edu.fjnu.service.AuthorityService;
 import edu.fjnu.service.UserService;
+import edu.fjnu.utils.AESUtil;
 import edu.fjnu.utils.FaceUtils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -25,10 +39,15 @@ import static org.apache.commons.lang3.StringUtils.isNotEmpty;
  * @date 2018/2/17
  */
 @Controller
-@Api(tags ="登录操作管理")
+@Api(tags ="登录管理")
 @RequestMapping("/security")
 @SessionAttributes("loginUser")
 public class SecurityController extends BaseController {
+
+    /**
+     * 记住我的有效时间秒(下面为一周)
+     */
+    private static final String KEY = "xiaoze.com";
 
     @Autowired
     UserService userService;
@@ -36,36 +55,41 @@ public class SecurityController extends BaseController {
     @Autowired
     AuthorityService authorityService;
 
-    @ApiOperation(value="进入主界面")
-    @GetMapping("/enter")
-    public String enter(@SessionAttribute("loginUser") User user,Map<String, Object> map) {
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-        user.setAuthority(authorityService.selectByPrimaryKey(user.getUserAuthorityId()));
+    @Autowired
+    PersistentTokenRepository persistentTokenRepository;
+
+    @ApiOperation(value="进入主界面")
+    @RequestMapping("/enter")
+    public String enter(Map<String, Object> map,
+                        @AuthenticationPrincipal UserDetails userDetails) {
+
+        System.out.println(userDetails.getPassword());
+        User user=userService.selectByPrimaryKey(userDetails.getUsername());
+
         map.put("loginUser",user);
         return "main";
     }
 
     @ApiOperation(value="进入登录页面")
     @GetMapping("/toLogin")
-    public String toLogin(Map<String, Object> map) {
-
+    public String toLogin(Map<String, Object> map,
+                          @AuthenticationPrincipal UserDetails userDetails) {
+        if(userDetails!=null)
+            return "redirect:/security/enter";
         map.put("user", new User());
 
         return "security/login";
     }
 
-    @ApiOperation(value="登录后加入主页面")
-    @RequestMapping("/login")
-    public String login(User user,Map<String, Object> map,
-                        @RequestParam(value="number",required=false) String number) {
-        if(isNotEmpty(number))
-            user=userService.selectByPrimaryKey(number);
-        else
-            user=userService.selectByPrimaryKey(user.getUserAccount());
-        user.setAuthority(authorityService.selectByPrimaryKey(user.getUserAuthorityId()));
-        map.put("loginUser",user);
+    @ApiOperation(value="登录失败返回")
+    @GetMapping("/loginError")
+    public String loginError(Map<String, Object> map) {
 
-        return "main";
+        map.put("errorMsg", "登陆失败，账号或者密码错误！");
+        return "security/login";
     }
 
     @ApiOperation(value="进入密码找回页面")
@@ -93,6 +117,9 @@ public class SecurityController extends BaseController {
     public String register(User user,Map<String, Object> map,
                            @RequestParam("personPhoto") MultipartFile file) throws IOException {
 
+        AESUtil aesUtil = new AESUtil();
+        user.setUserPassword(aesUtil.Encrypt(user.getPassword(),"ABCDEFGHIJKLMNOP"));
+        user.setUserAuthorityId("1");
         FaceUtils faceUtils=new FaceUtils();
         if(!file.isEmpty()){
             if(faceUtils.checkOneFace(file)){
@@ -112,11 +139,18 @@ public class SecurityController extends BaseController {
 
     @ApiOperation(value="退出去登录界面")
     @GetMapping("/logOut")
-    public String logOut(HttpSession httpSession,Map<String, Object> map) {
+    public String logOut(HttpServletRequest request,
+                         HttpServletResponse response,
+                         @AuthenticationPrincipal UserDetails userDetails) {
 
-        httpSession.removeAttribute("loginUser");
-        map.put("user", new User());
-        return "security/login";
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+
+        new PersistentTokenBasedRememberMeServices(KEY, userDetailsService, persistentTokenRepository).logout(request, response, auth);
+        new CookieClearingLogoutHandler(userDetails.getUsername()).logout(request, response, auth);
+        new SecurityContextLogoutHandler().logout(request, response, auth);
+
+
+        return "redirect:/security/toLogin";
     }
 
     @ApiOperation(value="取人脸识别登录界面")
@@ -134,12 +168,17 @@ public class SecurityController extends BaseController {
     })
     @RequestMapping(value="/faceContrast")
     @ResponseBody
-    public String faceContrast(String imgString,String number) throws IOException {
-        if(isEmpty(number))
-            return "没输入账号!";
+    public Map faceContrast(String imgString,String number) throws IOException {
+        Map<String, Object> map=new HashMap<>();
+        if(isEmpty(number)) {
+            map.put("rInfo","没输入账号");
+            return map;
+        }
 
-        if(userService.selectByPrimaryKey(number)==null)
-            return "输入账号不正确!";
+        if(userService.selectByPrimaryKey(number)==null) {
+            map.put("rInfo","输入账号不正确");
+            return map;
+        }
         System.out.println("账号："+number);
 
         FaceUtils faceUtils = new FaceUtils();
@@ -167,20 +206,25 @@ public class SecurityController extends BaseController {
             for(String str:sOne){
                 if(str.equals("age"))
                     j++;
-                if(j>1)
-                    return "对不起，您上传的用户头像照片质量不达标(即不是单个有效头像)，请重新上传！";
+                if(j>1) {
+                    map.put("rInfo","对不起，您上传的用户头像照片质量不达标(即不是单个有效头像)，请重新上传！");
+                    return map;
+                }
             }
             sLengthOne = sOne.length;
             faceTokenOne = sOne[sLengthOne-2];
             i++;
             if(i>=10) {
-                return "网络故障，请稍后再试！";
+                map.put("rInfo","网络故障，请稍后再试！");
+                return map;
             }
             break;
         }
 
-        if(!sOne[sLengthOne-4].equals("face_token"))
-            return "对不起，您上传的用户头像照片质量不达标(即不是单个有效头像)，请重新上传！";
+        if(!sOne[sLengthOne-4].equals("face_token")){
+            map.put("rInfo","对不起，您上传的用户头像照片质量不达标(即不是单个有效头像)，请重新上传！");
+            return map;
+        }
 
         User user = userService.selectByPrimaryKey(number);
 
@@ -193,8 +237,10 @@ public class SecurityController extends BaseController {
             sLengthTwo = sTwo.length;
             faceTokenTwo = sTwo[sLengthTwo-2];
             i++;
-            if(i>=10)
-                return "网络故障，请稍后再试！";
+            if(i>=10){
+                map.put("rInfo","网络故障，请稍后再试！");
+                return map;
+            }
             break;
         }
 
@@ -208,17 +254,23 @@ public class SecurityController extends BaseController {
             if(compareInfoStr[1].equals("error_message"))
                 continue;
             i++;
-            if(i>=10)
-                return "网络故障，请稍后再试！";
+            if(i>=10){
+                map.put("rInfo","网络故障，请稍后再试！");
+                return map;
+            }
             break;
         }
 
         Double likeInfo = Double.parseDouble(compareInfoStr[2].substring(2, compareInfoStr[2].length()-2));
-        if(likeInfo<70)
-            return "认证不成功，请本人刷脸";
-        return "1";
+        if(likeInfo<70){
+            map.put("rInfo","认证不成功，请本人刷脸！");
+            return map;
+        }
+        map.put("rNum","1");
+        String str=userService.selectByPrimaryKey(number).getPassword();
+        map.put("rPassword",new AESUtil().Decrypt(str,"ABCDEFGHIJKLMNOP"));
+        System.out.println("原始密码是："+new AESUtil().Decrypt(str,"ABCDEFGHIJKLMNOP"));
+        return map;
     }
-
-
 
 }

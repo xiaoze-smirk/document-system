@@ -256,7 +256,7 @@ public class VersionController extends BaseController  {
     @ApiOperation(value="文件上传操作")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
-            @ApiImplicitParam(name = "theVerId", value = "文件theVerId", dataType = "Integer")
+            @ApiImplicitParam(name = "theVerId", value = "文件theVerId")
     })
     @PostMapping(value="/upLoad/{verId}/{theDocNum}")
     public String fileUpLoad(@RequestParam("file") MultipartFile[] files, Map<String, Object> map,
@@ -288,7 +288,7 @@ public class VersionController extends BaseController  {
     @ApiOperation(value="单文件下载")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
-            @ApiImplicitParam(name = "theVerId", value = "文件theVerId", dataType = "Integer"),
+            @ApiImplicitParam(name = "theVerId", value = "文件theVerId"),
             @ApiImplicitParam(name = "fileName", value = "文件名fileName", dataType = "String")
     })
     @GetMapping(value="/downloadOne/{fileName}/{verId}/{theDocNum}")
@@ -342,7 +342,7 @@ public class VersionController extends BaseController  {
     @ApiOperation(value="多文件下载")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
-            @ApiImplicitParam(name = "theVerId", value = "文件theVerId", dataType = "Integer"),
+            @ApiImplicitParam(name = "theVerId", value = "文件theVerId"),
             @ApiImplicitParam(name = "manyFileName", value = "文件名集合字符串manyFileName", dataType = "String")
     })
     @GetMapping(value="/downloadMany/{manyFileName}/{verId}/{theDocNum}")
@@ -381,7 +381,7 @@ public class VersionController extends BaseController  {
     @ApiOperation(value="文件删除")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
-            @ApiImplicitParam(name = "theVerId", value = "文件theVerId", dataType = "Integer"),
+            @ApiImplicitParam(name = "theVerId", value = "文件theVerId"),
             @ApiImplicitParam(name = "manyFileName", value = "文件名集合字符串manyFileName", dataType = "String")
     })
     @GetMapping(value="/removeFile/{manyFileName}/{verId}/{theDocNum}")

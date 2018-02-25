@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import edu.fjnu.entity.User;
 import edu.fjnu.service.AuthorityService;
 import edu.fjnu.service.UserService;
+import edu.fjnu.utils.AESUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -87,7 +88,7 @@ public class UserController extends BaseController{
     }
 
     @ApiOperation(value="删除操作后台所需要的值")
-    @ApiImplicitParam(name = "userId", value = "用户userId", required = true, dataType = "Integer")
+    @ApiImplicitParam(name = "userAccount", value = "用户userAccount", required = true, dataType = "String")
     @DeleteMapping(value="/remove/{userAccount}")
     public String remove(@PathVariable("userAccount") String userAccount) {
 
@@ -96,13 +97,12 @@ public class UserController extends BaseController{
         return "redirect:/user/list";
     }
 
-    @ApiOperation(value="进入部门修改界面")
-    @ApiImplicitParam(name = "userId", value = "用户userId", required = true, dataType = "Integer")
+    @ApiOperation(value="进入用户修改界面")
+    @ApiImplicitParam(name = "userAccount", value = "用户userAccount", required = true, dataType = "String")
     @GetMapping(value="/preUpdate/{userAccount}")
     public String preUpdate(@PathVariable("userAccount") String userAccount, Map<String, Object> map){
 
         map.put("user", userService.selectByPrimaryKey(userAccount));
-        map.put("authorityList", authorityService.findAllAuthority());
 
         return "user/update_user";
     }
@@ -140,7 +140,7 @@ public class UserController extends BaseController{
         sos.flush();
         sos.close();
 
-        return null; //由于已经把界面数据发回去了，所以不需要struts做VIEW服务了。
+        return null; //由于已经把界面数据发回去了，所以不需要spring做VIEW服务了。
 
     }
 
@@ -166,9 +166,10 @@ public class UserController extends BaseController{
 
         Integer setNum=0;
         if(!file.isEmpty()) {
-            System.out.println("坏蛋坏蛋");
             user.setUserFaceAvatar(file.getBytes());
         }
+        AESUtil aesUtil = new AESUtil();
+        user.setUserPassword(aesUtil.Encrypt(user.getPassword(),"ABCDEFGHIJKLMNOP"));
         userService.updateByPrimaryKeySelective(user);
 
         map.put("setNum",setNum);
@@ -184,17 +185,14 @@ public class UserController extends BaseController{
     public String updatePassword(String affirmPassword,Map<String, Object> map,
                                  @SessionAttribute("loginUser") User user) {
 
-        user.setUserPassword(affirmPassword);
+        AESUtil aesUtil = new AESUtil();
+        user.setUserPassword(aesUtil.Encrypt(affirmPassword,"ABCDEFGHIJKLMNOP"));
         map.put("loginUser",user);
-        map.put("user",user);
-
-        Integer setNum=1;
-        map.put("setNum",setNum);
 
         if(isNotEmpty(affirmPassword))
             userService.updateByPrimaryKeySelective(user);
 
-        return "user/settingInfo";
+        return "redirect:/security/logOut";
     }
 
     @ApiOperation(value="ajax检查原始密码正确性")
@@ -204,7 +202,8 @@ public class UserController extends BaseController{
     public String validateCourseNo(String originalPassword,
                                    @SessionAttribute("loginUser") User user){
 
-        if(user.getUserPassword().equals(originalPassword)){
+        AESUtil aesUtil = new AESUtil();
+        if(user.getUserPassword().equals(aesUtil.Encrypt(originalPassword,"ABCDEFGHIJKLMNOP"))){
             System.out.println(1);
             return "1";
         }

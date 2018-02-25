@@ -46,8 +46,8 @@ body {
 
 /********************登录模块********************/
 .login {
-	width: 25%;
-	height: 480px;
+	width: 22%;
+	height: 430px;
 	border-radius: 20px;
 	background-color: #EDEEED;
 	text-align: center;
@@ -56,17 +56,37 @@ body {
 	right: 5%;
 	z-index: 100;
 }
+.tit {
+	width: 100%;
+	height: 30px;
+	margin-bottom: 15px;
+}
 p{
 	font-size: 22px;
 	font-family: 微软雅黑;
-	margin-bottom: 25px;
+	margin-left: 90px;
+	display: block;
+	float: left;
+}
+.tit img {
+	width: 28px;
+	float: right;
+	position: relative;
+	top: 19px;
+	right: 10px;
+	cursor: pointer;
+	filter: grayscale(100%);
+}
+.tit img:hover {
+	filter: grayscale(0);
 }
 .input-style{
 	height: 35px;
 	margin-top: 14px;
+	clear: both;
 }
 .login-hint{
-	width: 120px;
+	width: 110px;
 	text-align: right;
 	font-size: 18px;
 	line-height: 30px;
@@ -74,15 +94,15 @@ p{
 	float: left;
 }
 input[type="text"],input[type="password"]{
-	width: 150px;
+	width: 130px;
 	height: 25px;
 	font-size: 16px;
 	padding-left: 10px;
 	margin-left: -40px;
 }
 .input-style .iCode {
-	width: 76px;
-	margin-left: 0;
+	width: 65px;
+	margin-left: 0px;
 }
 .code {
 	width: 60px;
@@ -90,19 +110,19 @@ input[type="text"],input[type="password"]{
 	line-height: 29px;
 	border: 1px solid rgba(90, 224, 238, 0.5);
 	font-size: 16px;
-	margin-right: 49px;
+	margin-right: 44px;
 	display: block;
 	float: right;
 	cursor: pointer;
 }
 input[type="checkbox"] {
 	float: left;
-	margin-left: 48px;
+	margin-left: 37px;
 	margin-top: 9px;
 }
 .pwd {
 	float: left;
-	margin-left: -46px;
+	margin-left: -36px;
 }
 input[type="button"]{
 	width: auto;
@@ -121,26 +141,26 @@ input[type="button"]:hover {
 	border-radius: 8px;
 }
 .forget_pwd {
-	margin-left: 25px;
+	margin-left: 18px;
 	margin-right: 3px;
 }
 .account-reg{
 	margin-left: 18px;
 }
 .btnReg {
-	margin-left: -120px;
+	margin-left: -100px;
 }
 .demo_line{
-	width: 72px;
+	width: 60px;
 	height: 1px;
 	background-color: gray;
 	float: left
 }
 .denglu div:first-child {
-	margin: 20px 10px 0 45px;
+	margin: 20px 10px 0 36px;
 }
 .denglu div:last-child {
-	margin: 20px 30px 0 10px;
+	margin: 20px 20px 0 10px;
 }
 .denglu {
 	margin-top: 50px;
@@ -160,21 +180,6 @@ button{
 }
 button:hover {
 	background-color: #0078a3;
-}
-.tAccount {
-	margin-top: 25px;
-	margin-left: 8px;
-}
-.tAccount .login-hint {
-	width: 140px;
-	margin-left: 25px;
-}
-.third_account {
-	height: 30px;
-	float: left;
-	margin-left: 11px;
-	margin-bottom: 3px;
-	cursor: pointer;
 }
 /**********************************************/
 
@@ -258,4 +263,3 @@ button:hover {
 	background: #b63e1a;
 }
 /**********************************************/
-

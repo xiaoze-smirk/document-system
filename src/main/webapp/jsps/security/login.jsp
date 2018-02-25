@@ -16,14 +16,15 @@
 </div>
 <div class="login">
     <p>账号密码登录</p>
-    <form:form action="${pageContext.request.contextPath}/security/login" method="post" modelAttribute="user">
+    <img id="faceLogin" src="${pageContext.request.contextPath}/images/login/Face_gray.png" class="faceId" />
+    <form action="${pageContext.request.contextPath}/login" method="post" >
         <div class="input-style">
             <span class="login-hint">用户名：</span>
-            <form:input path="userAccount" placeholder="用户名" />
+            <input id="username" type="text" name="username" placeholder="用户名" />
         </div>
         <div class="input-style">
             <span class="login-hint">密&nbsp;&nbsp;&nbsp; 码：</span>
-            <form:password path="userPassword" placeholder="密码" />
+            <input id="password" type="password" name="password" placeholder="密码" />
         </div>
         <div class="input-style">
             <span class="login-hint">验证码：</span>
@@ -32,9 +33,8 @@
         </div>
 
         <div class="input-style">
-            <input type="checkbox" checked />
+            <input name="remember-me" type="checkbox" checked/>
             <span class="login-hint pwd">记住密码</span>
-            <input type="button" class="forget_pwd" value="忘记密码" />
         </div>
         <div class="input-style">
             <span class="login-hint account-reg">没有账号？</span>
@@ -45,13 +45,7 @@
             <button class="btn_login">登 录</button>
             <div class="demo_line"></div>
         </div>
-    </form:form>
-    <div class="input-style tAccount" >
-        <span class="login-hint">第三方账号登录</span>
-        <img id="faceLogin" src="${pageContext.request.contextPath}/images/login/Face_gray.png" class="third_account" />
-        <img src="${pageContext.request.contextPath}/images/login/QQ_gray.png" class="third_account" />
-        <img src="${pageContext.request.contextPath}/images/login/weixin_gray.png" class="third_account" />
-    </div>
+    </form>
 </div>
 <div class="show_advantage">
     <div class="active_advantage" ><span>优点1</span></div>
@@ -79,21 +73,19 @@
 
 <script>
 
+    var errorMsg="${errorMsg}";
+
+    if(errorMsg!="")
+        alert(errorMsg);
 
     /****************************第三方登录***************************/
-    var imgHover = ["${pageContext.request.contextPath}/images/login/Face.png","${pageContext.request.contextPath}/images/login/QQ.png","${pageContext.request.contextPath}/images/login/weixin.png"];
-    var images = ["${pageContext.request.contextPath}/images/login/Face_gray.png","${pageContext.request.contextPath}/images/login/QQ_gray.png","${pageContext.request.contextPath}/images/login/weixin_gray.png"];
-    $(".tAccount").find(".third_account").mouseover(function () {
-        var index = $(this).index();
-        $(this).attr("src",imgHover[index-1]);
+    var imgHover = "${pageContext.request.contextPath}/images/login/Face.png";
+    var images = "${pageContext.request.contextPath}/images/login/Face_gray.png";
+    $(".login").find(".faceId").mouseover(function () {
+        $(this).attr("src",imgHover);
     });
-    $(".tAccount").find(".third_account").mouseleave(function () {
-        var index = $(this).index();
-        $(this).attr("src",images[index-1]);
-    });
-
-    $(".forget_pwd").click(function () {
-        $(location).attr("href","${pageContext.request.contextPath}/security/toRetrievePwd");
+    $(".login").find(".faceId").mouseleave(function () {
+        $(this).attr("src",images);
     });
 
     $(".btnReg").click(function () {

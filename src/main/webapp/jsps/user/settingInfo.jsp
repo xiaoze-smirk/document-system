@@ -99,24 +99,22 @@
                 </div>
             </form:form><!--修改密码-->
             <div class="form">
-                <div class="container">
-                    <div class="imageBox">
-                        <div class="thumbBox"></div>
-                        <div class="spinner" style="display: none">Loading...</div>
-                    </div>
-                    <div class="action">
-                        <div class="new-contentarea tc">
-                            <a href="javascript:void(0)" class="upload-img">
-                                <label for="upload-file">上传图像</label>
-                            </a>
-                            <input type="file" class="" name="upload-file" id="upload-file" />
-                        </div>
-                        <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁切">
-                        <input type="button" id="btnZoomIn" class="Btnsty_peyton" value="+"  >
-                        <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-" >
-                    </div>
-                    <div class="cropped"></div>
+                <div class="imageBox">
+                    <div class="thumbBox"></div>
+                    <div class="spinner" style="display: none">Loading...</div>
                 </div>
+                <div class="action">
+                    <div class="new-contentarea tc">
+                        <a href="javascript:void(0)" class="upload-img">
+                            <label for="upload-file">上传图像</label>
+                        </a>
+                        <input type="file" class="" name="upload-file" id="upload-file" />
+                    </div>
+                    <input type="button" id="btnZoomIn" class="Btnsty_peyton enlarge" value="+"  />
+                    <input type="button" id="btnZoomOut" class="Btnsty_peyton" value="-" />
+                    <input type="button" id="btnCrop"  class="Btnsty_peyton" value="裁剪" />
+                </div>
+                <div class="cropped"></div>
             </div><!--头像设置-->
         </div>
     </div>
@@ -157,37 +155,26 @@
             $(location).attr("href","${pageContext.request.contextPath}/security/enter");
         });
 
-        <%--$("#originalPassword").change(function(){--%>
-        <%--var val = $(this).val();--%>
-        <%--val = $.trim(val);--%>
-        <%--if(val==null||val=="")--%>
-        <%--return false;--%>
+        $("#originalPassword").change(function(){
+            var val = $(this).val();
+            val = $.trim(val);
+            if(val==null||val=="")
+            return false;
 
-        <%--var url = "${pageContext.request.contextPath }/user/ajaxValidatePassword";--%>
-        <%--var args = {"originalPassword":val,"date":new Date()};--%>
+            var url = "${pageContext.request.contextPath }/user/ajaxValidatePassword";
+            var args = {"originalPassword":val,"date":new Date()};
 
-        <%--$.post(url, args, function(data){--%>
-        <%--if(data=="0"){--%>
-        <%--$("#originalPasswordError").html("密码不正确！");--%>
+            $.post(url, args, function(data){
+                if(data=="0"){
+                    $("#originalPasswordError").html("<img src='${pageContext.request.contextPath}/images/folders/wrong.png' />"+"<p>输入错误！请重新输入！</p>");
 
-        <%--}else if(data=="1"){--%>
-        <%--$("#originalPasswordError").html("");--%>
-        <%--}else{--%>
-        <%--alert("网络或程序出错. ");--%>
-        <%--}--%>
-        <%--},"json");--%>
-
-
-        <%--});--%>
-
-        // $("#affirmPassword").change(function () {
-        //     var firstPassword = $("#alertPassword").val();
-        //     var secondPassword = $("#affirmPassword").val();
-        //     if(firstPassword!=secondPassword)
-        //         $("#affirmPasswordError").html("请再次确认密码！");
-        //     else
-        //         $("#affirmPasswordError").html("");
-        // });
+                }else if(data=="1"){
+                    $("#originalPasswordError").html("<img src='${pageContext.request.contextPath}/images/folders/selected.png' />");
+                }else{
+                    alert("网络或程序出错. ");
+                }
+            },"json");
+        });
 
         $(".form").find("input").blur(function(){
             var index = $(this).parent().index();    /*点击的文本框*/
@@ -195,12 +182,6 @@
             var length = value.replace(/[^/x00-\xff]/g,"**").length;    /*文本框输入的长度*/
             var right = "<img src='${pageContext.request.contextPath}/images/folders/selected.png' />";     /*输入正确时*/
             var wrong = "<img src='${pageContext.request.contextPath}/images/folders/wrong.png' />"+"<p>输入错误！请重新输入！</p>";       /*输入错误时*/
-            if(index == 0){
-                if(length > 6 && length < 10) {
-                    $(this).parent().find(".secondLabel").html(right);
-                } else
-                    $(this).parent().find(".secondLabel").html(wrong);
-            }
             if(index == 1){
                 if (length > 2 && length < 9){
                     $(this).parent().find(".secondLabel").html(right);
@@ -255,9 +236,7 @@
         $('#btnCrop').on('click', function(){
             var img = cropper.getDataURL();
             $('.cropped').html('');
-            $('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:64px;margin-top:4px;border-radius:64px;box-shadow:0px 0px 12px #7E7E7E;" ><p>64px*64px</p>');
             $('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:128px;margin-top:4px;border-radius:128px;box-shadow:0px 0px 12px #7E7E7E;"><p>128px*128px</p>');
-            $('.cropped').append('<img src="'+img+'" align="absmiddle" style="width:180px;margin-top:4px;border-radius:180px;box-shadow:0px 0px 12px #7E7E7E;"><p>180px*180px</p>');
         })
         $('#btnZoomIn').on('click', function(){
             cropper.zoomIn();
@@ -272,6 +251,7 @@
                     $("form:eq("+setNum+")").submit();
                     return false;
                 }else{
+
                     // 提交用户头像的图片数据
                     var formData = new FormData();   //不需要提交其他参数可以直接FormData无参数的构造函数,如果需要提交form里面其他参数在form里面写
                     var base64Codes = cropper.getDataURL();

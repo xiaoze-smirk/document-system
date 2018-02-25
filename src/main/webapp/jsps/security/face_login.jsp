@@ -9,24 +9,48 @@
     <link href="${pageContext.request.contextPath}/css/faces/face_login.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
+<div class="spinner">
+    <div class="spinner-container container1">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+        <div class="circle4"></div>
+    </div>
+    <div class="spinner-container container2">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+        <div class="circle4"></div>
+    </div>
+    <div class="spinner-container container3">
+        <div class="circle1"></div>
+        <div class="circle2"></div>
+        <div class="circle3"></div>
+        <div class="circle4"></div>
+    </div>
+</div>
 <div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    <div class="account">
-        <label>账号：</label>
-        <input type="text" id="number" placeholder="请填入您的账号">
-    </div>
-    <div class="preview">
-        <img src="${pageContext.request.contextPath}/images/face/cover1.png" class="img1" />
-        <img src="${pageContext.request.contextPath}/images/face/cover.png" class="img2 bg" />
-        <video autoplay></video>
-    </div>
-    <div class="drawImg">
-        <img src="${pageContext.request.contextPath}/images/face/drawImg2.png" class="img3" />
-        <img src="${pageContext.request.contextPath}/images/face/drawImg.png" class="img4 bg" />
-        <canvas id="myCanvas"></canvas>
-    </div>
-    <div class="btn">
-        <input type="button" id="capture" value="拍照登录" />
-    </div>
+    <form action="${pageContext.request.contextPath}/login" method="post" >
+        <div class="account">
+            <label>账号：</label>
+            <input name="username" type="text" id="username" placeholder="请填入您的账号">
+            <input name="password" type="hidden" id="password">
+        </div>
+            <input name="remember-me" type="checkbox" />记住我
+        <div class="preview">
+            <img src="${pageContext.request.contextPath}/images/face/cover1.png" class="img1" />
+            <img src="${pageContext.request.contextPath}/images/face/cover.png" class="img2 bg" />
+            <video autoplay></video>
+        </div>
+        <div class="drawImg">
+            <img src="${pageContext.request.contextPath}/images/face/drawImg2.png" class="img3" />
+            <img src="${pageContext.request.contextPath}/images/face/drawImg.png" class="img4 bg" />
+            <canvas id="myCanvas"></canvas>
+        </div>
+        <div class="btn">
+            <input type="button" id="capture" value="拍照登录" />
+        </div>
+    </form>
     <div class="notice">
         <img src="${pageContext.request.contextPath}/images/face/notice.jpg" />
     </div>
@@ -61,16 +85,19 @@
                 var context = canvas.getContext('2d');
                 context.drawImage(video,10,80);
                 var info = {
-                    number: $("#number").val(),
+                    number: $("#username").val(),
                     imgString: canvas.toDataURL("image/png")
                 }
 
                 $.post("${pageContext.request.contextPath}/security/faceContrast",info,function(data){
-                    if(data=="1"){
-                        $(location).attr("href","${pageContext.request.contextPath}/security/login?number="+$("#number").val());
+                    if(data.rNum=="1"){
+                        $("#password").val(data.rPassword);
+                        $(".spinner").css("display","block");
+                        $("form:eq(0)").submit();
                         return false;
                     }
-                    alert(data);
+                    $(".spinner").css("display","none");
+                    alert(data.rInfo);
 
                 },"json")
 

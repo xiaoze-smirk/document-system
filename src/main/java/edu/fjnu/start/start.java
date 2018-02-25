@@ -14,7 +14,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @SpringBootApplication
 @MapperScan("edu.fjnu.mapper")//扫描：该包下相应的class,主要是MyBatis的持久化类.
 @EnableTransactionManagement
-@EnableSwagger2
 public class start {
 	public static void main(String[] args) {
 		SpringApplication.run(start.class, args);

@@ -1,11 +1,12 @@
 package edu.fjnu.entity;
 
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
 @Component
-public class Authority implements Serializable {
+public class Authority implements Serializable , GrantedAuthority {
 
     //权限编号
     private String authorityId;
@@ -38,5 +39,10 @@ public class Authority implements Serializable {
 
     public void setAuthorityChineseName(String authorityChineseName) {
         this.authorityChineseName = authorityChineseName == null ? null : authorityChineseName.trim();
+    }
+
+    @Override
+    public String getAuthority() {
+        return this.authorityEnglishName;
     }
 }
