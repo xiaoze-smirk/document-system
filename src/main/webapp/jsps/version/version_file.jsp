@@ -85,6 +85,9 @@
 
     $(function(){
 
+        var h = document.documentElement.clientHeight;
+        $(".infoDetail").height(h);
+
         /*文件图片实现*/
         for(var i = 0;i < $(".box_file").length;i ++ ){
             var type = $(".box_file").eq(i).find("span").html();
@@ -213,10 +216,11 @@
             if(num == 0)
                 alert("您还未选择任何文件！");
             else {
+                var l = $(".thirdFile").find(".box_file");
                 var download = new Array();      /*记录被选中文件的位置*/
-                var d = 0;
+                var d = 0;  /*文件被选中的个数*/
                 var allValue="";
-                for(var i = 0;i<bgImgBefore.length;i++){
+                for(var i = 0;i < l.length;i++){
                     if(t[i]== 1){
                         var value = $(".thirdFile").find(".box_file").eq(i).find("span").text();
                         download[d] = value;
@@ -239,13 +243,14 @@
 
         /*删除*/
         $(".btn_delete").bind("click",del = function () {
+            var l = $(".thirdFile").find(".box_file");
             var allValue="";
             if(num == 0)
                 alert("您还未选择任何文件！");
             else {
                 var del = new Array();      /*记录被选中文件的位置*/
                 var de = 0;
-                for(var i = 0;i<bgImgBefore.length;i++){
+                for(var i = 0;i < l.length;i++){
                     if(t[i]== 1){
                         var value = $(".thirdFile").find(".box_file").eq(i).find("span").text();
                         del[de] = value;

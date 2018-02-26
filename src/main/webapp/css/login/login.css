@@ -68,16 +68,16 @@ p{
 	display: block;
 	float: left;
 }
-.tit img {
-	width: 28px;
+.login img {
+	width: 30px;
 	float: right;
 	position: relative;
-	top: 19px;
-	right: 10px;
+	top: 18px;
+	right: 12px;
 	cursor: pointer;
 	filter: grayscale(100%);
 }
-.tit img:hover {
+.login img:hover {
 	filter: grayscale(0);
 }
 .input-style{
@@ -116,13 +116,13 @@ input[type="text"],input[type="password"]{
 	cursor: pointer;
 }
 input[type="checkbox"] {
-	float: left;
-	margin-left: 37px;
+	font-size: 16px;
 	margin-top: 9px;
+	margin-right: -190px;
 }
 .pwd {
-	float: left;
-	margin-left: -36px;
+	float: right;
+	margin-right: 48px;
 }
 input[type="button"]{
 	width: auto;
@@ -148,7 +148,7 @@ input[type="button"]:hover {
 	margin-left: 18px;
 }
 .btnReg {
-	margin-left: -100px;
+	margin-left: -95px;
 }
 .demo_line{
 	width: 60px;
@@ -204,10 +204,11 @@ button:hover {
 }
 .show_advantage div span {
 	position: absolute;
-	top: 50%;
-	left: 7%;
-	font-size: 50px;
-	font-weight: bold;
+	top: 55%;
+	left: 9%;
+	font-size: 40px;
+	line-height: 60px;
+	font-weight: 500;
 	color: white;
 }
 /**********************************************/

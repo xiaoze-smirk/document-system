@@ -20,7 +20,7 @@
     <div class="setting_menu">
         <div>
             <img onerror="this.src='${pageContext.request.contextPath}/images/main/person-img.png'" src="${user.userAvatar}" class="person-img">
-            <span class="user_name">高富帅</span>
+            <span class="user_name">${user.userName}</span>
         </div>
         <ul>
             <li class="nowLi">基本资料</li>
@@ -30,12 +30,13 @@
         </ul>
     </div>
     <div class="setting_detail">
-        <div class="setting_title">
-            <p>基本资料</p>
-            <div class="saveInfo"><button id="saveInformation" name="saveInfo">保 存</button></div>
-        </div>
-        <div class="box_detail">
-            <form:form class="form active" action="${pageContext.request.contextPath}/user/updateSelfInfo" method="post" modelAttribute="user" enctype="multipart/form-data">
+        <div class="box_detail active">
+            <form:form class="form" action="${pageContext.request.contextPath}/user/updateSelfInfo" method="post" modelAttribute="user" enctype="multipart/form-data">
+                <div class="setting_title">
+                    <p>基本资料</p>
+                    <div class="saveInfo"><button id="saveInformation0">保 存</button></div>
+                </div>
+
                 <div>
                     <label class="firstLabel">账号：</label>
                     <form:input path="userAccount"/>
@@ -81,7 +82,13 @@
                     <canvas id="cvs" width="200" height="200"></canvas>
                 </div>
             </form:form><!--基本资料-->
-            <form:form class="form" action="${pageContext.request.contextPath}/user/updatePassword" method="post">
+        </div>
+        <div class="box_detail">
+            <form:form class="form formPassword" action="${pageContext.request.contextPath}/user/updatePassword" method="post">
+                <div class="setting_title">
+                    <p>修改密码</p>
+                    <div class="saveInfo"><button id="saveInformation1">保 存</button></div>
+                </div>
                 <div>
                     <label class="firstLabel">原始密码：</label>
                     <input id="originalPassword" type="password" name="originalPassword">
@@ -90,7 +97,7 @@
                 <div>
                     <label class="firstLabel">修改密码：</label>
                     <input id="alertPassword" type="password" name="alertPassword">
-                    <label id="orinalPasswordError" class="secondLabel" style="color: red"></label>
+                    <label id="alertPasswordError" class="secondLabel" style="color: red"></label>
                 </div>
                 <div>
                     <label class="firstLabel">确认密码：</label>
@@ -98,10 +105,16 @@
                     <label id="affirmPasswordError" class="secondLabel" style="color: red"></label>
                 </div>
             </form:form><!--修改密码-->
+        </div>
+        <div class="box_detail">
+            <div class="setting_title headLogo">
+                <p>头像设置</p>
+                <div class="saveInfo"><button id="saveInformation2">保 存</button></div>
+            </div>
             <div class="form">
                 <div class="imageBox">
                     <div class="thumbBox"></div>
-                    <div class="spinner" style="display: none">Loading...</div>
+                    <div class="spinner" style="display: none"></div>
                 </div>
                 <div class="action">
                     <div class="new-contentarea tc">
@@ -125,27 +138,20 @@
 
         /*判断主页中点击的选项，默认选中*/
         var setNum = ${setNum},
-            value = setNum,
+            value = setNum ,
             nowLi = $(".setting_menu").find("ul").find("li"),
-            setting_title = $(".setting_title").find("p"),
-            show = $(".box_detail").find(".form");
+            // setting_title = $(".setting_title").find("p"),
+            show = $(".setting_detail").find(".box_detail");
         nowLi.eq(value).addClass("nowLi").siblings().removeClass("nowLi");
-        setting_title.text(nowLi.eq(value).text());
+        // setting_title.text(nowLi.eq(value).text());
         show.eq(value).addClass("active").siblings().removeClass("active");
 
         nowLi.click(function () {
             var index = $(this).index();
             $(this).addClass("nowLi").siblings().removeClass("nowLi");
-            setting_title.text(nowLi.eq(index).text());
+            // setting_title.text(nowLi.eq(index).text());
             show.eq(index).addClass("active").siblings().removeClass("active");
         })
-
-        var saveNum=0;
-
-        var saveInfo = $(".setting_menu").find("ul").find("li");
-        saveInfo.click(function () {
-            saveNum = $(this).index();
-        });
 
 
 
@@ -153,48 +159,94 @@
         $(".back_settingInfo").click( function () {
             window.history.back(-1);
             $(location).attr("href","${pageContext.request.contextPath}/security/enter");
+            return false;
         });
 
-        $("#originalPassword").change(function(){
-            var val = $(this).val();
+        $(".saveInformation0").click( function () {
+            $("form:eq(0)").submit();
+            return false;
+        });
+
+        $("#saveInformation1").bind("click",function () {
+
+            var val = $("#originalPassword").val();
             val = $.trim(val);
             if(val==null||val=="")
-            return false;
+                return false;
 
             var url = "${pageContext.request.contextPath }/user/ajaxValidatePassword";
             var args = {"originalPassword":val,"date":new Date()};
 
             $.post(url, args, function(data){
                 if(data=="0"){
-                    $("#originalPasswordError").html("<img src='${pageContext.request.contextPath}/images/folders/wrong.png' />"+"<p>输入错误！请重新输入！</p>");
-
+                    return false;
                 }else if(data=="1"){
-                    $("#originalPasswordError").html("<img src='${pageContext.request.contextPath}/images/folders/selected.png' />");
+
                 }else{
                     alert("网络或程序出错. ");
+                    return false;
                 }
             },"json");
+
+            var firstPwd = $("#alertPassword").val();
+            var secondPwd = $("#affirmPassword").val();
+            var len = $("#affirmPassword").val().replace(/[^/x00-\xff]/g,"**").length;    /*文本框输入的长度*/
+            if(secondPwd != "") {
+                if (secondPwd == firstPwd && len > 7 && len < 17 && firstPwd != val) {
+                    $("form:eq(1)").submit();
+                    return false;
+                } else {
+                    alert("密码修改错误！");
+                    return false;
+                }
+            }
+            return false;
         });
 
-        $(".form").find("input").blur(function(){
+        $(".formPassword").find("input").blur(function(){
             var index = $(this).parent().index();    /*点击的文本框*/
             var value = $(this).val();     /*点击的文本框的值*/
             var length = value.replace(/[^/x00-\xff]/g,"**").length;    /*文本框输入的长度*/
             var right = "<img src='${pageContext.request.contextPath}/images/folders/selected.png' />";     /*输入正确时*/
             var wrong = "<img src='${pageContext.request.contextPath}/images/folders/wrong.png' />"+"<p>输入错误！请重新输入！</p>";       /*输入错误时*/
-            if(index == 1){
-                if (length > 2 && length < 9){
-                    $(this).parent().find(".secondLabel").html(right);
-                } else
-                    $(this).parent().find(".secondLabel").html(wrong);
+            var val = $("#originalPassword").val();
+            val = $.trim(val);
+            if(val==null||val=="") {
+                return false;
             }
-            if(index == 2){
+            var url = "${pageContext.request.contextPath }/user/ajaxValidatePassword";
+            var args = {"originalPassword":val,"date":new Date()};
+            if(index == 1) {
+
+                $.post(url, args, function(data){
+                    if(data=="0"){
+                        $("#originalPasswordError").html(wrong);
+                    }else if(data=="1"){
+                        $("#originalPasswordError").html(right);
+                    }else{
+                        alert("网络或程序出错. ");
+                    }
+                },"json");
+            }
+            if(index == 2) {
+                if (value != "") {
+                    var firstPwd = $("#alertPassword").val();
+                    if (length > 7 && length < 17 && val != firstPwd) {
+                        $("#alertPasswordError").html(right);
+                    } else
+                        $("#alertPasswordError").html(wrong);
+                }
+            }
+            if(index == 3){
                 var firstPwd = $("#alertPassword").val();
                 var secondPwd = $("#affirmPassword").val();
-                if (secondPwd == firstPwd){
-                    $(this).parent().find(".secondLabel").html(right);
-                } else
-                    $(this).parent().find(".secondLabel").html(wrong);
+                var len = secondPwd.replace(/[^/x00-\xff]/g,"**").length;    /*文本框输入的长度*/
+                if(secondPwd != "") {
+                    if (secondPwd == firstPwd && len > 7 && len < 17) {
+                        $(this).parent().find(".secondLabel").html(right);
+                    } else
+                        $(this).parent().find(".secondLabel").html(wrong);
+                }
             }
         });
 
@@ -221,7 +273,7 @@
             {
                 thumbBox: '.thumbBox',
                 spinner: '.spinner',
-                imgSrc: '${pageContext.request.contextPath}/images/avatar.jpg'
+                imgSrc: ''
             }
         var cropper = $('.imageBox').cropbox(options);
         $('#upload-file').on('change', function(){
@@ -245,90 +297,44 @@
             cropper.zoomOut();
         })
 
-        $("#saveInformation").click(function () {
-            if(saveNum==0){
-                if(setNum!=2){
-                    $("form:eq("+setNum+")").submit();
-                    return false;
-                }else{
+        $("#saveInformation2").click(function () {
 
-                    // 提交用户头像的图片数据
-                    var formData = new FormData();   //不需要提交其他参数可以直接FormData无参数的构造函数,如果需要提交form里面其他参数在form里面写
-                    var base64Codes = cropper.getDataURL();
-                    formData.append("fileName",String(parseInt(String(Math.random()*1000000)))+".jpg");
-                    formData.append("file",convertBase64UrlToBlob(base64Codes));  //append函数的第一个参数是后台获取数据的参数名,和html标签的input的name属性功能相同
+            // 提交用户头像的图片数据
+            var formData = new FormData();   //不需要提交其他参数可以直接FormData无参数的构造函数,如果需要提交form里面其他参数在form里面写
+            var base64Codes = cropper.getDataURL();
+            formData.append("fileName",String(parseInt(String(Math.random()*1000000)))+".jpg");
+            formData.append("file",convertBase64UrlToBlob(base64Codes));  //append函数的第一个参数是后台获取数据的参数名,和html标签的input的name属性功能相同
 
+            $.ajax({
+                url: 'http://localhost:8081/upload',
+                type: 'POST',
+                cache: false,
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(data){
+
+                    var avatarUrl = data;
+
+                    // 保存头像更改到数据库
                     $.ajax({
-                        url: 'http://localhost:8081/upload',
+                        url: "${pageContext.request.contextPath}/user/saveAvatar",
                         type: 'POST',
-                        cache: false,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
+                        data: {"userAccount":${user.userAccount}, "avatarUrl":avatarUrl},
                         success: function(data){
-
-                            var avatarUrl = data;
-
-                            // 保存头像更改到数据库
-                            $.ajax({
-                                url: "${pageContext.request.contextPath}/user/saveAvatar",
-                                type: 'POST',
-                                data: {"userAccount":${user.userAccount}, "avatarUrl":avatarUrl},
-                                success: function(data){
-                                    $(location).attr("href","${pageContext.request.contextPath}/user/returnPerson");
-                                },
-                                error : function() {
-                                    alert("网络或程序出错1. ");
-                                }
-                            });
+                            $(location).attr("href","${pageContext.request.contextPath}/user/returnPerson");
                         },
                         error : function() {
-                            alert("网络或程序出错2. ");
+                            alert("网络或程序出错1. ");
                         }
-                    })
+                    });
+                },
+                error : function() {
+                    alert("网络或程序出错2. ");
                 }
+            })
+            return false;
 
-            }else{
-                if(saveNum!=2){
-                    $("form:eq("+saveNum+")").submit();
-                    return false;
-                }else{
-                    // 提交用户头像的图片数据
-                    var formData = new FormData();   //不需要提交其他参数可以直接FormData无参数的构造函数,如果需要提交form里面其他参数在form里面写
-                    var base64Codes = cropper.getDataURL();
-                    formData.append("fileName",String(parseInt(String(Math.random()*1000000)))+".jpg");
-                    formData.append("file",convertBase64UrlToBlob(base64Codes));  //append函数的第一个参数是后台获取数据的参数名,和html标签的input的name属性功能相同
-
-                    $.ajax({
-                        url: 'http://localhost:8081/upload',
-                        type: 'POST',
-                        cache: false,
-                        data: formData,
-                        processData: false,
-                        contentType: false,
-                        success: function(data){
-
-                            var avatarUrl = data;
-
-                            // 保存头像更改到数据库
-                            $.ajax({
-                                url: "${pageContext.request.contextPath}/user/saveAvatar",
-                                type: 'POST',
-                                data: {"userAccount":${user.userAccount}, "avatarUrl":avatarUrl},
-                                success: function(data){
-                                    $(location).attr("href","${pageContext.request.contextPath}/user/returnPerson");
-                                },
-                                error : function() {
-                                    alert("网络或程序出错1. ");
-                                }
-                            });
-                        },
-                        error : function() {
-                            alert("网络或程序出错2. ");
-                        }
-                    })
-                }
-            }
         })
 
 

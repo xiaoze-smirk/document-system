@@ -93,7 +93,7 @@
     </ul>
 </div><!--菜单栏-->
 <div class="content">
-    <iframe id="contentFrame" width="100%" scrolling="yes" height="550px" frameborder="0" name="contentFrame" allowtransparency="true" src="${pageContext.request.contextPath}/jsps/welcome.jsp">
+    <iframe id="contentFrame" width="100%" scrolling="no" height="580px" frameborder="0" name="contentFrame" allowtransparency="true" src="${pageContext.request.contextPath}/jsps/welcome.jsp">
     </iframe>
 </div>
 
@@ -118,7 +118,7 @@
         var setInfo = $(".personal_info").find("ul").find("li");
         setInfo.click(function () {
             var setNum = $(this).index();
-            $(this).find("a").attr("href","${pageContext.request.contextPath}/user/toSettingInfo?setNum="+setNum);
+            $(location).attr("href","${pageContext.request.contextPath}/user/toSettingInfo/"+setNum);
         });
         /*注销账号跳转至登录页面*/
         $(".logout").click(function () {

@@ -131,11 +131,11 @@
 /****************文档具体信息****************/
 .infoDetail {
     width: 27.5%;
-    height: 485px;
-    background-color: rgba(77, 186, 121, 0.1);
+    /*height:484px;*/
+    background-color: #D6EDF4;
     position: absolute;
+    top: 78px;
     right: 0;
-    bottom: 20px;
 }
 .infoForm {
     width: 100%;

@@ -55,12 +55,12 @@
                     },
                     zoomIn: function ()
                     {
-                        this.ratio*=1.1;
+                        this.ratio*=1.3;
                         setBackground();
                     },
                     zoomOut: function ()
                     {
-                        this.ratio*=0.9;
+                        this.ratio*=0.7;
                         setBackground();
                     }
                 },

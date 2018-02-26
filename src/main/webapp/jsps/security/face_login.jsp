@@ -9,34 +9,17 @@
     <link href="${pageContext.request.contextPath}/css/faces/face_login.css" type="text/css" rel="stylesheet" />
 </head>
 <body>
-<div class="spinner">
-    <div class="spinner-container container1">
-        <div class="circle1"></div>
-        <div class="circle2"></div>
-        <div class="circle3"></div>
-        <div class="circle4"></div>
-    </div>
-    <div class="spinner-container container2">
-        <div class="circle1"></div>
-        <div class="circle2"></div>
-        <div class="circle3"></div>
-        <div class="circle4"></div>
-    </div>
-    <div class="spinner-container container3">
-        <div class="circle1"></div>
-        <div class="circle2"></div>
-        <div class="circle3"></div>
-        <div class="circle4"></div>
-    </div>
-</div>
-<div>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<div>
     <form action="${pageContext.request.contextPath}/login" method="post" >
         <div class="account">
             <label>账号：</label>
             <input name="username" type="text" id="username" placeholder="请填入您的账号">
             <input name="password" type="hidden" id="password">
         </div>
-            <input name="remember-me" type="checkbox" />记住我
+        <div class="remember-me">
+            <input name="remember-me" id="remember-me" type="checkbox" />
+            <label for="remember-me">记住我</label>
+        </div>
         <div class="preview">
             <img src="${pageContext.request.contextPath}/images/face/cover1.png" class="img1" />
             <img src="${pageContext.request.contextPath}/images/face/cover.png" class="img2 bg" />
@@ -75,7 +58,7 @@
         },function(err){
             console.log("capturing",err)
         });
-        document.querySelector("#capture").addEventListener("click",function(event){
+        $("#capture").click(function(){
             if(streaming){
                 //alert(video.clientHeight)
                 //canvas.width = video.clientWidth;
@@ -100,10 +83,13 @@
                     alert(data.rInfo);
 
                 },"json")
-
-
             }
-        })
+        });
+        $(document).keyup(function(event){
+            if(event.keyCode == 13){
+                $("#capture").click();
+            }
+        });
     }else{
         alert("浏览器暂不支持")
     }

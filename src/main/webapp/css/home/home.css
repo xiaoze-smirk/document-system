@@ -1,6 +1,6 @@
 html{
     width: 100%;
-    height: 100%;
+    height: 580px;
 }
 * {
     margin: 0;
@@ -241,15 +241,15 @@ textarea {
     border: none;
     border-radius: 5px;
     position: relative;
-    top: -14px;
+    top: -12px;
 }
 .box table tr td button:hover {
-    top: -12.5px;
+    top: -10.5px;
 }
 .box table tr td button:active {
     color: #156785;
     background-color: rgb(44,160,202);
-    top: -9px;
+    top: -7px;
 }
 /*******************************************/
 

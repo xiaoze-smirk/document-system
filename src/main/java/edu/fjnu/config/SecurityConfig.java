@@ -2,6 +2,7 @@ package edu.fjnu.config;
 
 import edu.fjnu.utils.AESUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.ServletListenerRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -11,11 +12,14 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.session.SessionRegistry;
+import org.springframework.security.core.session.SessionRegistryImpl;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.RememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenBasedRememberMeServices;
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
+import org.springframework.security.web.session.HttpSessionEventPublisher;
 
 /**
  * @author xiaoze
@@ -40,6 +44,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     PersistentTokenRepository persistentTokenRepository;
+
+    @Autowired
+    SessionRegistry sessionRegistry;
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
@@ -92,8 +99,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/index").permitAll() // 都可以访问
                 .anyRequest().authenticated()
                 .and()
-                .formLogin()   //基于 Form 表单登录验证
-                .loginPage("/security/toLogin")
+                    .formLogin()   //基于 Form 表单登录验证
+                    .loginPage("/security/toLogin")
                     .loginProcessingUrl("/login")
                     .usernameParameter("username")
                     .passwordParameter("password")
@@ -106,9 +113,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .tokenValiditySeconds(REMEMBER_ME_SECONDS)
                     .key(KEY)
                 .and()
-                .logout()
+                    .logout()
                     .logoutSuccessUrl("/security/logOut")
-                .and().exceptionHandling().accessDeniedPage("/error");  // 处理异常，拒绝访问就重定向到 403 页面
+                .and()
+                    .exceptionHandling()
+                    .accessDeniedPage("/error")   // 处理异常，拒绝访问就重定向到 403 页面
+                .and()
+                    .sessionManagement()
+                    .maximumSessions(1)
+                    .sessionRegistry(sessionRegistry);
         http.csrf().disable();
         http.headers().frameOptions().disable();
     }
@@ -121,4 +134,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.userDetailsService(userDetailsService);
         auth.authenticationProvider(authenticationProvider());
     }
+
+    @Bean
+    public SessionRegistry getSessionRegistry(){
+        SessionRegistry sessionRegistry=new SessionRegistryImpl();
+        return sessionRegistry;
+    }
+
+    @Bean
+    public ServletListenerRegistrationBean httpSessionEventPublisher() {
+        return new ServletListenerRegistrationBean(new HttpSessionEventPublisher());
+    }
+
 }

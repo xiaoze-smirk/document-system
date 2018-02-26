@@ -146,9 +146,9 @@ public class UserController extends BaseController{
 
     @ApiOperation(value="修改操作需要传入后台的值")
     @ApiImplicitParam(name = "setNum", value = "个人信息等所在位置的值setNum", required = true, dataType = "Integer")
-    @GetMapping(value="/toSettingInfo")
+    @GetMapping(value="/toSettingInfo/{setNum}")
     public String toSettingInfo(Map<String, Object> map,
-            @RequestParam(value="setNum", required=false, defaultValue="0") Integer setNum,
+                                @PathVariable("setNum") Integer setNum,
             @SessionAttribute("loginUser") User user) {
 
         map.put("setNum",setNum);
@@ -201,6 +201,7 @@ public class UserController extends BaseController{
     @PostMapping(value="/ajaxValidatePassword")
     public String validateCourseNo(String originalPassword,
                                    @SessionAttribute("loginUser") User user){
+        System.out.println("修改页面中传进来的原始密码是："+originalPassword);
 
         AESUtil aesUtil = new AESUtil();
         if(user.getUserPassword().equals(aesUtil.Encrypt(originalPassword,"ABCDEFGHIJKLMNOP"))){

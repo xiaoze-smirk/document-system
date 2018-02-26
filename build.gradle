@@ -43,6 +43,10 @@ dependencies {
 
 	compile ('org.springframework:spring-context-support')
 
+	compile ('org.springframework.boot:spring-boot-starter-data-redis')
+
+	compile ('org.springframework.session:spring-session-data-redis')
+
 	compile ('org.apache.tomcat.embed:tomcat-embed-jasper:8.5.23')
 
 	compile ('com.github.pagehelper:pagehelper-spring-boot-starter:1.2.3')

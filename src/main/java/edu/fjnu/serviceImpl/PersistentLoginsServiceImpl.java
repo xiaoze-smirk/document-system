@@ -23,9 +23,6 @@ public class PersistentLoginsServiceImpl implements PersistentTokenRepository {
     PersistentLoginsMapper persistentLoginsMapper;
 
     @Autowired
-    private UserDetailsService userDetailsService;
-
-    @Autowired
     PersistentTokenRepository persistentTokenRepository;
 
     @Override
@@ -52,10 +49,12 @@ public class PersistentLoginsServiceImpl implements PersistentTokenRepository {
         PersistentLogins persistentLogins =persistentLoginsMapper.selectByPrimaryKey(seriesId);
 
 
-        return new PersistentRememberMeToken(persistentLogins.getUsername(),
-                persistentLogins.getSeries(),
-                persistentLogins.getToken(),
-                persistentLogins.getLastUsed());
+        if(persistentLogins!=null)
+            return new PersistentRememberMeToken(persistentLogins.getUsername(),
+                    persistentLogins.getSeries(),
+                    persistentLogins.getToken(),
+                    persistentLogins.getLastUsed());
+        return null;
     }
 
     @Override

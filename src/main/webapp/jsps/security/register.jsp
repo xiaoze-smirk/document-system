@@ -158,7 +158,7 @@
                 }
             }
             if (index == 3) {
-                if (length != 0) {
+                if (!= 0length ) {
                     if (firstPwd == secondPwd) {
                         $(this).parent().find(".labelSecond").html(right);
                     } else
@@ -212,15 +212,15 @@
                 }
             }
             if(i!=4){
-                alert("表单输入有误1！");
+                alert("表单输入有误！");
                 return false;
             }
             if($(".form").find("input[type='password']").val() == ""){
-                alert("表单输入有误2！");
+                alert("表单输入有误！");
                 return false;
             }
             if($(".form").find("input[type='file']").val() == ""){
-                alert("表单输入有误3！");
+                alert("表单输入有误！");
                 return false;
             }
             $("form:eq(0)").submit();

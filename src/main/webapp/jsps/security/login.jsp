@@ -7,7 +7,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>项目文档管理系统</title>
     <link href="<c:url value="/css/login/login.css"/>" type="text/css" rel="stylesheet" />
-    <script src="${pageContext.request.contextPath}/js/login/login.js"></script>
+
 </head>
 <body>
 <div class="box_title">
@@ -33,8 +33,8 @@
         </div>
 
         <div class="input-style">
-            <input name="remember-me" type="checkbox" checked/>
-            <span class="login-hint pwd">记住密码</span>
+            <input name="remember-me" id="remember-me" type="checkbox" checked="checked" />
+            <label for="remember-me" class="login-hint pwd">记住密码</label>
         </div>
         <div class="input-style">
             <span class="login-hint account-reg">没有账号？</span>
@@ -48,10 +48,10 @@
     </form>
 </div>
 <div class="show_advantage">
-    <div class="active_advantage" ><span>优点1</span></div>
-    <div><span>优点2</span></div>
-    <div><span>优点3</span></div>
-    <div><span>优点4</span></div>
+    <div class="active_advantage" ><span>文档分类<br>可视化的管理</span></div>
+    <div><span>设计简洁<br>页面操作舒适</span></div>
+    <div><span>前沿技术<br>系统稳定流畅</span></div>
+    <div><span>专业存储<br>按需处理文件</span></div>
 </div>
 <div class="slideShow">
     <!--图片布局开始-->
@@ -70,7 +70,7 @@
 </div>
 <!--按钮布局结束-->
 <script src="${pageContext.request.contextPath}/js/jquery-3.2.1.min.js"></script>
-
+<script src="${pageContext.request.contextPath}/js/login/login.js"></script>
 <script>
 
     var errorMsg="${errorMsg}";
