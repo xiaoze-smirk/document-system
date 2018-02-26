@@ -85,9 +85,6 @@
 
     $(function(){
 
-        var h = document.documentElement.clientHeight;
-        $(".infoDetail").height(h);
-
         /*文件图片实现*/
         for(var i = 0;i < $(".box_file").length;i ++ ){
             var type = $(".box_file").eq(i).find("span").html();

@@ -87,9 +87,6 @@
 
     $(function(){
 
-        var h = document.documentElement.clientHeight;
-        $(".infoDetail").height(h);
-
         $(".input-file").find("input").css("display","none");   /*不可上传*/
         /**************************设置操作按钮背景***************************/
         var ImgGray = ["${pageContext.request.contextPath}/images/folders/upload_gray.png",

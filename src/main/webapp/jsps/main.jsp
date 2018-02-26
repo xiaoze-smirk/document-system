@@ -93,7 +93,7 @@
     </ul>
 </div><!--菜单栏-->
 <div class="content">
-    <iframe id="contentFrame" width="100%" scrolling="no" height="580px" frameborder="0" name="contentFrame" allowtransparency="true" src="${pageContext.request.contextPath}/jsps/welcome.jsp">
+    <iframe id="contentFrame" width="100%" scrolling="yes" height="580px" frameborder="0" name="contentFrame" allowtransparency="true" src="${pageContext.request.contextPath}/jsps/welcome.jsp">
     </iframe>
 </div>
 

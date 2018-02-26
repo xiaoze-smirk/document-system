@@ -131,7 +131,7 @@
 /****************文档具体信息****************/
 .infoDetail {
     width: 27.5%;
-    /*height:484px;*/
+    height:484px;
     background-color: #D6EDF4;
     position: absolute;
     top: 78px;
