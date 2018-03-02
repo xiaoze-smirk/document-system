@@ -125,7 +125,4 @@ public class DepartmentController extends BaseController {
 
         return "redirect:/department/list";
     }
-
-
-
 }

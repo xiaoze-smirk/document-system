@@ -33,7 +33,7 @@
         </div>
 
         <div class="input-style">
-            <input name="remember-me" id="remember-me" type="checkbox" checked="checked" />
+            <input name="remember-me" id="remember-me" type="checkbox" />
             <label for="remember-me" class="login-hint pwd">记住密码</label>
         </div>
         <div class="input-style">
