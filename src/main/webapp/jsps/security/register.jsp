@@ -158,7 +158,7 @@
                 }
             }
             if (index == 3) {
-                if (!= 0length ) {
+                if (length!= 0 ) {
                     if (firstPwd == secondPwd) {
                         $(this).parent().find(".labelSecond").html(right);
                     } else

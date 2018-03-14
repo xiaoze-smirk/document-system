@@ -1,16 +1,20 @@
 package edu.fjnu.utils;
 
-import edu.fjnu.entity.Document;
 import edu.fjnu.entity.Version;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+/**
+ * @author xiaoze
+ * @date 2018/3/8
+ */
 public class Utils {
 
     public String dateToStr(Date date){
@@ -64,8 +68,9 @@ public class Utils {
         if (!file.isEmpty()) {
             try {
                 // 文件保存路径
-                String fileName = file.getOriginalFilename();
-                String filePath = path + fileName;
+                String[] strArray=path.split("\\/");
+                String fileName = strArray[strArray.length-1];
+                String filePath = path;
                 System.out.println(file.getOriginalFilename());
 
                 File file1 = new File(filePath);
@@ -89,15 +94,18 @@ public class Utils {
 
     }
 
-    public Version ver(MultipartFile[] files, Version version,String theDocNum){
+    public Version ver(MultipartFile[] files, Version version,String getFileName){
+        DecimalFormat df = new DecimalFormat("######0.0");
         String path ;
         int j=0;
         for(int i=0;i<files.length;i++){
             path="F:/xiaoze/abc/";
-            if(theDocNum.equals(version.getTestJh())&&!files[i].isEmpty()) {
-                path = path + "测试计划/"+theDocNum+"/";
-                saveFile(path , files[i]);
+            if(getFileName.equals("测试计划")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setJhBiggestNum(version.getJhBiggestNum()+0.1);
+                path = path + "测试计划/"+"("+df.format(version.getJhBiggestNum())+")";
                 path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
 
                 if(isNotEmpty(version.getTestJhPath())) {
                     String[] strArray=version.getTestJhPath().split("!");
@@ -110,10 +118,12 @@ public class Utils {
                 }
                 else
                     version.setTestJhPath(path);
-            }else if(theDocNum.equals(version.getTestYl())&&!files[i].isEmpty()) {
-                path = path + "测试用例/"+theDocNum+"/" ;
-                saveFile(path , files[i]);
+            }else if(getFileName.equals("测试用例")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setYlBiggestNum(version.getYlBiggestNum()+0.1);
+                path = path + "测试用例/"+"("+df.format(version.getYlBiggestNum())+")";
                 path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
                 if(isNotEmpty(version.getTestYlPath())) {
                     String[] strArray=version.getTestYlPath().split("!");
                     for(j=0;j<strArray.length;j++){
@@ -125,10 +135,12 @@ public class Utils {
                 }
                 else
                     version.setTestYlPath(path);
-            }else if(theDocNum.equals(version.getTestJl())&&!files[i].isEmpty()) {
-                path = path + "测试记录/"+theDocNum+"/";
-                saveFile(path , files[i]);
+            }else if(getFileName.equals("测试记录")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setJlBiggestNum(version.getJlBiggestNum()+0.1);
+                path = path + "测试记录/"+"("+df.format(version.getJlBiggestNum())+")";
                 path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
                 if(isNotEmpty(version.getTestJlPath())) {
                     String[] strArray=version.getTestJlPath().split("!");
                     for(j=0;j<strArray.length;j++){
@@ -140,10 +152,12 @@ public class Utils {
                 }
                 else
                     version.setTestJlPath(path);
-            }else if(theDocNum.equals(version.getTestQx())&&!files[i].isEmpty()) {
-                path = path + "缺陷报告/"+theDocNum+"/";
-                saveFile(path , files[i]);
+            }else if(getFileName.equals("缺陷报告")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setQxBiggestNum(version.getQxBiggestNum()+0.1);
+                path = path + "缺陷报告/"+"("+df.format(version.getQxBiggestNum())+")";
                 path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
                 if(isNotEmpty(version.getTestQxPath())) {
                     String[] strArray=version.getTestQxPath().split("!");
                     for(j=0;j<strArray.length;j++){
@@ -155,10 +169,12 @@ public class Utils {
                 }
                 else
                     version.setTestQxPath(path);
-            }else if(theDocNum.equals(version.getTestBg())&&!files[i].isEmpty()) {
-                path = path + "测试报告/"+theDocNum+"/";
-                saveFile(path , files[i]);
+            }else if(getFileName.equals("测试报告")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setBgBiggestNum(version.getBgBiggestNum()+0.1);
+                path = path + "测试报告/"+"("+df.format(version.getBgBiggestNum())+")";
                 path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
                 if(isNotEmpty(version.getTestBgPath())) {
                     String[] strArray=version.getTestBgPath().split("!");
                     for(j=0;j<strArray.length;j++){
@@ -170,6 +186,40 @@ public class Utils {
                 }
                 else
                     version.setTestBgPath(path);
+            }else if(getFileName.equals("测试输入项")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setShBiggestNum(version.getShBiggestNum()+0.1);
+                path = path + "测试输入项/"+"("+df.format(version.getShBiggestNum())+")";
+                path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
+                if(isNotEmpty(version.getTestShPath())) {
+                    String[] strArray=version.getTestShPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestShPath(version.getTestShPath() + "!" + path);
+                }
+                else
+                    version.setTestShPath(path);
+            }else if(getFileName.equals("其他")&&!files[i].isEmpty()) {
+                if(i==0)
+                    version.setQtBiggestNum(version.getQtBiggestNum()+0.1);
+                path = path + "其他/"+"("+df.format(version.getQtBiggestNum())+")";
+                path=path+files[i].getOriginalFilename();
+                saveFile(path , files[i]);
+                if(isNotEmpty(version.getTestQtPath())) {
+                    String[] strArray=version.getTestQtPath().split("!");
+                    for(j=0;j<strArray.length;j++){
+                        if(strArray[j].equals(path))
+                            break;
+                    }
+                    if(j==strArray.length)
+                        version.setTestQtPath(version.getTestQtPath() + "!" + path);
+                }
+                else
+                    version.setTestQtPath(path);
             }
 
         }
@@ -204,67 +254,73 @@ public class Utils {
         return strArray[strArray.length-1];
     }
 
-    public Map<String, Object> map(Version version,String theDocNum){
+    public Map<String, Object> theMap(Version version, String fileName){
 
         Map<String, Object> map = new HashMap<>();
 
         String[] stringArray = null;
         List<String> stringList = new ArrayList<>();
-        if(version.getTestJh()!=null&&theDocNum.equals(version.getTestJh())) {
+        if(version.getTestJhPath()!=null&&fileName.equals("测试计划")) {
             if(version.getTestJhPath()!=null) {
                 stringArray = version.getTestJhPath().split("!");
                 for (String s : stringArray) {
                     stringList.add(lastStr(s));
                 }
             }
-            map.put("getFileName", "测试计划");
-        }
-        else if(version.getTestYl()!=null&&theDocNum.equals(version.getTestYl())){
+        }else if(version.getTestYlPath()!=null&&fileName.equals("测试用例")){
             if(version.getTestYlPath()!=null) {
                 stringArray = version.getTestYlPath().split("!");
                 for (String s : stringArray) {
                     stringList.add(lastStr(s));
                 }
             }
-            map.put("getFileName", "测试用例");
-        }
-        else if(version.getTestJl()!=null&&theDocNum.equals(version.getTestJl())){
+        }else if(version.getTestJlPath()!=null&&fileName.equals("测试记录")){
             if(version.getTestJlPath()!=null) {
                 stringArray = version.getTestJlPath().split("!");
                 for (String s : stringArray) {
                     stringList.add(lastStr(s));
                 }
             }
-            map.put("getFileName", "测试记录");
         }
-        else if(version.getTestQx()!=null&&theDocNum.equals(version.getTestQx())){
+        else if(version.getTestQxPath()!=null&&fileName.equals("缺陷报告")){
             if(version.getTestQxPath()!=null) {
                 stringArray = version.getTestQxPath().split("!");
                 for (String s : stringArray) {
                     stringList.add(lastStr(s));
                 }
             }
-            map.put("getFileName", "缺陷报告");
-        }
-        else if(version.getTestBg()!=null&&theDocNum.equals(version.getTestBg())){
+        }else if(version.getTestBgPath()!=null&&fileName.equals("测试报告")){
             if(version.getTestBgPath()!=null) {
                 stringArray = version.getTestBgPath().split("!");
                 for (String s : stringArray) {
                     stringList.add(lastStr(s));
                 }
             }
-            map.put("getFileName", "测试报告");
+        }else if(version.getTestShPath()!=null&&fileName.equals("测试输入项")){
+            if(version.getTestShPath()!=null) {
+                stringArray = version.getTestShPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
+        }else if(version.getTestQtPath()!=null&&fileName.equals("其他")){
+            if(version.getTestQtPath()!=null) {
+                stringArray = version.getTestQtPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(lastStr(s));
+                }
+            }
         }
 
-        if(stringList!=null)
-            map.put("stringList", stringList);
+        map.put("stringList", stringList);
+
         return map;
     }
 
-    public String getOneFilePath(Version version,String theDocNum,String fileName){
+    public String getOneFilePath(Version version,String getFileName,String fileName){
         String path=null;
         String[] strArray=null;
-        if(version.getTestJh().equals(theDocNum)) {
+        if(getFileName.equals("测试计划")) {
             strArray = version.getTestJhPath().split("!");
             for(String str:strArray) {
                 if (lastStr(str).equals(fileName)) {
@@ -272,8 +328,7 @@ public class Utils {
                     break;
                 }
             }
-        }
-        else if (version.getTestYl().equals(theDocNum)) {
+        }else if (getFileName.equals("测试用例")) {
             strArray = version.getTestYlPath().split("!");
             for(String str:strArray) {
                 if (lastStr(str).equals(fileName)) {
@@ -281,8 +336,7 @@ public class Utils {
                     break;
                 }
             }
-        }
-        else if (version.getTestJl().equals(theDocNum)) {
+        }else if (getFileName.equals("测试记录")) {
             strArray = version.getTestJlPath().split("!");
             for(String str:strArray) {
                 if (lastStr(str).equals(fileName)) {
@@ -290,8 +344,7 @@ public class Utils {
                     break;
                 }
             }
-        }
-        else if (version.getTestQx().equals(theDocNum)) {
+        }else if (getFileName.equals("缺陷报告")) {
             strArray = version.getTestQxPath().split("!");
             for(String str:strArray) {
                 if (lastStr(str).equals(fileName)) {
@@ -299,9 +352,24 @@ public class Utils {
                     break;
                 }
             }
-        }
-        else if (version.getTestBg().equals(theDocNum)) {
+        }else if (getFileName.equals("测试报告")) {
             strArray = version.getTestBgPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }else if (getFileName.equals("测试输入项")) {
+            strArray = version.getTestShPath().split("!");
+            for(String str:strArray) {
+                if (lastStr(str).equals(fileName)) {
+                    path = str;
+                    break;
+                }
+            }
+        }else if (getFileName.equals("其他")) {
+            strArray = version.getTestQtPath().split("!");
             for(String str:strArray) {
                 if (lastStr(str).equals(fileName)) {
                     path = str;
@@ -330,4 +398,18 @@ public class Utils {
             path=path.substring(1, path.length());
         return path;
     }
+
+    public Double getbiggest(String path) throws Exception{
+        String[] strArray = path.split("!");
+        List<Double> dbList = new ArrayList<>();
+        String s;
+        for(String str:strArray){
+            s=lastStr(str).split("\\)")[0];
+            dbList.add(Double.parseDouble(s.substring(1, s.length())));
+        }
+        Collections.sort(dbList);
+        return dbList.get(dbList.size()-1);
+    }
+
+
 }

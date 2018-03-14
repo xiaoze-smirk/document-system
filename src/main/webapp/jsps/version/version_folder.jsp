@@ -53,6 +53,14 @@
             <img class="imgOn" title="BG" src="<c:url value="/images/folders/file.png"/>" >
             <span>测试报告</span>
         </div>
+        <div class="box_file">
+            <img class="imgOn" title="SH" src="<c:url value="/images/folders/file.png"/>" >
+            <span>测试输入项</span>
+        </div>
+        <div class="box_file">
+            <img class="imgOn" title="QT" src="<c:url value="/images/folders/file.png"/>" >
+            <span>其他</span>
+        </div>
     </div><!--二级文件区-->
     <div class="infoDetail">
         <form:form class="infoForm"  action="${pageContext.request.contextPath}/version/updateFolder" method="post" modelAttribute="version">
@@ -61,12 +69,8 @@
                 <div class="edit"><button>编辑</button></div>
             </div>
             <div class="labelInfo">
-                <label class="labelFirst">文档号:</label>
-                    <input type="text" class="noedit" value="${version.docNum}" disabled />
-            </div>
-            <div class="labelInfo">
-                <label class="labelFirst">版本号:</label>
-                    <input type="text" class="noedit" value="${version.verNum}" disabled />
+                <label class="labelFirst">项目:</label>
+                    <input type="text" class="noedit" value="${version.item.itemName}" disabled />
             </div>
             <div class="labelInfo">
                 <label class="labelFirst">修改时间:</label>
@@ -74,7 +78,9 @@
             </div>
             <div class="labelInfo">
                 <label class="labelFirst">修改人:</label>
-                <form:input path="verAlertPeople" disabled="true" />
+                <form:select path="verAlertPeople" disabled="true">
+                    <form:options items="${userList}" itemValue="userAccount" itemLabel="userName" />
+                </form:select>
             </div>
             <div class="labelInfo">
                 <label class="labelFirst">修改摘要:</label>
@@ -125,6 +131,7 @@
         var edit = $(".edit").find("button");
         $(".labelInfo").find("input").css("border","1px solid #EDF8F1");
         $(".labelInfo").find("input").css("background-color","#EDF8F1");
+        $(".labelInfo").find("select").css("background-color","#EDF8F1");
         edit.click(function () {
             if($(this).html() == "编辑"){
                 edit.html("保存");
@@ -135,6 +142,10 @@
                 $(".labelInfo").find("textarea").attr("disabled",false);
                 $(".labelInfo").find("textarea").css("border","1px solid gray");
                 $(".labelInfo").find("textarea").css("background-color","white");
+
+                $(".labelInfo").find("select").attr("disabled",false);
+                $(".labelInfo").find("select").css("border","1px solid gray");
+                $(".labelInfo").find("select").css("background-color","white");
 
                 $(".labelInfo").find(".noedit").attr("disabled",true);
                 $(".labelInfo").find(".noedit").css("border","1px solid #EDF8F1");

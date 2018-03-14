@@ -11,6 +11,7 @@
 </head>
 <body>
 <div class="box_title">
+    <img src="${pageContext.request.contextPath}/images/logo.png" class="logo">
     <span class="title">项目文档管理系统</span>
     <div class="personal_info">
         <img  onerror="this.src='${pageContext.request.contextPath}/images/main/person-img.png'" src="${loginUser.userAvatar}" class="person-img">
@@ -49,13 +50,6 @@
             </li>
         </sec:authorize>
         <li>
-            <h4 >员工管理</h4>
-            <div class="list-item none">
-                <a href="<c:url value="/employee/toInput"/>" target="contentFrame">新增员工</a>
-                <a href="<c:url value="/employee/list"/>" target="contentFrame">员工管理</a>
-            </div>
-        </li>
-        <li>
             <h4>部门管理</h4>
             <div class="list-item none">
                 <a href="<c:url value="/department/toInput"/>" target="contentFrame">新增部门</a>
@@ -77,17 +71,10 @@
             </div>
         </li>
         <li>
-            <h4 >文档管理</h4>
-            <div class="list-item none">
-                <a href="<c:url value="/document/toInput"/>" target="contentFrame">新增文档</a>
-                <a href="<c:url value="/document/list"/>" target="contentFrame">文档管理</a>
-            </div>
-        </li>
-        <li>
             <h4 >版本管理</h4>
             <div class="list-item none">
-                <a href="<c:url value="/version/toInput"/>" target="contentFrame">新增版本</a>
-                <a href="<c:url value="/version/list"/>" target="contentFrame">版本管理</a>
+                <a href="<c:url value="/version/toInput"/>" target="contentFrame">新增项目</a>
+                <a href="<c:url value="/version/list"/>" target="contentFrame">项目管理</a>
             </div>
         </li>
     </ul>

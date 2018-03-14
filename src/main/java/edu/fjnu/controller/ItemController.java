@@ -4,22 +4,24 @@ package edu.fjnu.controller;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import edu.fjnu.entity.Client;
 import edu.fjnu.entity.Item;
 import edu.fjnu.service.ClientService;
 import edu.fjnu.service.ItemService;
+import edu.fjnu.service.StateService;
+import edu.fjnu.service.UserService;
 import edu.fjnu.utils.StringUtil;
+import edu.fjnu.utils.Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.apache.commons.lang3.StringUtils.isEmpty;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
@@ -35,12 +37,18 @@ public class ItemController extends BaseController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    StateService stateService;
+
     @ModelAttribute
-    public void getEmployee(@RequestParam(value="autoId",required=false) Integer autoId,
+    public void getEmployee(@RequestParam(value="itemId",required=false) Integer itemId,
                             Map<String, Object> map, Item item){
 
-        if(autoId != null)
-            item=itemService.selectByPrimaryKey(autoId);
+        if(itemId != null)
+            item=itemService.selectByPrimaryKey(itemId);
         if(item != null)
             map.put("item", item);
     }
@@ -50,6 +58,8 @@ public class ItemController extends BaseController {
     public String input(Map<String, Object> map) {
         map.put("item", new Item());
         map.put("clientList",clientService.findAllClient());
+        map.put("userList",userService.findAllUser());
+        map.put("stateList", stateService.findAllState());
 
         return "item/input_item";
     }
@@ -60,8 +70,9 @@ public class ItemController extends BaseController {
                          @RequestParam(value="dateItemStartDate", required=false) Date dateItemStartDate,
                          @RequestParam(value="dateItemDeadline", required=false) Date dateItemDeadline) {
 
-        if(isEmpty(item.getClientId()))
-            return "redirect:/item/toInput";
+        if(isEmpty(item.getClientId())|| StringUtils.isEmpty(item.getItemState())) {
+            return "item/input_item";
+        }
 
         if(dateItemStartDate!=null)
             item.setItemStartDate(dateItemStartDate);
@@ -69,13 +80,13 @@ public class ItemController extends BaseController {
             item.setItemDeadline(dateItemDeadline);
         System.out.println(dateItemStartDate + "是大法官" + dateItemDeadline);
 
-        item.setClientId(item.getClientId().substring(4,7));
+        item.setClientId(item.getClientId().substring(4,9));
         LocalDateTime localDateTime = LocalDateTime.now();
 
         StringUtil stringUtil = new StringUtil();
-        item.setItemId(stringUtil.getYear(localDateTime)+item.getClientId()+stringUtil.getThreeStr(itemService.selectNextAutoId()));
+        item.setItemNum(stringUtil.getYear(localDateTime)+item.getClientId()+stringUtil.getFiveStr(itemService.selectNextAutoId()));
 
-        itemService.insert(item);
+        itemService.insertSelective(item);
 
         return "redirect:/item/list";
 
@@ -112,36 +123,57 @@ public class ItemController extends BaseController {
         List<Item> itemList =  itemService.findByItemName(map1);
 
         PageInfo<Item> page=new PageInfo<Item>(itemList);
-        page.setList((List<Item>)JSON.toJSON(page.getList()));
-        map.put("page", page);
+
+        Utils utils=new Utils();
+        List<Integer> intList = new ArrayList<>();
+        List<Item> itemList1 = new ArrayList<>();
+
+        if(page.getList()!=null){
+            for(Item item:page.getList()){
+                item.setUser(userService.selectByPrimaryKey(item.getUserAccount()));
+                itemList1.add(item);
+                intList.add(utils.getStateLength(item.getItemState()));
+            }
+        }
+        page.setList((List<Item>)JSON.toJSON(itemList1));
 
         if(isNotEmpty(searchItemName))
             map.put("searchItemName", searchItemName);
 
+        map.put("page", page);
         map.put("pageSize", pageSize);
+        map.put("intList", intList);
 
         return "item/list_item";
     }
 
     @ApiOperation(value="删除操作后台所需要的值")
-    @ApiImplicitParam(name = "autoId", value = "项目autoId", required = true, dataType = "Integer")
-    @DeleteMapping(value="/remove/{autoId}")
-    public String remove(@PathVariable("autoId") Integer autoId) {
+    @ApiImplicitParam(name = "itemId", value = "项目itemId", required = true, dataType = "Integer")
+    @DeleteMapping(value="/remove/{itemId}")
+    public String remove(@PathVariable("itemId") Integer itemId) {
 
-        itemService.deleteByPrimaryKey(autoId);
+        itemService.deleteByPrimaryKey(itemId);
 
         return "redirect:/item/list";
     }
 
     @ApiOperation(value="进入项目修改界面")
-    @ApiImplicitParam(name = "autoId", value = "项目autoId", dataType = "Integer")
-    @GetMapping(value="/preUpdate/{autoId}")
-    public String preUpdate(@PathVariable("autoId") Integer autoId, Map<String, Object> map){
+    @ApiImplicitParam(name = "itemId", value = "项目itemId", dataType = "Integer")
+    @GetMapping(value="/preUpdate/{itemId}")
+    public String preUpdate(@PathVariable("itemId") Integer itemId, Map<String, Object> map){
 
-        Item item = itemService.selectByPrimaryKey(autoId);
+        Item item = itemService.selectByPrimaryKey(itemId);
+        List<Client> clientList=clientService.findAllClient();
+        for(Client client:clientList){
+            if(client.getClientId().substring(4,9).equals(item.getClientId())){
+                item.setClientId(client.getClientId());
+                break;
+            }
+        }
         map.put("item", item);
-        map.put("clientList",clientService.findAllClient());
-        map.put("client",clientService.selectLikePrimaryKey(item.getClientId()));
+        map.put("clientList",clientList);
+        map.put("userList",userService.findAllUser());
+        map.put("stateList", stateService.findAllState());
 
         return "item/update_item";
     }
@@ -158,9 +190,8 @@ public class ItemController extends BaseController {
         if(dateItemDeadline!=null)
             item.setItemDeadline(dateItemDeadline);
 
-        if(clientId.length()==7){
-            item.setClientId(clientId.substring(4,7));
-            item.setItemId(item.getItemId().substring(0,4)+item.getClientId()+item.getItemId().substring(7,10));
+        if(clientId.length()==9){
+            item.setItemNum(item.getItemNum().substring(0,4)+clientId.substring(4,9)+item.getItemNum().substring(9,14));
         }
 
         itemService.updateByPrimaryKey(item);

@@ -4,9 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import edu.fjnu.entity.Version;
-import edu.fjnu.service.DocumentService;
 import edu.fjnu.service.ItemService;
+import edu.fjnu.service.UserService;
 import edu.fjnu.service.VersionService;
+import edu.fjnu.utils.StringUtil;
 import edu.fjnu.utils.Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -22,14 +23,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
-import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
 @Controller
 @Api(tags ="版本管理")
@@ -41,10 +41,10 @@ public class VersionController extends BaseController  {
     VersionService versionService;
 
     @Autowired
-    DocumentService documentService;
+    ItemService itemService;
 
     @Autowired
-    ItemService itemService;
+    UserService userService;
 
     @ModelAttribute
     public void getDepartment(@RequestParam(value="verId",required=false) Integer verId,
@@ -65,11 +65,12 @@ public class VersionController extends BaseController  {
     @ApiOperation(value="新增版本界面")
     @GetMapping("/toInput")
     public String input(Map<String, Object> map) {
+
         map.put("version", new Version());
 
-        map.put("documentList", documentService.findAllDocument());
-
         map.put("itemList", itemService.findAllItem());
+
+        map.put("userList", userService.findAllUser());
 
         return "version/input_version";
     }
@@ -81,11 +82,21 @@ public class VersionController extends BaseController  {
 
         if(dateVerAlertTime!=null)
             version.setVerAlertTime(dateVerAlertTime);
-        version.setTestJh("JH"+version.getForItem()+version.getDocNum());
-        version.setTestYl("YL"+version.getForItem()+version.getDocNum());
-        version.setTestJl("JL"+version.getForItem()+version.getDocNum());
-        version.setTestQx("QX"+version.getForItem()+version.getDocNum());
-        version.setTestBg("BG"+version.getForItem()+version.getDocNum());
+        if(version.getJhBiggestNum()==null||version.getJhBiggestNum()==0)
+            version.setJhBiggestNum(version.getVerNum());
+        if(version.getYlBiggestNum()==null||version.getYlBiggestNum()==0)
+            version.setYlBiggestNum(version.getVerNum());
+        if(version.getJlBiggestNum()==null||version.getJlBiggestNum()==0)
+            version.setJlBiggestNum(version.getVerNum());
+        if(version.getQxBiggestNum()==null||version.getQxBiggestNum()==0)
+            version.setQxBiggestNum(version.getVerNum());
+        if(version.getBgBiggestNum()==null||version.getBgBiggestNum()==0)
+            version.setBgBiggestNum(version.getVerNum());
+        if(version.getShBiggestNum()==null||version.getShBiggestNum()==0)
+            version.setShBiggestNum(version.getVerNum());
+        if(version.getQtBiggestNum()==null||version.getQtBiggestNum()==0)
+            version.setQtBiggestNum(version.getVerNum());
+
         versionService.insertSelective(version);
 
         return "redirect:/version/list";
@@ -97,8 +108,7 @@ public class VersionController extends BaseController  {
     @RequestMapping("/list")
     public String list(Map<String, Object> map,
                        @RequestParam(value="pageNo", required=false, defaultValue="1") String pageNoStr,
-                       @RequestParam(value="pageSize", required=false, defaultValue="3") String pageSizeStr,
-                       @RequestParam(value="searchDocNum", required=false) String searchDocNum) {
+                       @RequestParam(value="pageSize", required=false, defaultValue="3") String pageSizeStr) {
 
         Integer pageNo = 1;
         Integer pageSize = 3;
@@ -116,29 +126,36 @@ public class VersionController extends BaseController  {
         }
 
         PageHelper.startPage(pageNo, pageSize);
-        List<Version> versionList ;
-        if(isNotEmpty(searchDocNum))
-            versionList = versionService.selectByDocNum(searchDocNum);
-        else
-            versionList = versionService.findAllVersion();
+        List<Version> versionList =versionService.findAllVersion();
 
-        PageInfo<Version> page=new PageInfo<Version>(versionList);
-        page.setList((List<Version>) JSON.toJSON(page.getList()));
+        PageInfo<Version> page=new PageInfo<>(versionList);
+        List <Version> versionList1 = new ArrayList<>();
+
+        for(Version version:page.getList()){
+            version.setItem(itemService.selectByPrimaryKey(version.getItemId()));
+            versionList1.add(version);
+        }
+
+        page.setList((List<Version>) JSON.toJSON(versionList1));
         map.put("page", page);
         map.put("pageSize", pageSize);
-
-        if(isNotEmpty(searchDocNum))
-            map.put("searchDocNum", searchDocNum);
 
         return "version/list_version";
     }
 
     @ApiOperation(value="进入文件夹查看(修改)界面")
     @ApiImplicitParam(name = "verId", value = "版本verId", required = true, dataType = "Integer")
-    @GetMapping(value="/preWatch/{verId}")
-    public String preWatch(@PathVariable("verId") Integer verId, Map<String, Object> map){
+    @GetMapping(value="/preWatchFolder/{itemId}")
+    public String preWatchFolder(@PathVariable("itemId") Integer itemId, Map<String, Object> map){
 
-        map.put("version", versionService.selectByPrimaryKey(verId));
+        try {
+            if(versionService.selectByItemId(itemId).getItemId()!=null)
+                map.put("version", versionService.selectByItemId(itemId));
+        }catch (Exception e){
+            map.put("version", new Version());
+        }
+
+        map.put("userList", userService.findAllUser());
 
         return "version/version_folder";
     }
@@ -150,22 +167,23 @@ public class VersionController extends BaseController  {
 
         if(dateVerAlertTime!=null)
             version.setVerAlertTime(dateVerAlertTime);
-        versionService.updateByPrimaryKey(version);
+        versionService.updateByPrimaryKeySelective(version);
+        map.put("userList", userService.findAllUser());
         map.put("version", version);
         return "version/version_folder";
     }
 
-    @ApiOperation(value="进入文件夹查看(修改)界面")
+    @ApiOperation(value="进入文件夹查看文件界面")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "fileName", value = "文件夹名称fileName", dataType = "String"),
             @ApiImplicitParam(name = "theVerId", value = "文件theVerId", dataType = "Integer")
     })
     @GetMapping(value="/preWatchFile/{fileName}/{theVerId}")
-    public String preWatch(@PathVariable("fileName") String fileName,
+    public String preWatchFile(@PathVariable("fileName") String fileName,
                            @PathVariable("theVerId") Integer theVerId,
                            Map<String, Object> map){
         Version version = versionService.selectByPrimaryKey(theVerId);
-
+        DecimalFormat df = new DecimalFormat("######0.0");
         map.put("version", version);
 
         String[] stringArray = null;
@@ -180,9 +198,8 @@ public class VersionController extends BaseController  {
                 }
             }
             map.put("getFileName", "测试计划");
-            map.put("theDocNum", version.getTestJh());
-        }
-        else if(fileName.equals("YL")){
+            map.put("getBiggest", df.format(version.getJhBiggestNum()));
+        }else if(fileName.equals("YL")){
             if(version.getTestYlPath()!=null) {
                 stringArray = version.getTestYlPath().split("!");
                 for (String s : stringArray) {
@@ -190,9 +207,8 @@ public class VersionController extends BaseController  {
                 }
             }
             map.put("getFileName", "测试用例");
-            map.put("theDocNum", version.getTestYl());
-        }
-        else if(fileName.equals("JL")){
+            map.put("getBiggest", df.format(version.getYlBiggestNum()));
+        }else if(fileName.equals("JL")){
             if(version.getTestJlPath()!=null) {
                 stringArray = version.getTestJlPath().split("!");
                 for (String s : stringArray) {
@@ -200,9 +216,8 @@ public class VersionController extends BaseController  {
                 }
             }
             map.put("getFileName", "测试记录");
-            map.put("theDocNum", version.getTestJl());
-        }
-        else if(fileName.equals("QX")){
+            map.put("getBiggest", df.format(version.getJlBiggestNum()));
+        }else if(fileName.equals("QX")){
             if(version.getTestQxPath()!=null) {
                 stringArray = version.getTestQxPath().split("!");
                 for (String s : stringArray) {
@@ -210,9 +225,8 @@ public class VersionController extends BaseController  {
                 }
             }
             map.put("getFileName", "缺陷报告");
-            map.put("theDocNum", version.getTestQx());
-        }
-        else if(fileName.equals("BG")){
+            map.put("getBiggest", df.format(version.getQxBiggestNum()));
+        }else if(fileName.equals("BG")){
             if(version.getTestBgPath()!=null) {
                 stringArray = version.getTestBgPath().split("!");
                 for (String s : stringArray) {
@@ -220,48 +234,70 @@ public class VersionController extends BaseController  {
                 }
             }
             map.put("getFileName", "测试报告");
-            map.put("theDocNum", version.getTestBg());
+            map.put("getBiggest", df.format(version.getBgBiggestNum()));
+        }else if(fileName.equals("SH")){
+            if(version.getTestShPath()!=null) {
+                stringArray = version.getTestShPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(utils.lastStr(s));
+                }
+            }
+            map.put("getFileName", "测试输入项");
+            map.put("getBiggest", df.format(version.getShBiggestNum()));
+        }else if(fileName.equals("QT")){
+            if(version.getTestQtPath()!=null) {
+                stringArray = version.getTestQtPath().split("!");
+                for (String s : stringArray) {
+                    stringList.add(utils.lastStr(s));
+                }
+            }
+            map.put("getFileName", "其他");
+            map.put("getBiggest", df.format(version.getQtBiggestNum()));
         }
 
-        if(stringList!=null)
-            map.put("stringList", stringList);
-        System.out.println(map.get("theDocNum")+"你真的很好"+map.get("getFileName"));
+        map.put("stringList", stringList);
+        map.put("userList", userService.findAllUser());
+        System.out.println("你真的很好"+map.get("getFileName"));
         return "version/version_file";
+
     }
 
     @ApiOperation(value="修改文件夹页面值操作需要传入后台的值")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "getBiggest", value = "最高版本theVerId"),
+            @ApiImplicitParam(name = "getFileName", value = "文件夹名称getFileName", dataType = "String")
+    })
     @PostMapping(value="/updateFile")
     public String updateFile(Version version, Map<String, Object> map,
-                         @RequestParam(value="dateVerAlertTime", required=false) Date dateVerAlertTime,
-                         @RequestParam(value="theDocNum", required=false) String theDocNum) {
+                             @RequestParam(value="dateVerAlertTime", required=false) Date dateVerAlertTime,
+                             @RequestParam(value="getFileName", required=false) String getFileName,
+                             @RequestParam(value="getBiggest", required=false) Double getBiggest){
 
-        System.out.println(theDocNum+"你好啊啊啊啊啊 啊");
         if(dateVerAlertTime!=null)
             version.setVerAlertTime(dateVerAlertTime);
-        versionService.updateByPrimaryKeySelective(version);
 
         Utils utils = new Utils();
-        map.put("version", version);
-        if(isNotEmpty(theDocNum))
-            map.put("theDocNum", theDocNum);
+        if(utils.theMap(version,getFileName).get("stringList")!=null)
+            map.put("stringList", utils.theMap(version,getFileName).get("stringList"));
 
-        if(utils.map(version,theDocNum).get("getFileName")!=null)
-            map.put("getFileName", utils.map(version,theDocNum).get("getFileName"));
-        if(utils.map(version,theDocNum).get("stringList")!=null)
-            map.put("stringList", utils.map(version,theDocNum).get("stringList"));
-
+        map.put("getFileName", getFileName);
+        map.put("getBiggest", getBiggest);
+        map.put("userList", userService.findAllUser());
+        System.out.println("你真的很好"+map.get("getFileName"));
         return "version/version_file";
+
     }
 
     @ApiOperation(value="文件上传操作")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
-            @ApiImplicitParam(name = "theVerId", value = "文件theVerId")
+            @ApiImplicitParam(name = "getBiggest", value = "最高版本theVerId"),
+            @ApiImplicitParam(name = "getFileName", value = "文件夹名称getFileName", dataType = "String")
     })
-    @PostMapping(value="/upLoad/{verId}/{theDocNum}")
+    @PostMapping(value="/upLoad/{verId}/{getBiggest}/{getFileName}")
     public String fileUpLoad(@RequestParam("file") MultipartFile[] files, Map<String, Object> map,
                              @PathVariable("verId") Integer verId,
-                             @PathVariable("theDocNum") String theDocNum) {
+                             @PathVariable("getFileName") String getFileName,
+                             @PathVariable("getBiggest") Double getBiggest) {
 
         for(MultipartFile f:files){
             System.out.print(f.getOriginalFilename()+"   ");
@@ -270,40 +306,39 @@ public class VersionController extends BaseController  {
 
         Utils utils = new Utils();
         Version version = versionService.selectByPrimaryKey(verId);
-        version= utils.ver(files, version,theDocNum);
+        version= utils.ver(files, version,getFileName);
         versionService.updateByPrimaryKeySelective(version);
 
         map.put("version", version);
-        if(isNotEmpty(theDocNum))
-            map.put("theDocNum", theDocNum);
+        if(utils.theMap(version,getFileName).get("stringList")!=null)
+            map.put("stringList", utils.theMap(version,getFileName).get("stringList"));
 
-        if(utils.map(version,theDocNum).get("getFileName")!=null)
-            map.put("getFileName", utils.map(version,theDocNum).get("getFileName"));
-        if(utils.map(version,theDocNum).get("stringList")!=null)
-            map.put("stringList", utils.map(version,theDocNum).get("stringList"));
+        map.put("getFileName", getFileName);
+        map.put("getBiggest", getBiggest);
+        map.put("userList", userService.findAllUser());
 
         return "version/version_file";
     }
 
     @ApiOperation(value="单文件下载")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
+            @ApiImplicitParam(name = "fileName", value = "文件名fileName", dataType = "String"),
             @ApiImplicitParam(name = "theVerId", value = "文件theVerId"),
-            @ApiImplicitParam(name = "fileName", value = "文件名fileName", dataType = "String")
+            @ApiImplicitParam(name = "getFileName", value = "文件夹名称getFileName", dataType = "String")
     })
-    @GetMapping(value="/downloadOne/{fileName}/{verId}/{theDocNum}")
-    public String downloadOne(@PathVariable("verId") Integer verId ,
-                              @PathVariable("theDocNum") String theDocNum ,
-                              @PathVariable("fileName") String fileName ,
+    @GetMapping(value="/downloadOne/{fileName}/{verId}/{getFileName}")
+    public String downloadOne(@PathVariable("fileName") String fileName ,
+                              @PathVariable("verId") Integer verId ,
+                              @PathVariable("getFileName") String getFileName,
                               HttpServletResponse response){
-
+        StringUtil stringUtil = new StringUtil();
         Utils utils =new Utils();
         String path="";
 
-        System.out.println(theDocNum+"和"+fileName);
+        System.out.println(getFileName+"和"+fileName);
 
         Version version= versionService.selectByPrimaryKey(verId);
-        path=utils.getOneFilePath(version,theDocNum,fileName);
+        path=utils.getOneFilePath(version,getFileName,fileName);
 
         File file = new File(path);
 
@@ -312,7 +347,7 @@ public class VersionController extends BaseController  {
                 String filename=file.getName();
                 System.out.println("----------file download" + filename);
                 response.setContentType("application/force-download;charset=UTF-8");
-                response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(filename, "UTF-8"));
+                response.setHeader("Content-Disposition", "attachment;fileName=" + URLEncoder.encode(stringUtil.downloadFileName(filename), "UTF-8"));
 
                 byte[] buffer = new byte[1024];
                 FileInputStream fis = null; //文件输入流
@@ -341,25 +376,26 @@ public class VersionController extends BaseController  {
 
     @ApiOperation(value="多文件下载")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
+            @ApiImplicitParam(name = "fileName", value = "文件名fileName", dataType = "String"),
             @ApiImplicitParam(name = "theVerId", value = "文件theVerId"),
-            @ApiImplicitParam(name = "manyFileName", value = "文件名集合字符串manyFileName", dataType = "String")
+            @ApiImplicitParam(name = "getFileName", value = "文件夹名称getFileName", dataType = "String")
     })
-    @GetMapping(value="/downloadMany/{manyFileName}/{verId}/{theDocNum}")
-    public String downloadMany(@PathVariable("verId") Integer verId ,
-                              @PathVariable("theDocNum") String theDocNum ,
-                              @PathVariable("manyFileName") String manyFileName ,
-                              HttpServletResponse response)  throws IOException {
+    @GetMapping(value="/downloadMany/{manyFileName}/{verId}/{getFileName}")
+    public String downloadMany(@PathVariable("manyFileName") String manyFileName ,
+                               @PathVariable("verId") Integer verId ,
+                               @PathVariable("getFileName") String getFileName,
+                               HttpServletResponse response)  throws IOException {
         String[] strArray = manyFileName.split("!");
         Version version= versionService.selectByPrimaryKey(verId);
         List<String> fileNamePaths = new ArrayList<>();
+        StringUtil stringUtil = new StringUtil();
         Utils utils =new Utils();
         for(String s:strArray){
-            fileNamePaths.add(utils.getOneFilePath(version,theDocNum,s));
+            fileNamePaths.add(utils.getOneFilePath(version,getFileName,s));
         }
 
         response.setContentType(MediaType.APPLICATION_OCTET_STREAM.toString());
-        response.setHeader("Content-Disposition","attachment;fileName=" + URLEncoder.encode("批量下载："+strArray[0]+"等文件.zip", "UTF-8"));
+        response.setHeader("Content-Disposition","attachment;fileName=" + URLEncoder.encode("批量下载："+stringUtil.downloadFileName(strArray[0])+"等文件.zip", "UTF-8"));
 
         ZipOutputStream zipOutputStream = new ZipOutputStream(response.getOutputStream());
 
@@ -380,14 +416,14 @@ public class VersionController extends BaseController  {
 
     @ApiOperation(value="文件删除")
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "theDocNum", value = "文件夹编号theDocNum", dataType = "String"),
+            @ApiImplicitParam(name = "fileName", value = "文件名fileName", dataType = "String"),
             @ApiImplicitParam(name = "theVerId", value = "文件theVerId"),
-            @ApiImplicitParam(name = "manyFileName", value = "文件名集合字符串manyFileName", dataType = "String")
+            @ApiImplicitParam(name = "getFileName", value = "文件夹名称getFileName", dataType = "String")
     })
-    @GetMapping(value="/removeFile/{manyFileName}/{verId}/{theDocNum}")
-    public String removeFile(@PathVariable("verId") Integer verId ,Map<String, Object> map,
-                               @PathVariable("theDocNum") String theDocNum ,
-                               @PathVariable("manyFileName") String manyFileName ) {
+    @GetMapping(value="/removeFile/{manyFileName}/{verId}/{getFileName}")
+    public String removeFile(@PathVariable("manyFileName") String manyFileName,Map<String, Object> map,
+                             @PathVariable("verId") Integer verId ,
+                             @PathVariable("getFileName") String getFileName) throws Exception{
 
         System.out.println(manyFileName);
         Version version= versionService.selectByPrimaryKey(verId);
@@ -396,52 +432,66 @@ public class VersionController extends BaseController  {
         List<String> fileNamePaths = new ArrayList<>();
         Utils utils =new Utils();
         for(String s:strArray){
-            fileNamePaths.add(utils.getOneFilePath(version,theDocNum,s));
+            fileNamePaths.add(utils.getOneFilePath(version,getFileName,s));
         }
 
         String path=null;
-        if(version.getTestJh().equals(theDocNum)) {
+        if(getFileName.equals("测试计划")) {
             String[] sArray = version.getTestJhPath().split("!");
-
             path=utils.getPath(sArray,strArray);
             version.setTestJhPath(path);
-        }
-        else if (version.getTestYl().equals(theDocNum)) {
+            version.setJhBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getJhBiggestNum());
+        }else if (getFileName.equals("测试用例")) {
             String[] sArray = version.getTestYlPath().split("!");
             path=utils.getPath(sArray,strArray);
             version.setTestYlPath(path);
-        }
-        else if (version.getTestJl().equals(theDocNum)) {
+            version.setYlBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getYlBiggestNum());
+        }else if (getFileName.equals("测试记录")) {
             String[] sArray = version.getTestJlPath().split("!");
             path=utils.getPath(sArray,strArray);
             version.setTestJlPath(path);
-        }
-        else if (version.getTestQx().equals(theDocNum)) {
+            version.setJlBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getJlBiggestNum());
+        }else if (getFileName.equals("缺陷报告")) {
             String[] sArray = version.getTestQxPath().split("!");
             path=utils.getPath(sArray,strArray);
             version.setTestQxPath(path);
-        }
-        else if (version.getTestBg().equals(theDocNum)) {
+            version.setQxBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getQxBiggestNum());
+        }else if (getFileName.equals("测试报告")) {
             String[] sArray = version.getTestBgPath().split("!");
             path=utils.getPath(sArray,strArray);
             version.setTestBgPath(path);
+            version.setBgBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getBgBiggestNum());
+        }else if (getFileName.equals("测试输入项")) {
+            String[] sArray = version.getTestShPath().split("!");
+            path=utils.getPath(sArray,strArray);
+            version.setTestShPath(path);
+            version.setShBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getShBiggestNum());
+        }else if (getFileName.equals("其他")) {
+            String[] sArray = version.getTestQtPath().split("!");
+            path=utils.getPath(sArray,strArray);
+            version.setTestQtPath(path);
+            version.setQtBiggestNum(utils.getbiggest(path));
+            map.put("getBiggest", version.getQtBiggestNum());
         }
         versionService.updateByPrimaryKeySelective(version);
 
         map.put("version", version);
-        if(isNotEmpty(theDocNum))
-            map.put("theDocNum", theDocNum);
 
-        if(utils.map(version,theDocNum).get("stringList")!=null)
-            map.put("stringList", utils.map(version,theDocNum).get("stringList"));
+        if(utils.theMap(version,getFileName).get("stringList")!=null)
+            map.put("stringList", utils.theMap(version,getFileName).get("stringList"));
 
-
-        if(utils.map(version,theDocNum).get("getFileName")!=null)
-            map.put("getFileName", utils.map(version,theDocNum).get("getFileName"));
-
+        map.put("getFileName", getFileName);
+        map.put("userList", userService.findAllUser());
         return "version/version_file";
 
     }
+
 
 }
 

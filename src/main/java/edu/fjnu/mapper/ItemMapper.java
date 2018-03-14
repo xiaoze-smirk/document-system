@@ -11,19 +11,17 @@ public interface ItemMapper {
 
     void insertSelective(Item record);
 
-    void deleteByPrimaryKey(Integer autoId);
+    void deleteByPrimaryKey(Integer itemId);
 
     void updateByPrimaryKeySelective(Item record);
 
     void updateByPrimaryKey(Item record);
 
-    Item selectByPrimaryKey(Integer autoId);
-
-    Integer selectNextAutoId();
+    Item selectByPrimaryKey(Integer itemId);
 
     List<Item> findAllItem();
 
     List<Item> findByItemName(Map map);
 
-    Item selectByLastRecord();
+    Integer selectNextAutoId();
 }

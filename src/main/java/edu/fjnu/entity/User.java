@@ -1,10 +1,9 @@
 package edu.fjnu.entity;
 
+import edu.fjnu.utils.StringUtil;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -41,8 +40,15 @@ public class User implements UserDetails, Serializable {
     //用户头像路径
     private String userAvatar;
 
-    //用户qq账号
-    private String userQqAccount;
+    //用户职务
+    private String userDuty;
+
+    //用户所属部门
+    private String userDepartment;
+    //显示部门辅助字符数组
+    private String[] userDept;
+    //显示部门辅助字符串
+    private String userDeptName;
 
     //用户个人照
     private byte[] userFaceAvatar;
@@ -111,12 +117,40 @@ public class User implements UserDetails, Serializable {
         this.userAvatar = userAvatar == null ? null : userAvatar.trim();
     }
 
-    public String getUserQqAccount() {
-        return userQqAccount;
+    public String getUserDuty() {
+        return userDuty;
     }
 
-    public void setUserQqAccount(String userQqAccount) {
-        this.userQqAccount = userQqAccount == null ? null : userQqAccount.trim();
+    public void setUserDuty(String userDuty) {
+        this.userDuty = userDuty == null ? null : userDuty.trim();
+    }
+
+    public String getUserDepartment() {
+        return userDepartment;
+    }
+
+    public void setUserDepartment(String userDepartment) {
+        this.userDepartment = userDepartment == null ? null : userDepartment.trim();
+        StringUtil stringUtil = new StringUtil();
+        this.userDept=stringUtil.strList(userDepartment);
+    }
+
+    public String[] getUserDept() {
+        return userDept;
+    }
+
+    public void setUserDept(String[] userDept) {
+        this.userDept = userDept;
+        StringUtil stringUtil = new StringUtil();
+        this.userDepartment=stringUtil.str(userDept);
+    }
+
+    public String getUserDeptName() {
+        return userDeptName;
+    }
+
+    public void setUserDeptName(String userDeptName) {
+        this.userDeptName = userDeptName;
     }
 
     public byte[] getUserFaceAvatar() {

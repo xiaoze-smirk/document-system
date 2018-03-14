@@ -218,26 +218,13 @@ textarea {
 .infoForm .labelInfo {
     margin-top: 15px;
 }
+.infoForm .labelInfo select {
+    width: 80px;
+    height: 25px;
+    margin: 3px 0 0 6px;
+}
 .version {
     display: none;
-}
-.history tr td:nth-child(1) {
-    width: 117px;
-}
-.history tr td:nth-child(2) {
-    width: 10%;
-}
-.history tr td:nth-child(3) {
-    width: 15%;
-}
-.history tr td:nth-child(4) {
-    width: 10%;
-}
-.history tr td:nth-child(5) {
-    width: 40%;
-}
-.history tr td:nth-child(6) {
-    width: 15%;
 }
 /******************返回按钮******************/
 .return {

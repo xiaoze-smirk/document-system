@@ -59,6 +59,16 @@
                     <form:radiobuttons  path="userSex" items="${status}"/>
                 </div>
                 <div>
+                    <label class="firstLabel">职务：</label>
+                    <form:input path="userDuty" disabled="true"/>
+                    <label></label>
+                </div>
+                <div>
+                    <label class="firstLabel">部门：</label>
+                    <form:input path="userDeptName" disabled="true"/>
+                    <label></label>
+                </div>
+                <div>
                     <label class="firstLabel">手机号：</label>
                     <form:input path="userPhone"/>
                     <label></label>
@@ -66,11 +76,6 @@
                 <div>
                     <label class="firstLabel">邮箱：</label>
                     <form:input path="userEmail"/>
-                    <label></label>
-                </div>
-                <div>
-                    <label class="firstLabel">QQ账号：</label>
-                    <form:input path="userQqAccount"/>
                     <label></label>
                 </div>
                 <div>

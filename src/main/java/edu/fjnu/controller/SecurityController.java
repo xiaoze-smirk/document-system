@@ -119,7 +119,8 @@ public class SecurityController extends BaseController {
 
         AESUtil aesUtil = new AESUtil();
         user.setUserPassword(aesUtil.Encrypt(user.getPassword(),"ABCDEFGHIJKLMNOP"));
-        user.setUserAuthorityId("1");
+        user.setUserAuthorityId("2");
+        user.setUserDepartment("01");
         FaceUtils faceUtils=new FaceUtils();
         if(!file.isEmpty()){
             if(faceUtils.checkOneFace(file)){
@@ -175,10 +176,13 @@ public class SecurityController extends BaseController {
             return map;
         }
 
-        if(userService.selectByPrimaryKey(number)==null) {
+        try {
+            User user1=userService.selectByPrimaryKey(number);
+        }catch (Exception e){
             map.put("rInfo","输入账号不正确");
             return map;
         }
+
         System.out.println("账号："+number);
 
         FaceUtils faceUtils = new FaceUtils();

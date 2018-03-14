@@ -1,3 +1,9 @@
+.staffMgr tr td {
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
+    table-layout: fixed;
+}
 .staffMgr tr td:nth-child(1) {
     width: 136.6px;
 }
@@ -5,24 +11,27 @@
     width: 8%;
 }
 .staffMgr tr td:nth-child(3) {
-    width: 8%;
+    width: 6%;
 }
 .staffMgr tr td:nth-child(4) {
-    width: 14%;
+    width: 11%;
 }
 .staffMgr tr td:nth-child(5) {
-    width: 14%;
+    width: 18%;
 }
 .staffMgr tr td:nth-child(6) {
     width: 14%;
 }
 .staffMgr tr td:nth-child(7) {
-    width: 14%;
+    width: 10%;
 }
 .staffMgr tr td:nth-child(8) {
-    width: 16.5%;
+    width: 10%;
     margin: 0 auto;
 }
-.staffMgr tr td:nth-child(8) div {
-    left: 23%;
+/*.staffMgr tr td:nth-child(8) div {*/
+     /*left: 15%;*/
+ /*}*/
+.staffMgr tr td:nth-child(9) {
+    width: 15%;
 }

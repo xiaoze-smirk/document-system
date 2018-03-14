@@ -4,6 +4,10 @@ import edu.fjnu.entity.Version;
 
 import java.util.List;
 
+/**
+ * @author xiaoze
+ * @date 2018/3/11
+ */
 public interface VersionService {
 
     void insert(Version record);
@@ -18,7 +22,7 @@ public interface VersionService {
 
     Version selectByPrimaryKey(Integer verId);
 
-    List<Version> selectByDocNum(String docNum);
+    Version selectByItemId(Integer itemId);
 
     List<Version> findAllVersion();
 

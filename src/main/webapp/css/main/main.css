@@ -27,11 +27,17 @@ a {
     position: absolute;
     z-index: 100;
 }
+.box_title .logo {
+    width: 50px;
+    margin-left: 5px;
+}
 .title {
-    margin-left: 10px;
+    margin-left: 5px;
     font-size: 25px;
     color: white;
     line-height: 50px;
+    position: relative;
+    top: -16px;
 }
 /*****************个人信息****************/
 .personal_info {

@@ -31,17 +31,26 @@ public class StringUtil {
         return String.valueOf(i+1);
     }
 
-    //获取三为字符串
-    public String getThreeStr(int i){
+    //获取五位字符串
+    public String getFiveStr(int i){
 
         String str;
         if(i<10)
+            str="0000"+ i;
+        else if(i<100)
+            str="000"+ i;
+        else if(i<1000)
             str="00"+ i;
-        else if(i<20)
+        else if(i<10000)
             str="0"+ i;
         else
             str=String.valueOf(i);
         return str;
+    }
+
+    public String downloadFileName(String str){
+        String[] s=str.split("\\)");
+        return s[0].substring(1,s[0].length())+"-"+s[1];
     }
 
 }

@@ -2,10 +2,13 @@ package edu.fjnu.controller;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import edu.fjnu.entity.Department;
 import edu.fjnu.entity.User;
 import edu.fjnu.service.AuthorityService;
+import edu.fjnu.service.DepartmentService;
 import edu.fjnu.service.UserService;
 import edu.fjnu.utils.AESUtil;
+import edu.fjnu.utils.EntityUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -42,6 +45,9 @@ public class UserController extends BaseController{
     @Autowired
     AuthorityService authorityService;
 
+    @Autowired
+    private DepartmentService departmentService;
+
     @ModelAttribute
     public void getDepartment(@RequestParam(value="userAccount",required=false) String userAccount,
                               Map<String, Object> map, User user){
@@ -76,10 +82,17 @@ public class UserController extends BaseController{
 
         PageHelper.startPage(pageNo, pageSize);
         List<User> userList=userService.findAllUser();
+        List<Department> departmentList = departmentService.findAllDepartment();
+
+        EntityUtil entityUtil = new EntityUtil();
 
         PageInfo<User> page=new PageInfo<>(userList);
-        for(User user:page.getList())
+        String str;
+        for(User user:page.getList()) {
             user.setAuthority(authorityService.selectByPrimaryKey(user.getUserAuthorityId()));
+            str = entityUtil.str(user.getUserDept(),departmentList);
+            user.setUserDeptName(str);
+        }
 
         map.put("page", page);
         map.put("pageSize", pageSize);
@@ -103,6 +116,8 @@ public class UserController extends BaseController{
     public String preUpdate(@PathVariable("userAccount") String userAccount, Map<String, Object> map){
 
         map.put("user", userService.selectByPrimaryKey(userAccount));
+        map.put("authorityList", authorityService.findAllAuthority());
+        map.put("deptList", departmentService.findAllDepartment());
 
         return "user/update_user";
     }

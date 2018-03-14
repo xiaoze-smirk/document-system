@@ -14,7 +14,7 @@
 <body>
 <div class="box_function box2">
     <div class="btn_upload function">
-        <form:form action="${pageContext.request.contextPath}/version/upLoad/${version.verId}/${theDocNum}" method="post" enctype="multipart/form-data">
+        <form:form action="${pageContext.request.contextPath}/version/upLoad/${version.verId}/${getBiggest}/${getFileName}" method="post" enctype="multipart/form-data">
             <span class="input-file input-fileup">
                 <img />上传
                 <input size="100" type="file" name="file" multiple="multiple" id="file">
@@ -51,21 +51,18 @@
 <div class="infoDetail">
     <form:form class="infoForm"  action="${pageContext.request.contextPath}/version/updateFile" method="post" modelAttribute="version">
         <form:hidden path="verId"/>
+        <input id="getBiggest" name="getBiggest" type="hidden" value="${getBiggest}" disabled />
+        <input id="getFileName" name="getFileName" type="hidden" value="${getFileName}" disabled />
         <div class="labelInfo">
             <div class="edit"><button>编辑</button></div>
         </div>
         <div class="labelInfo">
-            <label class="labelFirst">文档号:</label>
-            <input type="text" class="noedit" value="${version.docNum}" disabled />
+            <label class="labelFirst">项目:</label>
+            <input type="text" class="noedit" value="${version.item.itemName}" disabled />
         </div>
         <div class="labelInfo">
             <label class="labelFirst">版本号:</label>
-            <input type="text" class="noedit" value="${version.verNum}" disabled />
-        </div>
-        <div class="labelInfo">
-            <label class="labelFirst">文档编号:</label>
-            <input type="text" class="noedit" value="${theDocNum}" disabled />
-            <input id="theDocNum" name="theDocNum" type="hidden" value="${theDocNum}" disabled />
+            <input type="text" class="noedit" value="${getBiggest}" disabled />
         </div>
         <div class="labelInfo">
             <label class="labelFirst">修改时间:</label>
@@ -73,7 +70,9 @@
         </div>
         <div class="labelInfo">
             <label class="labelFirst">修改人:</label>
-            <form:input path="verAlertPeople" disabled="true" />
+            <form:select path="verAlertPeople" disabled="true">
+                <form:options items="${userList}" itemValue="userAccount" itemLabel="userName" />
+            </form:select>
         </div>
         <div class="labelInfo">
             <label class="labelFirst">修改摘要:</label>
@@ -148,6 +147,7 @@
         var edit = $(".edit").find("button");
         $(".labelInfo").find("input").css("border","1px solid #EDF8F1");
         $(".labelInfo").find("input").css("background-color","#EDF8F1");
+        $(".labelInfo").find("select").css("background-color","#EDF8F1");
         edit.click(function () {
             if($(this).html() == "编辑"){
                 edit.html("保存");
@@ -158,6 +158,10 @@
                 $(".labelInfo").find("textarea").attr("disabled",false);
                 $(".labelInfo").find("textarea").css("border","1px solid gray");
                 $(".labelInfo").find("textarea").css("background-color","white");
+
+                $(".labelInfo").find("select").attr("disabled",false);
+                $(".labelInfo").find("select").css("border","1px solid gray");
+                $(".labelInfo").find("select").css("background-color","white");
 
                 $(".labelInfo").find(".noedit").attr("disabled",true);
                 $(".labelInfo").find(".noedit").css("border","1px solid #EDF8F1");
@@ -225,14 +229,17 @@
                     }
                 }
                 if(d==1){
-                    $(location).attr("href","${pageContext.request.contextPath}/version/downloadOne/"+ download[0] + "/${version.verId}/${theDocNum}" );
-                }
-                else{
+                    if(confirm("您确定要下载吗?")){
+                        $(location).attr("href","${pageContext.request.contextPath}/version/downloadOne/"+ download[0] + "/${version.verId}/${getFileName}" );
+                    }
+                }else{
                     allValue=download[0];
                     for(var i = 1;i<download.length;i++){
                         allValue = allValue +"!"+ download[i];
                     }
-                    $(location).attr("href","${pageContext.request.contextPath}/version/downloadMany/"+ allValue +"/${version.verId}/${theDocNum}" );
+                    if(confirm("您确定要下载吗?")){
+                        $(location).attr("href","${pageContext.request.contextPath}/version/downloadMany/"+ allValue +"/${version.verId}/${getFileName}" );
+                    }
                 }
                 return false;
             }
@@ -263,7 +270,10 @@
                     }
 
                 }
-                $(location).attr("href","${pageContext.request.contextPath}/version/removeFile/" + allValue+"/${version.verId}/${theDocNum}");
+                if(confirm("您确定要删除吗?")){
+                    $(location).attr("href","${pageContext.request.contextPath}/version/removeFile/" + allValue+"/${version.verId}/${getFileName}");
+                }
+
                 return false;
             }
         });
@@ -275,7 +285,7 @@
 
         $("#historyClick").click(function () {
 
-            $(location).attr("href","${pageContext.request.contextPath}/version/preWatch/${version.verId}");
+            $(location).attr("href","${pageContext.request.contextPath}/version/preWatchFolder/${version.itemId}");
         });
 
     });

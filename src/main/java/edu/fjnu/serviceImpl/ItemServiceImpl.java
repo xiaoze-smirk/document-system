@@ -10,10 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * @author xiaoze
+ * @date 2018/3/8
+ */
 @Service
 @Transactional
-public class ItemServiceImpl implements ItemService {
+public class ItemServiceImpl implements ItemService{
 
     @Autowired
     ItemMapper itemMapper;
@@ -29,8 +32,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteByPrimaryKey(Integer autoId) {
-        itemMapper.deleteByPrimaryKey(autoId);
+    public void deleteByPrimaryKey(Integer itemId) {
+        itemMapper.deleteByPrimaryKey(itemId);
     }
 
     @Override
@@ -44,13 +47,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item selectByPrimaryKey(Integer autoId) {
-        return itemMapper.selectByPrimaryKey(autoId);
-    }
-
-    @Override
-    public Integer selectNextAutoId() {
-        return itemMapper.selectNextAutoId();
+    public Item selectByPrimaryKey(Integer itemId) {
+        return itemMapper.selectByPrimaryKey(itemId);
     }
 
     @Override
@@ -64,7 +62,8 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public Item selectByLastRecord() {
-        return itemMapper.selectByLastRecord();
+    public Integer selectNextAutoId() {
+        return itemMapper.selectNextAutoId();
     }
+
 }

@@ -9,17 +9,20 @@ import java.util.Date;
 @Component
 public class Item implements Serializable {
 
-    //顺序号：编号
-    private Integer autoId;
+    //顺序号（id）
+    private Integer itemId;
 
-    //项目号：年份（4位）+客户号（3位）+顺序号（3位）
-    private String itemId;
+    //项目号：年份（4位）+客户号（5位）+顺序号（5位）
+    private String itemNum;
 
     //所属客户
     private String clientId;
 
     //项目名
     private String itemName;
+
+    //状态
+    private String itemState;
 
     //起始日期
     @JSONField(format = "yyyy-MM-dd")
@@ -29,28 +32,31 @@ public class Item implements Serializable {
     @JSONField(format = "yyyy-MM-dd")
     private Date itemDeadline;
 
-    //业务负责人
-    private String itemPrincipal;
+    //审核人(用户id)
+    private String userAccount;
+    //审核人(用户)
+    private User user;
 
-    public Integer getAutoId() {
-        return autoId;
-    }
+    //摘要
+    private String itemContent;
 
-    public void setAutoId(Integer autoId) {
-        this.autoId = autoId;
-    }
-
-    public String getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public void setItemId(String itemId) {
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
+    }
 
-        this.itemId = itemId == null ? null : itemId.trim();
-        if(this.itemId.length()==10){
-            this.clientId=this.itemId.substring(4,7);
+    public String getItemNum() {
+        return itemNum;
+    }
+
+    public void setItemNum(String itemNum) {
+        this.itemNum = itemNum == null ? null : itemNum.trim();
+        if(this.itemNum.length()==14){
+            this.clientId=this.itemNum.substring(4,9);
         }
-
     }
 
     public String getItemName() {
@@ -59,6 +65,14 @@ public class Item implements Serializable {
 
     public void setItemName(String itemName) {
         this.itemName = itemName == null ? null : itemName.trim();
+    }
+
+    public String getItemState() {
+        return itemState;
+    }
+
+    public void setItemState(String itemState) {
+        this.itemState = itemState == null ? null : itemState.trim();
     }
 
     public Date getItemStartDate() {
@@ -77,12 +91,20 @@ public class Item implements Serializable {
         this.itemDeadline = itemDeadline;
     }
 
-    public String getItemPrincipal() {
-        return itemPrincipal;
+    public String getUserAccount() {
+        return userAccount;
     }
 
-    public void setItemPrincipal(String itemPrincipal) {
-        this.itemPrincipal = itemPrincipal == null ? null : itemPrincipal.trim();
+    public void setUserAccount(String userAccount) {
+        this.userAccount = userAccount == null ? null : userAccount.trim();
+    }
+
+    public String getItemContent() {
+        return itemContent;
+    }
+
+    public void setItemContent(String itemContent) {
+        this.itemContent = itemContent == null ? null : itemContent.trim();
     }
 
     public String getClientId() {
@@ -93,16 +115,26 @@ public class Item implements Serializable {
         this.clientId = clientId;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Item{" +
-                "autoId=" + autoId +
-                ", itemId='" + itemId + '\'' +
+                "itemId=" + itemId +
+                ", itemNum='" + itemNum + '\'' +
                 ", clientId='" + clientId + '\'' +
                 ", itemName='" + itemName + '\'' +
+                ", itemState='" + itemState + '\'' +
                 ", itemStartDate=" + itemStartDate +
                 ", itemDeadline=" + itemDeadline +
-                ", itemPrincipal='" + itemPrincipal + '\'' +
+                ", userAccount='" + userAccount + '\'' +
+                ", itemContent='" + itemContent + '\'' +
                 '}';
     }
 }

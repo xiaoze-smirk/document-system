@@ -3,37 +3,43 @@
 <mapper namespace="edu.fjnu.mapper.VersionMapper">
   <resultMap id="BaseResultMap" type="edu.fjnu.entity.Version">
     <id column="ver_id" jdbcType="INTEGER" property="verId" />
-    <result column="doc_num" jdbcType="VARCHAR" property="docNum" />
-    <result column="ver_num" jdbcType="VARCHAR" property="verNum" />
+    <result column="item_id" jdbcType="INTEGER" property="itemId" />
+    <result column="ver_num" jdbcType="DOUBLE" property="verNum" />
     <result column="ver_alert_time" jdbcType="TIMESTAMP" property="verAlertTime" />
     <result column="ver_alert_people" jdbcType="VARCHAR" property="verAlertPeople" />
-    <result column="ver_content" jdbcType="VARCHAR" property="verContent" />
-    <result column="test_jh" jdbcType="VARCHAR" property="testJh" />
-    <result column="test_yl" jdbcType="VARCHAR" property="testYl" />
-    <result column="test_jl" jdbcType="VARCHAR" property="testJl" />
-    <result column="test_qx" jdbcType="VARCHAR" property="testQx" />
-    <result column="test_bg" jdbcType="VARCHAR" property="testBg" />
+    <result column="jh_biggest_num" jdbcType="DOUBLE" property="jhBiggestNum" />
+    <result column="yl_biggest_num" jdbcType="DOUBLE" property="ylBiggestNum" />
+    <result column="jl_biggest_num" jdbcType="DOUBLE" property="jlBiggestNum" />
+    <result column="qx_biggest_num" jdbcType="DOUBLE" property="qxBiggestNum" />
+    <result column="bg_biggest_num" jdbcType="DOUBLE" property="bgBiggestNum" />
+    <result column="sh_biggest_num" jdbcType="DOUBLE" property="shBiggestNum" />
+    <result column="qt_biggest_num" jdbcType="DOUBLE" property="qtBiggestNum" />
+    <result column="ver_content" jdbcType="LONGVARCHAR" property="verContent" />
     <result column="test_jh_path" jdbcType="LONGVARCHAR" property="testJhPath" />
     <result column="test_yl_path" jdbcType="LONGVARCHAR" property="testYlPath" />
     <result column="test_jl_path" jdbcType="LONGVARCHAR" property="testJlPath" />
     <result column="test_qx_path" jdbcType="LONGVARCHAR" property="testQxPath" />
     <result column="test_bg_path" jdbcType="LONGVARCHAR" property="testBgPath" />
+    <result column="test_sh_path" jdbcType="LONGVARCHAR" property="testShPath" />
+    <result column="test_qt_path" jdbcType="LONGVARCHAR" property="testQtPath" />
   </resultMap>
   <sql id="Base_Column_List">
-    ver_id, doc_num, ver_num, ver_alert_time, ver_alert_people, ver_content, test_jh, test_yl, test_jl,
-    test_qx, test_bg, test_jh_path, test_yl_path, test_jl_path, test_qx_path, test_bg_path
+    ver_id, item_id, ver_num, ver_alert_time, ver_alert_people, jh_biggest_num, yl_biggest_num, 
+    jl_biggest_num, qx_biggest_num, bg_biggest_num, sh_biggest_num, qt_biggest_num,ver_content,
+    test_jh_path, test_yl_path, test_jl_path, test_qx_path, test_bg_path,test_sh_path, test_qt_path
   </sql>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select
+    select 
     <include refid="Base_Column_List" />
     from tb_version
     where ver_id = #{verId,jdbcType=INTEGER}
   </select>
-  <select id="selectByDocNum" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByItemId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
     from tb_version
-    where doc_num = #{docNum,jdbcType=VARCHAR}
+    where item_id = #{itemId,jdbcType=INTEGER}
   </select>
   <select id="findAllVersion" resultMap="BaseResultMap">
     select
@@ -46,20 +52,20 @@
     where ver_id = #{verId,jdbcType=INTEGER}
   </delete>
   <insert id="insert" parameterType="edu.fjnu.entity.Version">
-    insert into tb_version (ver_id, doc_num, ver_num,
-      ver_alert_time, ver_alert_people, ver_content, test_jh,
-      test_yl, test_jl, test_qx,
-      test_bg, test_jh_path,
-      test_yl_path, test_jl_path, test_qx_path,
-      test_bg_path
-      )
-    values (#{verId,jdbcType=INTEGER}, #{docNum,jdbcType=VARCHAR}, #{verNum,jdbcType=VARCHAR},
-      #{verAlertTime,jdbcType=TIMESTAMP}, #{verAlertPeople,jdbcType=VARCHAR}, #{verContent,jdbcType=VARCHAR}, #{testJh,jdbcType=VARCHAR},
-      #{testYl,jdbcType=VARCHAR}, #{testJl,jdbcType=VARCHAR}, #{testQx,jdbcType=VARCHAR},
-      #{testBg,jdbcType=VARCHAR}, #{testJhPath,jdbcType=LONGVARCHAR},
-      #{testYlPath,jdbcType=LONGVARCHAR}, #{testJlPath,jdbcType=LONGVARCHAR}, #{testQxPath,jdbcType=LONGVARCHAR},
-      #{testBgPath,jdbcType=LONGVARCHAR})
-      )
+    insert into tb_version (ver_id, item_id, ver_num, 
+      ver_alert_time, ver_alert_people, jh_biggest_num, 
+      yl_biggest_num, jl_biggest_num, qx_biggest_num, 
+      bg_biggest_num, sh_biggest_num, qt_biggest_num, 
+      ver_content, test_jh_path, test_yl_path, 
+      test_jl_path, test_qx_path, test_bg_path, 
+      test_sh_path, test_qt_path)
+    values (#{verId,jdbcType=INTEGER}, #{itemId,jdbcType=INTEGER}, #{verNum,jdbcType=DOUBLE},
+      #{verAlertTime,jdbcType=TIMESTAMP}, #{verAlertPeople,jdbcType=VARCHAR}, #{jhBiggestNum,jdbcType=DOUBLE}, 
+      #{ylBiggestNum,jdbcType=DOUBLE}, #{jlBiggestNum,jdbcType=DOUBLE}, #{qxBiggestNum,jdbcType=DOUBLE}, 
+      #{bgBiggestNum,jdbcType=DOUBLE}, #{shBiggestNum,jdbcType=DOUBLE}, #{qtBiggestNum,jdbcType=DOUBLE}, 
+      #{verContent,jdbcType=LONGVARCHAR}, #{testJhPath,jdbcType=LONGVARCHAR}, #{testYlPath,jdbcType=LONGVARCHAR}, 
+      #{testJlPath,jdbcType=LONGVARCHAR}, #{testQxPath,jdbcType=LONGVARCHAR}, #{testBgPath,jdbcType=LONGVARCHAR}, 
+      #{testShPath,jdbcType=LONGVARCHAR}, #{testQtPath,jdbcType=LONGVARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="edu.fjnu.entity.Version">
     insert into tb_version
@@ -67,8 +73,8 @@
       <if test="verId != null">
         ver_id,
       </if>
-      <if test="docNum != null">
-        doc_num,
+      <if test="itemId != null">
+        item_id,
       </if>
       <if test="verNum != null">
         ver_num,
@@ -79,23 +85,29 @@
       <if test="verAlertPeople != null">
         ver_alert_people,
       </if>
+      <if test="jhBiggestNum != null">
+        jh_biggest_num,
+      </if>
+      <if test="ylBiggestNum != null">
+        yl_biggest_num,
+      </if>
+      <if test="jlBiggestNum != null">
+        jl_biggest_num,
+      </if>
+      <if test="qxBiggestNum != null">
+        qx_biggest_num,
+      </if>
+      <if test="bgBiggestNum != null">
+        bg_biggest_num,
+      </if>
+      <if test="shBiggestNum != null">
+        sh_biggest_num,
+      </if>
+      <if test="qtBiggestNum != null">
+        qt_biggest_num,
+      </if>
       <if test="verContent != null">
         ver_content,
-      </if>
-      <if test="testJh != null">
-        test_jh,
-      </if>
-      <if test="testYl != null">
-        test_yl,
-      </if>
-      <if test="testJl != null">
-        test_jl,
-      </if>
-      <if test="testQx != null">
-        test_qx,
-      </if>
-      <if test="testBg != null">
-        test_bg,
       </if>
       <if test="testJhPath != null">
         test_jh_path,
@@ -112,16 +124,22 @@
       <if test="testBgPath != null">
         test_bg_path,
       </if>
+      <if test="testShPath != null">
+        test_sh_path,
+      </if>
+      <if test="testQtPath != null">
+        test_qt_path,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="verId != null">
         #{verId,jdbcType=INTEGER},
       </if>
-      <if test="docNum != null">
-        #{docNum,jdbcType=VARCHAR},
+      <if test="itemId != null">
+        #{itemId,jdbcType=INTEGER},
       </if>
       <if test="verNum != null">
-        #{verNum,jdbcType=VARCHAR},
+        #{verNum,jdbcType=DOUBLE},
       </if>
       <if test="verAlertTime != null">
         #{verAlertTime,jdbcType=TIMESTAMP},
@@ -129,23 +147,29 @@
       <if test="verAlertPeople != null">
         #{verAlertPeople,jdbcType=VARCHAR},
       </if>
+      <if test="jhBiggestNum != null">
+        #{jhBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="ylBiggestNum != null">
+        #{ylBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="jlBiggestNum != null">
+        #{jlBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="qxBiggestNum != null">
+        #{qxBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="bgBiggestNum != null">
+        #{bgBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="shBiggestNum != null">
+        #{shBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="qtBiggestNum != null">
+        #{qtBiggestNum,jdbcType=DOUBLE},
+      </if>
       <if test="verContent != null">
-        #{verContent,jdbcType=VARCHAR},
-      </if>
-      <if test="testJh != null">
-        #{testJh,jdbcType=VARCHAR},
-      </if>
-      <if test="testYl != null">
-        #{testYl,jdbcType=VARCHAR},
-      </if>
-      <if test="testJl != null">
-        #{testJl,jdbcType=VARCHAR},
-      </if>
-      <if test="testQx != null">
-        #{testQx,jdbcType=VARCHAR},
-      </if>
-      <if test="testBg != null">
-        #{testBg,jdbcType=VARCHAR},
+        #{verContent,jdbcType=LONGVARCHAR},
       </if>
       <if test="testJhPath != null">
         #{testJhPath,jdbcType=LONGVARCHAR},
@@ -162,16 +186,22 @@
       <if test="testBgPath != null">
         #{testBgPath,jdbcType=LONGVARCHAR},
       </if>
+      <if test="testShPath != null">
+        #{testShPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testQtPath != null">
+        #{testQtPath,jdbcType=LONGVARCHAR},
+      </if>
     </trim>
   </insert>
   <update id="updateByPrimaryKeySelective" parameterType="edu.fjnu.entity.Version">
     update tb_version
     <set>
-      <if test="docNum != null">
-        doc_num = #{docNum,jdbcType=VARCHAR},
+      <if test="itemId != null">
+        item_id = #{itemId,jdbcType=INTEGER},
       </if>
       <if test="verNum != null">
-        ver_num = #{verNum,jdbcType=VARCHAR},
+        ver_num = #{verNum,jdbcType=DOUBLE},
       </if>
       <if test="verAlertTime != null">
         ver_alert_time = #{verAlertTime,jdbcType=TIMESTAMP},
@@ -179,23 +209,29 @@
       <if test="verAlertPeople != null">
         ver_alert_people = #{verAlertPeople,jdbcType=VARCHAR},
       </if>
+      <if test="jhBiggestNum != null">
+        jh_biggest_num = #{jhBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="ylBiggestNum != null">
+        yl_biggest_num = #{ylBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="jlBiggestNum != null">
+        jl_biggest_num = #{jlBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="qxBiggestNum != null">
+        qx_biggest_num = #{qxBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="bgBiggestNum != null">
+        bg_biggest_num = #{bgBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="shBiggestNum != null">
+        sh_biggest_num = #{shBiggestNum,jdbcType=DOUBLE},
+      </if>
+      <if test="qtBiggestNum != null">
+        qt_biggest_num = #{qtBiggestNum,jdbcType=DOUBLE},
+      </if>
       <if test="verContent != null">
-        ver_content = #{verContent,jdbcType=VARCHAR},
-      </if>
-      <if test="testJh != null">
-        test_jh = #{testJh,jdbcType=VARCHAR},
-      </if>
-      <if test="testYl != null">
-        test_yl = #{testYl,jdbcType=VARCHAR},
-      </if>
-      <if test="testJl != null">
-        test_jl = #{testJl,jdbcType=VARCHAR},
-      </if>
-      <if test="testQx != null">
-        test_qx = #{testQx,jdbcType=VARCHAR},
-      </if>
-      <if test="testBg != null">
-        test_bg = #{testBg,jdbcType=VARCHAR},
+        ver_content = #{verContent,jdbcType=LONGVARCHAR},
       </if>
       <if test="testJhPath != null">
         test_jh_path = #{testJhPath,jdbcType=LONGVARCHAR},
@@ -212,26 +248,36 @@
       <if test="testBgPath != null">
         test_bg_path = #{testBgPath,jdbcType=LONGVARCHAR},
       </if>
+      <if test="testShPath != null">
+        test_sh_path = #{testShPath,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="testQtPath != null">
+        test_qt_path = #{testQtPath,jdbcType=LONGVARCHAR},
+      </if>
     </set>
     where ver_id = #{verId,jdbcType=INTEGER}
   </update>
   <update id="updateByPrimaryKey" parameterType="edu.fjnu.entity.Version">
     update tb_version
-    set doc_num = #{docNum,jdbcType=VARCHAR},
-    ver_num = #{verNum,jdbcType=VARCHAR},
-    ver_alert_time = #{verAlertTime,jdbcType=TIMESTAMP},
-    ver_alert_people = #{verAlertPeople,jdbcType=VARCHAR},
-    ver_content = #{verContent,jdbcType=VARCHAR},
-    test_jh = #{testJh,jdbcType=VARCHAR},
-    test_yl = #{testYl,jdbcType=VARCHAR},
-    test_jl = #{testJl,jdbcType=VARCHAR},
-    test_qx = #{testQx,jdbcType=VARCHAR},
-    test_bg = #{testBg,jdbcType=VARCHAR},
-    test_jh_path = #{testJhPath,jdbcType=LONGVARCHAR},
-    test_yl_path = #{testYlPath,jdbcType=LONGVARCHAR},
-    test_jl_path = #{testJlPath,jdbcType=LONGVARCHAR},
-    test_qx_path = #{testQxPath,jdbcType=LONGVARCHAR},
-    test_bg_path = #{testBgPath,jdbcType=LONGVARCHAR}
+    set item_id = #{itemId,jdbcType=INTEGER},
+      ver_num = #{verNum,jdbcType=DOUBLE},
+      ver_alert_time = #{verAlertTime,jdbcType=TIMESTAMP},
+      ver_alert_people = #{verAlertPeople,jdbcType=VARCHAR},
+      jh_biggest_num = #{jhBiggestNum,jdbcType=DOUBLE},
+      yl_biggest_num = #{ylBiggestNum,jdbcType=DOUBLE},
+      jl_biggest_num = #{jlBiggestNum,jdbcType=DOUBLE},
+      qx_biggest_num = #{qxBiggestNum,jdbcType=DOUBLE},
+      bg_biggest_num = #{bgBiggestNum,jdbcType=DOUBLE},
+      sh_biggest_num = #{shBiggestNum,jdbcType=DOUBLE},
+      qt_biggest_num = #{qtBiggestNum,jdbcType=DOUBLE},
+      ver_content = #{verContent,jdbcType=LONGVARCHAR},
+      test_jh_path = #{testJhPath,jdbcType=LONGVARCHAR},
+      test_yl_path = #{testYlPath,jdbcType=LONGVARCHAR},
+      test_jl_path = #{testJlPath,jdbcType=LONGVARCHAR},
+      test_qx_path = #{testQxPath,jdbcType=LONGVARCHAR},
+      test_bg_path = #{testBgPath,jdbcType=LONGVARCHAR},
+      test_sh_path = #{testShPath,jdbcType=LONGVARCHAR},
+      test_qt_path = #{testQtPath,jdbcType=LONGVARCHAR}
     where ver_id = #{verId,jdbcType=INTEGER}
   </update>
 </mapper>

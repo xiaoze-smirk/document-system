@@ -6,8 +6,7 @@
 <head>
     <meta charset="UTF-8">
     <title>项目管理</title>
-    <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
-    <link href="<c:url value="/css/projects/projMgr.css"/>" type="text/css" rel="stylesheet" />
+    <link href="<c:url value="/css/documents/documentMgr.css"/>" type="text/css" rel="stylesheet" />
     <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
 </head>
 <body>
@@ -15,7 +14,7 @@
     <p>项目管理</p>
     <div class="searchBar">
         <form class="search" method="post" action="${pageContext.request.contextPath}/item/list">
-            <input value="${searchItemName}" id="searchItemName" name="searchItemName" type="text" placeholder="请输入您要搜索的项目名称">
+            <input value="${searchItemName}" id="searchItemName" name="searchItemName" type="text" placeholder="请输入您要搜索的项目名">
             <button type="submit"></button>
         </form>
     </div>
@@ -27,24 +26,57 @@
     <table class="projMgr">
         <tr class="trNow">
             <td>序号</td>
-            <td>项目编号</td>
-            <td>项目名称</td>
+            <td>项目号</td>
+            <td>项目名</td>
+            <td>状态</td>
             <td>起始日期</td>
             <td>结束日期</td>
-            <td>负责人</td>
+            <td>审核人</td>
+            <td>摘要</td>
             <td>操作</td>
+        </tr>
+        <tr>
+            <td>
+                <div class="progress">
+                <span class="container">
+                        <span class="progressBar"></span>
+                </span>
+                </div>
+            </td>
         </tr>
         <c:forEach var="item" items="${page.list}" >
             <tr class="trNow">
-                <td>${item.autoId}</td>
                 <td>${item.itemId}</td>
-                <td id="itemName" title="${item.itemName}" nowrap>${item.itemName}</td>
+                <td>${item.itemNum}</td>
+                <td id="itemName" title="${item.itemName}">${item.itemName}</td>
+                <td>
+                    <c:choose>
+                        <c:when test="${item.itemState=='a'}">未测</c:when>
+                        <c:when test="${item.itemState=='b'}">启动</c:when>
+                        <c:when test="${item.itemState=='c'}">计划</c:when>
+                        <c:when test="${item.itemState=='d'}">用例</c:when>
+                        <c:when test="${item.itemState=='e'}">报告</c:when>
+                        <c:when test="${item.itemState=='f'}">结束</c:when>
+                        <c:when test="${item.itemState=='g'}">投诉</c:when>
+                    </c:choose>
+                </td>
                 <td>${item.itemStartDate}</td>
                 <td>${item.itemDeadline}</td>
-                <td>${item.itemPrincipal}</td>
+                <td>${item.user.userName}</td>
+                <td>${item.itemContent}</td>
                 <td>
-                    <div class="btn"><button class="update" href="${pageContext.request.contextPath}/item/preUpdate/${item.autoId}">修改</button></div>
-                    <div class="btn"><button class="delete" href="${pageContext.request.contextPath}/item/remove/${item.autoId}">删除</button></div>
+                    <div class="btn"><button class="update" href="${pageContext.request.contextPath}/item/preUpdate/${item.itemId}">修改</button></div>
+                    <div class="btn"><button class="delete" href="${pageContext.request.contextPath}/item/remove/${item.itemId}">删除</button></div>
+                    <div class="btn"><button class="history" href="${pageContext.request.contextPath}/version/preWatchFolder/${item.itemId}">历史</button></div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="progress">
+                    <span class="container">
+                            <span class="progressBar"></span>
+                    </span>
+                    </div>
                 </td>
             </tr>
         </c:forEach>
@@ -77,6 +109,17 @@
         $("#pageSize").val(rePageSize);
 
 
+        $(document).ready(function () {
+            var value=${intList};          /*停止的值*/
+            var bar = $(".projMgr").find(".progressBar");
+            for(var i = 1;i < bar.length;i ++){
+                var widthTemp = ((value[i-1]-50) / 10).toFixed(1) + '%';
+                bar.eq(i).css('width', widthTemp);
+                bar.eq(i).text(value[i-1]/10+ '%');
+            }
+        });
+
+
         $(".delete").click(function(){
             var href = $(this).attr("href");
             var itemName=$(this).parent().parent().parent().children("#itemName").attr("title");
@@ -84,12 +127,18 @@
                 $("form:eq(1)").attr("action",href).submit();
                 return false;
             }
-
         });
 
         $(".update").click(function(){
             var href = $(this).attr("href");
             $(location).attr("href",href);
+            return false;
+        });
+
+        $(".history").click(function(){
+            var href = $(this).attr("href");
+            $(location).attr("href",href);
+            return false;
         });
 
         $("#pageSize").change(function () {
@@ -155,6 +204,5 @@
     });
 
 </script>
-
 </body>
 </html>

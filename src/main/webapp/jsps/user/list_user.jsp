@@ -26,7 +26,8 @@
             <td>性别</td>
             <td>手机号</td>
             <td>邮箱</td>
-            <td>qq账号</td>
+            <td>部门</td>
+            <td>职务</td>
             <td>权限</td>
             <td>操作</td>
         </tr>
@@ -42,7 +43,8 @@
                 </td>
                 <td>${user.userPhone}</td>
                 <td>${user.userEmail}</td>
-                <td>${user.userQqAccount}</td>
+                <td>${user.userDeptName}</td>
+                <td>${user.userDuty}</td>
                 <td>${user.authority.authorityChineseName}</td>
                 <td>
                     <div><button class="update" href="${pageContext.request.contextPath}/user/preUpdate/${user.userAccount}">修改</button></div>

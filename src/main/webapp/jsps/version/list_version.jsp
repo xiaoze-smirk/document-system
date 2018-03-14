@@ -19,24 +19,21 @@
 	<table class="verMgr">
 		<tr class="trNow">
 			<td>序号</td>
-			<td>文档号</td>
+			<td>项目</td>
 			<td>版本号</td>
 			<td>修改时间</td>
 			<td>修改人</td>
 			<td>修改摘要</td>
-			<td>操作</td>
 		</tr>
 		<c:forEach var="version" items="${page.list}" >
 			<tr class="trNow">
 				<td>${version.verId}</td>
-				<td>${version.docNum}</td>
+				<td>${version.item.itemName}</td>
 				<td>${version.verNum}</td>
 				<td>${version.verAlertTime}</td>
 				<td>${version.verAlertPeople}</td>
 				<td>${version.verContent}</td>
-				<td>
-					<div><button class="update" href="${pageContext.request.contextPath}/version/preWatch/${version.verId}">查看</button></div>
-				</td>
+
 			</tr>
 		</c:forEach>
 	</table>
@@ -131,9 +128,6 @@
             var size = $.trim($("#pageSize").val());
             var pageSize=parseInt(size);
             var href="?pageNo="+pageNo+"&pageSize=" + pageSize;
-            var searchDocNum = "${searchDocNum}";
-            if(searchDocNum!=null&&searchDocNum!="")
-                var href="?pageNo="+pageNo+"&pageSize=" + pageSize+"&searchDocNum=" + searchDocNum;
             $(location).attr("href",href);
             return false;
 

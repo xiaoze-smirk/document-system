@@ -9,42 +9,47 @@ import java.util.Date;
 @Component
 public class Version implements Serializable {
 
-    //序号
+    //版本序号（id）
     private Integer verId;
 
-    //文档号
-    private String docNum;
-
-    //所属项目
-    private String forItem;
+    //项目顺序号（项目id）
+    private Integer itemId;
+    //项目
+    private Item item;
 
     //版本号
-    private String verNum;
+    private Double verNum;
 
     //修改时间
     @JSONField(format = "yyyy-MM-dd hh:mm:ss")
     private Date verAlertTime;
 
-    //修改人
+    //修改人（用户id）
     private String verAlertPeople;
 
     //修改摘要
     private String verContent;
 
-    //测试计划编号
-    private String testJh;
+    //测试计划最高版本
+    private Double jhBiggestNum;
 
-    //测试用例编号
-    private String testYl;
+    //测试用例最高版本
+    private Double ylBiggestNum;
 
-    //测试记录编号
-    private String testJl;
+    //测试记录最高版本
+    private Double jlBiggestNum;
 
-    //缺陷报告编号
-    private String testQx;
+    //缺陷报告最高版本
+    private Double qxBiggestNum;
 
-    //测试报告编号
-    private String testBg;
+    //测试报告最高版本
+    private Double bgBiggestNum;
+
+    //测试输入项最高版本
+    private Double shBiggestNum;
+
+    //其他最高版本
+    private Double qtBiggestNum;
 
     //测试计划地址
     private String testJhPath;
@@ -61,6 +66,12 @@ public class Version implements Serializable {
     //测试报告地址
     private String testBgPath;
 
+    //测试输入项最高版本
+    private String testShPath;
+
+    //其他最高版本
+    private String testQtPath;
+
     public Integer getVerId() {
         return verId;
     }
@@ -69,20 +80,20 @@ public class Version implements Serializable {
         this.verId = verId;
     }
 
-    public String getDocNum() {
-        return docNum;
+    public Integer getItemId() {
+        return itemId;
     }
 
-    public void setDocNum(String docNum) {
-        this.docNum = docNum == null ? null : docNum.trim();
+    public void setItemId(Integer itemId) {
+        this.itemId = itemId;
     }
 
-    public String getVerNum() {
+    public Double getVerNum() {
         return verNum;
     }
 
-    public void setVerNum(String verNum) {
-        this.verNum = verNum == null ? null : verNum.trim();
+    public void setVerNum(Double verNum) {
+        this.verNum = verNum ;
     }
 
     public Date getVerAlertTime() {
@@ -101,52 +112,68 @@ public class Version implements Serializable {
         this.verAlertPeople = verAlertPeople == null ? null : verAlertPeople.trim();
     }
 
+    public Double getJhBiggestNum() {
+        return jhBiggestNum;
+    }
+
+    public void setJhBiggestNum(Double jhBiggestNum) {
+        this.jhBiggestNum = jhBiggestNum;
+    }
+
+    public Double getYlBiggestNum() {
+        return ylBiggestNum;
+    }
+
+    public void setYlBiggestNum(Double ylBiggestNum) {
+        this.ylBiggestNum = ylBiggestNum;
+    }
+
+    public Double getJlBiggestNum() {
+        return jlBiggestNum;
+    }
+
+    public void setJlBiggestNum(Double jlBiggestNum) {
+        this.jlBiggestNum = jlBiggestNum;
+    }
+
+    public Double getQxBiggestNum() {
+        return qxBiggestNum;
+    }
+
+    public void setQxBiggestNum(Double qxBiggestNum) {
+        this.qxBiggestNum = qxBiggestNum;
+    }
+
+    public Double getBgBiggestNum() {
+        return bgBiggestNum;
+    }
+
+    public void setBgBiggestNum(Double bgBiggestNum) {
+        this.bgBiggestNum = bgBiggestNum;
+    }
+
+    public Double getShBiggestNum() {
+        return shBiggestNum;
+    }
+
+    public void setShBiggestNum(Double shBiggestNum) {
+        this.shBiggestNum = shBiggestNum;
+    }
+
+    public Double getQtBiggestNum() {
+        return qtBiggestNum;
+    }
+
+    public void setQtBiggestNum(Double qtBiggestNum) {
+        this.qtBiggestNum = qtBiggestNum;
+    }
+
     public String getVerContent() {
         return verContent;
     }
 
     public void setVerContent(String verContent) {
         this.verContent = verContent == null ? null : verContent.trim();
-    }
-
-    public String getTestJh() {
-        return testJh;
-    }
-
-    public void setTestJh(String testJh) {
-        this.testJh = testJh == null ? null : testJh.trim();
-    }
-
-    public String getTestYl() {
-        return testYl;
-    }
-
-    public void setTestYl(String testYl) {
-        this.testYl = testYl == null ? null : testYl.trim();
-    }
-
-    public String getTestJl() {
-        return testJl;
-    }
-
-    public void setTestJl(String testJl) {
-        this.testJl = testJl == null ? null : testJl.trim();
-    }
-
-    public String getTestQx() {
-        return testQx;
-    }
-
-    public void setTestQx(String testQx) {
-        this.testQx = testQx == null ? null : testQx.trim();
-    }
-
-    public String getTestBg() {
-        return testBg;
-    }
-
-    public void setTestBg(String testBg) {
-        this.testBg = testBg == null ? null : testBg.trim();
     }
 
     public String getTestJhPath() {
@@ -189,11 +216,54 @@ public class Version implements Serializable {
         this.testBgPath = testBgPath == null ? null : testBgPath.trim();
     }
 
-    public String getForItem() {
-        return forItem;
+    public String getTestShPath() {
+        return testShPath;
     }
 
-    public void setForItem(String forItem) {
-        this.forItem = forItem;
+    public void setTestShPath(String testShPath) {
+        this.testShPath = testShPath == null ? null : testShPath.trim();
+    }
+
+    public String getTestQtPath() {
+        return testQtPath;
+    }
+
+    public void setTestQtPath(String testQtPath) {
+        this.testQtPath = testQtPath == null ? null : testQtPath.trim();
+    }
+
+    public Item getItem() {
+        return item;
+    }
+
+    public void setItem(Item item) {
+        this.item = item;
+    }
+
+    @Override
+    public String toString() {
+        return "Version{" +
+                "verId=" + verId +
+                ", itemId=" + itemId +
+                ", item=" + item +
+                ", verNum=" + verNum +
+                ", verAlertTime=" + verAlertTime +
+                ", verAlertPeople='" + verAlertPeople + '\'' +
+                ", verContent='" + verContent + '\'' +
+                ", jhBiggestNum=" + jhBiggestNum +
+                ", ylBiggestNum=" + ylBiggestNum +
+                ", jlBiggestNum=" + jlBiggestNum +
+                ", qxBiggestNum=" + qxBiggestNum +
+                ", bgBiggestNum=" + bgBiggestNum +
+                ", shBiggestNum=" + shBiggestNum +
+                ", qtBiggestNum=" + qtBiggestNum +
+                ", testJhPath='" + testJhPath + '\'' +
+                ", testYlPath='" + testYlPath + '\'' +
+                ", testJlPath='" + testJlPath + '\'' +
+                ", testQxPath='" + testQxPath + '\'' +
+                ", testBgPath='" + testBgPath + '\'' +
+                ", testShPath='" + testShPath + '\'' +
+                ", testQtPath='" + testQtPath + '\'' +
+                '}';
     }
 }

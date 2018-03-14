@@ -10,12 +10,13 @@
     <result column="user_email" jdbcType="VARCHAR" property="userEmail" />
     <result column="user_authority_id" jdbcType="VARCHAR" property="userAuthorityId" />
     <result column="user_avatar" jdbcType="VARCHAR" property="userAvatar" />
-    <result column="user_qq_account" jdbcType="VARCHAR" property="userQqAccount" />
+    <result column="user_duty" jdbcType="VARCHAR" property="userDuty" />
+    <result column="user_department" jdbcType="VARCHAR" property="userDepartment" />
     <result column="user_face_avatar" jdbcType="LONGVARBINARY" property="userFaceAvatar" />
   </resultMap>
   <sql id="Base_Column_List">
     user_account, user_name, user_password, user_sex, user_phone, user_email, user_authority_id,
-    user_avatar, user_qq_account,user_face_avatar
+    user_avatar, user_duty, user_department, user_face_avatar
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
@@ -36,12 +37,12 @@
   <insert id="insert" parameterType="edu.fjnu.entity.User">
     insert into tb_user (user_account, user_name, user_password,
     user_sex, user_phone, user_email,
-    user_authority_id, user_avatar, user_qq_account,
+    user_authority_id, user_avatar, user_duty, user_department,
     user_face_avatar)
     values (#{userAccount,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR},
     #{userSex,jdbcType=VARCHAR}, #{userPhone,jdbcType=VARCHAR}, #{userEmail,jdbcType=VARCHAR},
-    #{userAuthorityId,jdbcType=VARCHAR}, #{userAvatar,jdbcType=VARCHAR}, #{userQqAccount,jdbcType=VARCHAR},
-    #{userFaceAvatar,jdbcType=LONGVARBINARY})
+    #{userAuthorityId,jdbcType=VARCHAR}, #{userAvatar,jdbcType=VARCHAR}, #{userDuty,jdbcType=VARCHAR},
+    #{userDepartment,jdbcType=VARCHAR}, #{userFaceAvatar,jdbcType=LONGVARBINARY})
   </insert>
   <insert id="insertSelective" parameterType="edu.fjnu.entity.User">
     insert into tb_user
@@ -70,8 +71,11 @@
       <if test="userAvatar != null">
         user_avatar,
       </if>
-      <if test="userQqAccount != null">
-        user_qq_account,
+      <if test="userDuty != null">
+        user_duty,
+      </if>
+      <if test="userDepartment != null">
+        user_department,
       </if>
       <if test="userFaceAvatar != null">
         user_face_avatar,
@@ -102,8 +106,11 @@
       <if test="userAvatar != null">
         #{userAvatar,jdbcType=VARCHAR},
       </if>
-      <if test="userQqAccount != null">
-        #{userQqAccount,jdbcType=VARCHAR},
+      <if test="userDuty != null">
+        #{userDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="userDepartment != null">
+        #{userDepartment,jdbcType=VARCHAR},
       </if>
       <if test="userFaceAvatar != null">
         #{userFaceAvatar,jdbcType=LONGVARBINARY},
@@ -134,8 +141,11 @@
       <if test="userAvatar != null">
         user_avatar = #{userAvatar,jdbcType=VARCHAR},
       </if>
-      <if test="userQqAccount != null">
-        user_qq_account = #{userQqAccount,jdbcType=VARCHAR},
+      <if test="userDuty != null">
+        user_duty = #{userDuty,jdbcType=VARCHAR},
+      </if>
+      <if test="userDepartment != null">
+        user_department = #{userDepartment,jdbcType=VARCHAR},
       </if>
       <if test="userFaceAvatar != null">
         user_face_avatar = #{userFaceAvatar,jdbcType=LONGVARBINARY},
@@ -152,7 +162,9 @@
       user_email = #{userEmail,jdbcType=VARCHAR},
       user_authority_id = #{userAuthorityId,jdbcType=VARCHAR},
       user_avatar = #{userAvatar,jdbcType=VARCHAR},
-      user_qq_account = #{userQqAccount,jdbcType=VARCHAR}
+      user_duty = #{userDuty,jdbcType=VARCHAR},
+      user_department = #{userDepartment,jdbcType=VARCHAR},
+      user_face_avatar = #{userFaceAvatar,jdbcType=LONGVARBINARY}
     where user_account = #{userAccount,jdbcType=VARCHAR}
   </update>
 </mapper>

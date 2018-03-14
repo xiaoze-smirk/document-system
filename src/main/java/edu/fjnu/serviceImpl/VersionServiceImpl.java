@@ -1,6 +1,7 @@
 package edu.fjnu.serviceImpl;
 
 import edu.fjnu.entity.Version;
+import edu.fjnu.mapper.ItemMapper;
 import edu.fjnu.mapper.VersionMapper;
 import edu.fjnu.service.VersionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,12 +10,19 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * @author xiaoze
+ * @date 2018/3/11
+ */
 @Service
 @Transactional
 public class VersionServiceImpl implements VersionService {
 
     @Autowired
     VersionMapper versionMapper;
+
+    @Autowired
+    ItemMapper itemMapper;
 
     @Override
     public void insert(Version record) {
@@ -43,16 +51,24 @@ public class VersionServiceImpl implements VersionService {
 
     @Override
     public Version selectByPrimaryKey(Integer verId) {
-        return versionMapper.selectByPrimaryKey(verId);
+
+        Version version = versionMapper.selectByPrimaryKey(verId);
+        version.setItem(itemMapper.selectByPrimaryKey(version.getItemId()));
+        return version;
     }
 
     @Override
-    public List<Version> selectByDocNum(String docNum) {
-        return versionMapper.selectByDocNum(docNum);
+    public Version selectByItemId(Integer itemId) {
+
+        Version version = versionMapper.selectByItemId(itemId);
+        version.setItem(itemMapper.selectByPrimaryKey(version.getItemId()));
+        return version;
+
     }
 
     @Override
     public List<Version> findAllVersion() {
         return versionMapper.findAllVersion();
     }
+
 }

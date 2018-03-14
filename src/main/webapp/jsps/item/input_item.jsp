@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <title>新增项目</title>
     <link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
-    <link href="<c:url value="/css/items/addItem.css"/>" type="text/css" rel="stylesheet" />
+    <link href="<c:url value="/css/documents/addDocument.css"/>" type="text/css" rel="stylesheet" />
     <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
     <script src="<c:url value="/js/home/home.js"/>"></script>
 </head>
@@ -16,8 +16,7 @@
     <p>新增项目</p>
 </div>
 <div class="box">
-    <form:form class="formStyle" action="${pageContext.request.contextPath}/item/create" method="post" modelAttribute="item">
-
+    <form:form class="formStyle" method="post" action="${pageContext.request.contextPath}/item/create" modelAttribute="item">
         <div>
             <label class="labelFirst">所属客户:</label>
             <form:select path="clientId">
@@ -26,29 +25,40 @@
             </form:select>
         </div>
         <div>
-            <label class="labelFirst">项目名称:</label>
-            <form:input class="projName" path="itemName"/>
+            <label class="labelFirst">项目名:</label>
+            <form:input path="itemName"/>
+        </div>
+        <div>
+            <label class="labelFirst">状态:</label>
+            <form:select path="itemState">
+                <option value="">=请选择=</option>
+                <form:options items="${stateList}" itemLabel="stateStrName" itemValue="stateStr" />
+            </form:select>
         </div>
         <div>
             <label class="labelFirst">起始日期:</label>
             <input name="dateItemStartDate" type="date" class="dateBegin" value=""/>
-
         </div>
         <div>
             <label class="labelFirst">结束日期:</label>
             <input name="dateItemDeadline" type="date" class="dateEnd" value=""/>
-
         </div>
         <div>
-            <label class="labelFirst">负责人:</label>
-            <form:input class="official" path="itemPrincipal"/>
+            <label class="labelFirst">审核人:</label>
+            <form:select path="userAccount">
+                <option value="">=请选择=</option>
+                <form:options items="${userList}" itemValue="userAccount" itemLabel="userName" />
+            </form:select>
         </div>
         <div>
+            <label class="labelFirst">摘要:</label>
+            <form:textarea path="itemContent" rows="6" cols="60" />
+        </div>
+        <div class="funcBtn">
             <div class="addStyle"><input type="submit" value="确定" /></div>
             <div class="addStyle"><input type="reset" value="重置" /></div>
         </div>
     </form:form>
-</div>
 <script type="text/javascript">
 
     $(function(){
@@ -61,9 +71,7 @@
         var today = year + "-" + month + "-" + day;
         $(".dateBegin").attr("value", today);
         $(".dateEnd").attr("value", today);
-
     });
-
 </script>
 </body>
 </html>

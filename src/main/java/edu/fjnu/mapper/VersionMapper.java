@@ -18,7 +18,7 @@ public interface VersionMapper {
 
     Version selectByPrimaryKey(Integer verId);
 
-    List<Version> selectByDocNum(String docNum);
+    Version selectByItemId(Integer itemId);
 
     List<Version> findAllVersion();
 }

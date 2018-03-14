@@ -53,8 +53,12 @@
             <form:input path="userEmail"/>
         </div>
         <div>
-            <label class="labelFirst">qq账号:</label>
-            <form:input path="userQqAccount"/>
+            <label class="labelFirst">部门:</label>
+            <form:checkboxes path="userDept" items="${deptList}" itemLabel="deptName" itemValue="deptId"/>
+        </div>
+        <div>
+            <label class="labelFirst">职务:</label>
+            <form:input path="userDuty"/>
         </div>
         <div class="label">
             <label class="labelFirst">个人证照:</label>
@@ -64,7 +68,7 @@
         <div>
             <label class="labelFirst">权限:</label>
             <form:select path="userAuthorityId">
-                <form:options items="${user.authorities}" itemLabel="authorityChineseName" itemValue="authorityId" />
+                <form:options items="${authorityList}" itemLabel="authorityChineseName" itemValue="authorityId" />
             </form:select>
         </div>
         <div>
