@@ -14,6 +14,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -103,8 +105,11 @@ public class UserController extends BaseController{
     @ApiOperation(value="删除操作后台所需要的值")
     @ApiImplicitParam(name = "userAccount", value = "用户userAccount", required = true, dataType = "String")
     @DeleteMapping(value="/remove/{userAccount}")
-    public String remove(@PathVariable("userAccount") String userAccount) {
+    public String remove(@PathVariable("userAccount") String userAccount,
+                         @AuthenticationPrincipal UserDetails userDetails) {
 
+        if(userDetails.getUsername().equals(userAccount))
+            return "redirect:/user/list";
         userService.deleteByPrimaryKey(userAccount);
 
         return "redirect:/user/list";
