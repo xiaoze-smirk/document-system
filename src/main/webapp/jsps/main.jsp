@@ -73,8 +73,8 @@
         <li>
             <h4 >版本管理</h4>
             <div class="list-item none">
-                <a href="<c:url value="/version/toInput"/>" target="contentFrame">新增项目</a>
-                <a href="<c:url value="/version/list"/>" target="contentFrame">项目管理</a>
+                <a href="<c:url value="/version/toInput"/>" target="contentFrame">新增初始版本</a>
+                <a href="<c:url value="/version/list"/>" target="contentFrame">初始版本清单</a>
             </div>
         </li>
     </ul>

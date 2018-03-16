@@ -5,14 +5,14 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>新增版本</title>
+    <title>新增最初版本</title>
     <link href="<c:url value="/css/versions/addVer.css"/>" type="text/css" rel="stylesheet" />
     <script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
     <script src="<c:url value="/js/home/home.js"/>"></script>
 </head>
 <body>
 <div class="title">
-    <p>新增版本</p>
+    <p>新增最初版本</p>
 </div>
 <div class="box">
     <form:form class="formStyle" action="${pageContext.request.contextPath}/version/create" method="post" modelAttribute="version">

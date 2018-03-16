@@ -80,6 +80,13 @@ public class VersionController extends BaseController  {
     public String create(Version version,
                          @RequestParam(value="dateVerAlertTime", required=false) Date dateVerAlertTime) {
 
+        try {
+            if(versionService.selectByItemId(version.getItemId()).getItemId()!=null)
+                return "redirect:/version/list";
+        }catch (Exception e){
+            System.out.println(e.getMessage());
+        }
+
         if(dateVerAlertTime!=null)
             version.setVerAlertTime(dateVerAlertTime);
         if(version.getJhBiggestNum()==null||version.getJhBiggestNum()==0)
@@ -96,6 +103,7 @@ public class VersionController extends BaseController  {
             version.setShBiggestNum(version.getVerNum());
         if(version.getQtBiggestNum()==null||version.getQtBiggestNum()==0)
             version.setQtBiggestNum(version.getVerNum());
+
 
         versionService.insertSelective(version);
 

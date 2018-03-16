@@ -5,7 +5,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>版本管理</title>
+	<title>最初版本清单</title>
 	<link href="<c:url value="/css/home/home.css"/>" type="text/css" rel="stylesheet" />
 	<link href="<c:url value="/css/versions/versionMgr.css"/>" type="text/css" rel="stylesheet" />
 	<script src="<c:url value="/js/jquery-3.2.1.min.js"/>"></script>
@@ -13,7 +13,7 @@
 </head>
 <body>
 <div class="title">
-	<p>版本管理</p>
+	<p>最初版本清单</p>
 </div>
 <div class="box">
 	<table class="verMgr">
