@@ -257,7 +257,6 @@ public class Utils {
     public Map<String, Object> theMap(Version version, String fileName){
 
         Map<String, Object> map = new HashMap<>();
-
         String[] stringArray = null;
         List<String> stringList = new ArrayList<>();
         if(version.getTestJhPath()!=null&&fileName.equals("测试计划")) {

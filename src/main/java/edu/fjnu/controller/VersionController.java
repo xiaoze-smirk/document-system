@@ -275,23 +275,23 @@ public class VersionController extends BaseController  {
             @ApiImplicitParam(name = "getBiggest", value = "最高版本theVerId"),
             @ApiImplicitParam(name = "getFileName", value = "文件夹名称getFileName", dataType = "String")
     })
-    @PostMapping(value="/updateFile")
+    @PostMapping(value="/updateFile/{dateVerAlertTime}/{getBiggest}/{getFileName}")
     public String updateFile(Version version, Map<String, Object> map,
-                             @RequestParam(value="dateVerAlertTime", required=false) Date dateVerAlertTime,
-                             @RequestParam(value="getFileName", required=false) String getFileName,
-                             @RequestParam(value="getBiggest", required=false) Double getBiggest){
+                             @PathVariable("dateVerAlertTime") Date dateVerAlertTime,
+                             @PathVariable("getFileName") String getFileName,
+                             @PathVariable("getBiggest") Double getBiggest){
 
         if(dateVerAlertTime!=null)
             version.setVerAlertTime(dateVerAlertTime);
-
+        System.out.println(version.getTestJhPath());
         Utils utils = new Utils();
         if(utils.theMap(version,getFileName).get("stringList")!=null)
             map.put("stringList", utils.theMap(version,getFileName).get("stringList"));
-
         map.put("getFileName", getFileName);
         map.put("getBiggest", getBiggest);
         map.put("userList", userService.findAllUser());
         System.out.println("你真的很好"+map.get("getFileName"));
+        versionService.updateByPrimaryKeySelective(version);
         return "version/version_file";
 
     }

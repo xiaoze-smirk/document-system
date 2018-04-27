@@ -49,7 +49,7 @@
     </c:forEach>
 </div>
 <div class="infoDetail">
-    <form:form class="infoForm"  action="${pageContext.request.contextPath}/version/updateFile" method="post" modelAttribute="version">
+    <form:form class="infoForm"  action="" method="post" modelAttribute="version">
         <form:hidden path="verId"/>
         <input id="getBiggest" name="getBiggest" type="hidden" value="${getBiggest}" disabled />
         <input id="getFileName" name="getFileName" type="hidden" value="${getFileName}" disabled />
@@ -167,7 +167,9 @@
                 $(".labelInfo").find(".noedit").css("border","1px solid #EDF8F1");
                 $(".labelInfo").find(".noedit").css("background-color","#EDF8F1");
             } else {
-                $("form:eq(1)").submit();
+                var href="${pageContext.request.contextPath}/version/updateFile/"+$("#dateVerAlertTime").val()+"/${getBiggest}/${getFileName}";
+                $("form:eq(1)").attr("action",href).submit();
+                return false;
             }
             return false;
         });
